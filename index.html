@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>کتاب‌های صوتی | آکادمی سبحان صمدی</title>
+  <meta name="description" content="کتاب‌های صوتی ترجمه‌شده آکادمی سبحان صمدی - بهترین منابع آموزشی برای معامله‌گران" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.css" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ============ BACKGROUND PARTICLES ============ -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- ============ PRELOADER ============ -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo">
+      <img src="images/logo.jpg" alt="آکادمی سبحان صمدی" />
+    </div>
+    <div class="preloader-bar"><div class="preloader-fill"></div></div>
+    <p class="preloader-text">در حال بارگذاری...</p>
+  </div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header id="main-header">
+  <div class="container">
+    <nav class="navbar">
+      <div class="nav-brand">
+        <img src="images/logo.jpg" alt="آکادمی سبحان صمدی" class="nav-logo" />
+        <div class="nav-brand-text">
+          <span class="nav-title">آکادمی سبحان صمدی</span>
+          <span class="nav-subtitle">کتاب‌های صوتی</span>
+        </div>
+      </div>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#home" class="nav-link active" data-page="home"><i class="fa-solid fa-house"></i> خانه</a></li>
+        <li><a href="#library" class="nav-link" data-page="library"><i class="fa-solid fa-book-open"></i> کتابخانه</a></li>
+        <li><a href="#categories" class="nav-link" data-page="categories"><i class="fa-solid fa-tags"></i> دسته‌بندی‌ها</a></li>
+        <li><a href="#about" class="nav-link" data-page="about"><i class="fa-solid fa-info-circle"></i> درباره ما</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="search-btn" title="جستجو">
+          <i class="fa-solid fa-search"></i>
+        </button>
+        <button class="btn-icon" id="theme-toggle" title="تغییر تم">
+          <i class="fa-solid fa-moon" id="theme-icon"></i>
+        </button>
+        <button class="btn-icon mobile-menu-btn" id="mobile-menu-btn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ SEARCH OVERLAY ============ -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-box">
+    <button class="search-close" id="search-close"><i class="fa-solid fa-xmark"></i></button>
+    <div class="search-input-wrap">
+      <i class="fa-solid fa-search"></i>
+      <input type="text" id="search-input" placeholder="جستجوی کتاب، نویسنده..." autocomplete="off" />
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<!-- ============ MAIN CONTENT ============ -->
+<main>
+
+  <!-- === HOME PAGE === -->
+  <section id="home" class="page active">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content" data-aos="fade-right">
+            <div class="hero-badge">
+              <span class="badge-dot"></span>
+              منابع آموزشی برگزیده
+            </div>
+            <h1>کتاب‌های صوتی<br /><span class="text-gold">آکادمی سبحان صمدی</span></h1>
+            <p>بهترین کتاب‌های حوزه معامله‌گری، روانشناسی بازار و موفقیت مالی — ترجمه‌شده و ضبط‌شده توسط تیم آکادمی سبحان صمدی</p>
+            <div class="hero-actions">
+              <button class="btn btn-gold" onclick="showPage('library')">
+                <i class="fa-solid fa-headphones"></i> شروع گوش دادن
+              </button>
+              <button class="btn btn-outline" onclick="showPage('about')">
+                <i class="fa-solid fa-play-circle"></i> بیشتر بدانید
+              </button>
+            </div>
+            <div class="hero-stats">
+              <div class="stat">
+                <div class="stat-value gold-text" id="book-count">۱۲</div>
+                <div class="stat-label">کتاب صوتی</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value gold-text">۵۰۰۰+</div>
+                <div class="stat-label">دانش‌آموز فعال</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value gold-text">۴.۹</div>
+                <div class="stat-label">امتیاز کاربران</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-visual" data-aos="fade-left">
+            <div class="hero-card-float">
+              <div class="float-ring float-ring-1"></div>
+              <div class="float-ring float-ring-2"></div>
+              <div class="float-ring float-ring-3"></div>
+              <div class="hero-academy-logo">
+                <img src="images/logo.jpg" alt="آکادمی سبحان صمدی" />
+              </div>
+              <div class="float-badge float-badge-1">
+                <i class="fa-solid fa-headphones"></i>
+                <span>صوتی</span>
+              </div>
+              <div class="float-badge float-badge-2">
+                <i class="fa-solid fa-star"></i>
+                <span>برگزیده</span>
+              </div>
+              <div class="float-badge float-badge-3">
+                <i class="fa-solid fa-globe"></i>
+                <span>ترجمه فارسی</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FEATURED BOOKS CAROUSEL -->
+    <div class="section" id="featured">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">پیشنهاد ویژه</span>
+          <h2>کتاب‌های برگزیده</h2>
+          <p>محبوب‌ترین کتاب‌های صوتی آکادمی</p>
+        </div>
+        <div class="swiper featured-swiper">
+          <div class="swiper-wrapper" id="featured-swiper-wrapper"></div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORIES STRIP -->
+    <div class="section categories-strip">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">دسته‌بندی</span>
+          <h2>موضوعات اصلی</h2>
+        </div>
+        <div class="cats-grid">
+          <div class="cat-card" onclick="filterCategory('trading')">
+            <div class="cat-icon"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>معامله‌گری</h3>
+            <p>استراتژی‌های بازار</p>
+          </div>
+          <div class="cat-card" onclick="filterCategory('psychology')">
+            <div class="cat-icon"><i class="fa-solid fa-brain"></i></div>
+            <h3>روانشناسی</h3>
+            <p>ذهنیت موفق</p>
+          </div>
+          <div class="cat-card" onclick="filterCategory('finance')">
+            <div class="cat-icon"><i class="fa-solid fa-coins"></i></div>
+            <h3>مالی</h3>
+            <p>مدیریت سرمایه</p>
+          </div>
+          <div class="cat-card" onclick="filterCategory('success')">
+            <div class="cat-icon"><i class="fa-solid fa-trophy"></i></div>
+            <h3>موفقیت</h3>
+            <p>رشد شخصی</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-badge">نظرات</span>
+          <h2>دانش‌آموزان چه می‌گویند</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p>«کتاب‌های صوتی آکادمی سبحان صمدی واقعاً تفکر من رو در بازار تغییر داد. کیفیت صدا و ترجمه عالیه.»</p>
+            <div class="t-author"><div class="t-avatar">ع</div><div><strong>علی رضایی</strong><span>معامله‌گر فارکس</span></div></div>
+          </div>
+          <div class="testimonial-card featured-testimonial">
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p>«بهترین سرمایه‌گذاری عمرم بود. این کتاب‌ها مفاهیمی رو یاد دادن که هیچ جای دیگه‌ای پیدا نمی‌کردم.»</p>
+            <div class="t-author"><div class="t-avatar">س</div><div><strong>سارا محمدی</strong><span>تریدر حرفه‌ای</span></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <p>«روانشناسی معامله‌گری که توی این کتاب‌ها بود دقیقاً همون چیزی بود که کم داشتم. ممنون از آکادمی.»</p>
+            <div class="t-author"><div class="t-avatar">م</div><div><strong>محمد کریمی</strong><span>دانش‌آموز آکادمی</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- === LIBRARY PAGE === -->
+  <section id="library" class="page">
+    <div class="container">
+      <div class="library-header">
+        <h1>کتابخانه صوتی</h1>
+        <p>تمام کتاب‌های ترجمه‌شده آکادمی سبحان صمدی</p>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filter-tabs">
+          <button class="filter-tab active" data-cat="all">همه</button>
+          <button class="filter-tab" data-cat="trading">معامله‌گری</button>
+          <button class="filter-tab" data-cat="psychology">روانشناسی</button>
+          <button class="filter-tab" data-cat="finance">مالی</button>
+          <button class="filter-tab" data-cat="success">موفقیت</button>
+        </div>
+        <div class="filter-sort">
+          <select id="sort-select">
+            <option value="default">پیش‌فرض</option>
+            <option value="name">نام کتاب</option>
+            <option value="rating">بالاترین امتیاز</option>
+            <option value="duration">مدت زمان</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Books Grid -->
+      <div class="books-grid" id="books-grid"></div>
+    </div>
+  </section>
+
+  <!-- === CATEGORIES PAGE === -->
+  <section id="categories" class="page">
+    <div class="container">
+      <div class="library-header">
+        <h1>دسته‌بندی‌ها</h1>
+        <p>کتاب‌های صوتی بر اساس موضوع</p>
+      </div>
+      <div class="full-cats-grid" id="full-cats-grid"></div>
+    </div>
+  </section>
+
+  <!-- === ABOUT PAGE === -->
+  <section id="about" class="page">
+    <div class="container">
+      <div class="about-hero">
+        <div class="about-logo-wrap">
+          <img src="images/logo.jpg" alt="آکادمی سبحان صمدی" class="about-logo" />
+        </div>
+        <h1>آکادمی سبحان صمدی</h1>
+        <p class="about-tagline">پیشرو در آموزش معامله‌گری حرفه‌ای</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="about-icon"><i class="fa-solid fa-bullseye"></i></div>
+          <h3>مأموریت ما</h3>
+          <p>ارائه بهترین محتوای آموزشی برای معامله‌گران ایرانی، از طریق ترجمه و بومی‌سازی برترین منابع جهانی</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon"><i class="fa-solid fa-eye"></i></div>
+          <h3>چشم‌انداز</h3>
+          <p>تبدیل شدن به مرجع اصلی آموزش معامله‌گری در ایران و پرورش نسل جدیدی از تریدرهای موفق</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon"><i class="fa-solid fa-gem"></i></div>
+          <h3>ارزش‌های ما</h3>
+          <p>کیفیت، صداقت، و تعهد به موفقیت دانش‌آموزان — اصولی که هر روز به آن‌ها پایبندیم</p>
+        </div>
+      </div>
+      <div class="about-features">
+        <h2>چرا آکادمی سبحان صمدی؟</h2>
+        <div class="features-list">
+          <div class="feature-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>ترجمه دقیق و روان کتاب‌های معتبر جهانی</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>کیفیت صدای حرفه‌ای studio-grade</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>پشتیبانی مداوم از دانش‌آموزان</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>بروزرسانی مستمر محتوا</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>قابل دسترس در هر دستگاهی</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-check-circle"></i>
+            <span>جامعه فعال معامله‌گران</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ AUDIO PLAYER (PERSISTENT) ============ -->
+<div class="audio-player-wrap" id="audio-player-wrap" style="display:none;">
+  <div class="player-cover">
+    <img id="player-cover-img" src="" alt="" />
+    <div class="player-cover-overlay">
+      <i class="fa-solid fa-music"></i>
+    </div>
+  </div>
+  <div class="player-info">
+    <div class="player-book-title" id="player-book-title">نام کتاب</div>
+    <div class="player-chapter" id="player-chapter">فصل اول</div>
+  </div>
+  <div class="player-controls-main">
+    <div class="player-time-row">
+      <span id="current-time">۰:۰۰</span>
+      <div class="player-progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+        <div class="progress-thumb" id="progress-thumb"></div>
+      </div>
+      <span id="total-time">۰:۰۰</span>
+    </div>
+    <div class="player-btns">
+      <button class="player-btn" id="btn-speed" title="سرعت پخش">
+        <span id="speed-label">۱×</span>
+      </button>
+      <button class="player-btn" id="btn-rewind" title="۱۵ ثانیه عقب">
+        <i class="fa-solid fa-rotate-left"></i><small>۱۵</small>
+      </button>
+      <button class="player-btn btn-play-main" id="btn-play-pause">
+        <i class="fa-solid fa-play" id="play-icon"></i>
+      </button>
+      <button class="player-btn" id="btn-forward" title="۱۵ ثانیه جلو">
+        <small>۱۵</small><i class="fa-solid fa-rotate-right"></i>
+      </button>
+      <button class="player-btn" id="btn-bookmark" title="بوکمارک">
+        <i class="fa-regular fa-bookmark"></i>
+      </button>
+    </div>
+  </div>
+  <div class="player-extra">
+    <div class="player-volume-wrap">
+      <button class="player-btn" id="btn-mute"><i class="fa-solid fa-volume-high" id="vol-icon"></i></button>
+      <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" />
+    </div>
+    <button class="player-btn" id="btn-sleep" title="تایمر خواب">
+      <i class="fa-solid fa-moon"></i>
+    </button>
+    <button class="player-btn" id="btn-close-player" title="بستن">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <!-- Sleep Timer Popup -->
+  <div class="sleep-popup" id="sleep-popup" style="display:none;">
+    <p>توقف خودکار بعد از:</p>
+    <div class="sleep-options">
+      <button onclick="setSleep(5)">۵ دقیقه</button>
+      <button onclick="setSleep(10)">۱۰ دقیقه</button>
+      <button onclick="setSleep(15)">۱۵ دقیقه</button>
+      <button onclick="setSleep(30)">۳۰ دقیقه</button>
+      <button onclick="setSleep(60)">۱ ساعت</button>
+      <button onclick="setSleep(0)">لغو</button>
+    </div>
+  </div>
+  <!-- Speed Popup -->
+  <div class="speed-popup" id="speed-popup" style="display:none;">
+    <button onclick="setSpeed(0.5)">۰.۵×</button>
+    <button onclick="setSpeed(0.75)">۰.۷۵×</button>
+    <button onclick="setSpeed(1)" class="active">۱×</button>
+    <button onclick="setSpeed(1.25)">۱.۲۵×</button>
+    <button onclick="setSpeed(1.5)">۱.۵×</button>
+    <button onclick="setSpeed(2)">۲×</button>
+  </div>
+</div>
+
+<!-- ============ BOOK DETAIL MODAL ============ -->
+<div class="modal-overlay" id="book-modal" style="display:none;">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.jpg" alt="آکادمی سبحان صمدی" class="footer-logo" />
+        <p>آکادمی سبحان صمدی — پیشرو در آموزش معامله‌گری حرفه‌ای در ایران</p>
+        <div class="social-links">
+          <a href="#" class="social-link" title="اینستاگرام"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-link" title="تلگرام"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" class="social-link" title="یوتیوب"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <h4>صفحات</h4>
+        <ul>
+          <li><a onclick="showPage('home')">خانه</a></li>
+          <li><a onclick="showPage('library')">کتابخانه</a></li>
+          <li><a onclick="showPage('categories')">دسته‌بندی‌ها</a></li>
+          <li><a onclick="showPage('about')">درباره ما</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>موضوعات</h4>
+        <ul>
+          <li><a onclick="filterCategory('trading')">معامله‌گری</a></li>
+          <li><a onclick="filterCategory('psychology')">روانشناسی</a></li>
+          <li><a onclick="filterCategory('finance')">مالی</a></li>
+          <li><a onclick="filterCategory('success')">موفقیت</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© ۱۴۰۴ آکادمی سبحان صمدی — تمامی حقوق محفوظ است</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Hidden audio element -->
+<audio id="main-audio" preload="metadata"></audio>
+
+<!-- Swiper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/player.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
