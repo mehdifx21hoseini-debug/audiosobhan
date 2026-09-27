@@ -30,7 +30,7 @@ html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; 
 #sub.cta .w, #sub.cta .w.on { color: #1b1405; }
 
 /* ---------- price card ---------- */
-#price { left: 70px; right: 70px; top: 250px; height: 390px; border-radius: 44px; opacity: 0;
+#price { left: 70px; right: 70px; top: 1440px; height: 390px; border-radius: 44px; opacity: 0;
   background: linear-gradient(150deg, rgba(26,22,28,.94) 0%, rgba(8,8,11,.95) 60%); border: 1.5px solid rgba(255,255,255,.12);
   box-shadow: 0 40px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08); overflow: visible; }
 #price .glow { left: 40px; top: 30px; width: 300px; height: 330px; border-radius: 50%; background: radial-gradient(closest-side, rgba(150,40,60,.55), rgba(150,40,60,0)); }
@@ -78,12 +78,30 @@ html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; 
 #logoWrap img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 0 30px rgba(232,201,131,.35)); }
 #shine { position: absolute; inset: -10px; -webkit-mask: url("../../brand/logo_white_gold.png") center / contain no-repeat; mask: url("../../brand/logo_white_gold.png") center / contain no-repeat;
   background: linear-gradient(110deg, rgba(255,255,255,0) 35%, rgba(255,247,220,.95) 50%, rgba(255,255,255,0) 65%); background-size: 300% 100%; background-position: 100% 0; }
-#o1 { left: 0; right: 0; top: 1050px; text-align: center; font-weight: 900; font-size: 66px; line-height: 1.5; }
+#o1 { left: 0; right: 0; top: 1030px; text-align: center; font-weight: 900; font-size: 84px; line-height: 1.4; }
 #o1 .t { display: inline-block; margin: 0 8px; opacity: 0; }
 #o1 .gold { background: linear-gradient(180deg, #fbe6b3, #d6ad62); -webkit-background-clip: text; color: transparent; }
 #oline { left: 50%; top: 1290px; width: 0; height: 2px; transform: translateX(-50%); background: linear-gradient(90deg, rgba(232,201,131,0), #e8c983, rgba(232,201,131,0)); }
-#o2 { left: 0; right: 0; top: 1320px; text-align: center; font-weight: 500; font-size: 30px; letter-spacing: 12px; color: #e8c983; direction: ltr; opacity: 0; }
+#o2 { left: 0; right: 0; top: 1325px; text-align: center; font-weight: 500; font-size: 30px; letter-spacing: 12px; color: #e8c983; direction: ltr; opacity: 0; }
 #black { position: absolute; inset: 0; background: #000; opacity: 0; }
+
+/* ---------- v2 scene graphics ---------- */
+.eyebrow { left: 0; right: 0; text-align: center; font-weight: 900; font-size: 64px; letter-spacing: 0; color: rgba(243,213,143,.85); opacity: 0; }
+#assets, #growth { position: absolute; left: 0; right: 0; top: 0; height: 1100px; opacity: 0; }
+.tile { position: absolute; top: 300px; width: 330px; height: 380px; border-radius: 40px; background: linear-gradient(160deg, rgba(40,52,92,.9), rgba(12,18,40,.92)); border: 1.5px solid rgba(243,213,143,.25);
+  box-shadow: 0 30px 80px rgba(0,0,0,.45); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; opacity: 0; }
+.tile .lb { font-weight: 900; font-size: 60px; }
+.goldbar { width: 210px; height: 110px; border-radius: 14px; background: linear-gradient(160deg, #fff1c4 0%, #e6bf6d 40%, #b98a3a 100%); box-shadow: inset 0 -10px 18px rgba(120,80,20,.45), 0 16px 30px rgba(0,0,0,.35); transform: perspective(300px) rotateX(24deg); }
+.bill { width: 230px; height: 110px; border-radius: 12px; background: linear-gradient(135deg, #cfe9c9, #7fb784); border: 5px solid #e9f5e4; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 60px; color: #2f6b3a; box-shadow: 0 16px 30px rgba(0,0,0,.35); }
+#aphone { position: absolute; left: 50%; top: 250px; height: 520px; margin-left: -100px; opacity: 0; filter: drop-shadow(0 30px 50px rgba(0,0,0,.6)); }
+#achart { position: absolute; left: 90px; top: 250px; width: 900px; height: 560px; opacity: 0; }
+#achart .lg { position: absolute; font-weight: 800; font-size: 40px; opacity: 0; }
+.bars { position: absolute; left: 110px; right: 110px; top: 330px; height: 640px; display: flex; align-items: flex-end; justify-content: space-between; }
+.bars .b { width: 140px; border-radius: 20px 20px 8px 8px; background: linear-gradient(180deg, #f8e2ac, #c99a4a); box-shadow: 0 18px 40px rgba(0,0,0,.35); height: 0; }
+#storyav { position: absolute; left: 50%; top: 1530px; width: 150px; height: 150px; margin-left: -75px; opacity: 0; }
+#storyav .ring { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(#f9ce34, #ee2a7b, #6228d7, #f9ce34); }
+#storyav img { position: absolute; inset: 8px; width: 134px; height: 134px; border-radius: 50%; border: 5px solid #0b1330; object-fit: cover; }
+#storyav .tap { position: absolute; left: 50%; top: 50%; width: 60px; height: 60px; margin: -30px; border-radius: 50%; border: 4px solid #fff; opacity: 0; }
 </style>
 </head>
 <body>
@@ -108,28 +126,46 @@ html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; 
     <div class="attr"><span class="bar"></span><span class="n">وارن بافت</span><span class="e">WARREN BUFFETT</span><span class="bar"></span></div>
   </div>
 
-  <div class="abs" id="ladder">
+  <div class="abs" id="ladder" style="display:none">
     <div class="abs ttl">اول مدیریت، بعد مقدار</div>
     <div class="abs rung" id="r3" style="top:66px"><div class="bar" style="width:900px; justify-content:flex-start">۱۰ میلیارد</div></div>
     <div class="abs rung" id="r2" style="top:196px"><div class="bar" style="width:640px">۱ میلیارد</div><div class="chk">✓</div></div>
     <div class="abs rung" id="r1" style="top:326px"><div class="bar" style="width:420px">۱۰۰ میلیون</div><div class="chk">✓</div></div>
   </div>
 
-  <div class="abs" id="state">
+  <div class="abs" id="state" style="display:none">
     <div class="l1"><span class="s">ثرو..تمند</span><span class="s">واقعی</span></div>
     <div class="l2"><span class="s">دنبال</span><span class="s">اثبات</span><span class="s">خودش</span><br><span class="s">به</span><span class="s">یک</span><span class="s">شخص</span><span class="s">دیگه</span><span class="s neg">نیست</span></div>
     <div class="uline" id="suline"></div>
   </div>
 
+  <div id="assets">
+    <div class="abs eyebrow" id="a_eb" style="top:190px">دارایی&nbsp;&nbsp;←&nbsp;&nbsp;مصرف</div>
+    <div class="tile" id="t_gold" style="right:120px"><div class="goldbar"></div><div class="lb" style="color:#f3d58f">طلا</div></div>
+    <div class="tile" id="t_usd" style="left:120px"><div class="bill">$</div><div class="lb" style="color:#9fe3a8">دلار</div></div>
+    <img id="aphone" src="iphone18_burgundy.png">
+    <div id="achart"><svg width="900" height="560" viewBox="0 0 900 560">
+      <line x1="40" y1="500" x2="880" y2="500" stroke="rgba(255,255,255,.25)" stroke-width="3"/>
+      <path id="up" d="M40 380 C200 360 300 300 420 250 S700 120 880 60" fill="none" stroke="#5fe0a4" stroke-width="12" stroke-linecap="round"/>
+      <path id="dn" d="M40 380 C200 390 300 420 420 440 S700 480 880 490" fill="none" stroke="#ff7b85" stroke-width="12" stroke-linecap="round"/></svg>
+      <div class="lg" id="lg_up" style="right:0; top:0; color:#5fe0a4">طلا و دلار ↑</div>
+      <div class="lg" id="lg_dn" style="right:0; top:505px; color:#ff8a93">گوشی ↓</div></div>
+  </div>
+  <div id="growth">
+    <div class="abs eyebrow" id="g_eb" style="top:190px">هوش مالی</div>
+    <div class="bars"><div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div></div>
+  </div>
+  <div class="abs eyebrow" id="l_eb" style="top:170px; font-size:44px; font-weight:700">اول مدیریت، بعد مقدار</div>
+  <div id="storyav"><div class="ring"></div><img src="avatar.jpg"><div class="tap"></div></div>
   <div id="subband"></div>
   <div id="sub"></div><div id="mkwrap" class="abs" style="left:0;top:0"></div>
 
   <div id="outro">
     <canvas id="pcv" width="1080" height="1920"></canvas>
     <div class="abs" id="logoWrap"><img src="../../brand/logo_white_gold.png"><div id="shine"></div></div>
-    <div class="abs" id="o1"><span class="t">ثروت</span><span class="t">واقعی،</span><br><span class="t gold">از</span><span class="t gold">مدیریتِ</span><span class="t gold">امروز</span><span class="t gold">شروع</span><span class="t gold">می‌شه</span></div>
+    <div class="abs" id="o1"><span class="t">ثروت،</span><span class="t">مهارته؛</span><br><span class="t gold">نه</span><span class="t gold">شانس.</span></div>
     <div class="abs" id="oline"></div>
-    <div class="abs" id="o2">SOBHAN SAMADI</div>
+    <div class="abs" id="o2">SOBHAN SAMADI ACADEMY</div>
   </div>
   <div id="black"></div>
 </div>
@@ -140,7 +176,7 @@ const tl = gsap.timeline({ paused: true }), cv = $("#cv"), cx = cv.getContext("2
 const fa = n => n.toLocaleString("fa-IR");
 
 // ---------- camera: alternate punch-in on every jump cut + a few emphasis beats ----------
-const PUNCH = [S[17].dst[0] - .05, S[18].dst[0] - .1];                  // "نه قربونت، اون آدم همون کسیه"
+const PUNCH = TL.punch;                                                   // "نه قربونت، اون آدم همون کسیه"
 function camZ(t) {
   const [a, b] = PUNCH; if (t < a || t > b + .35) return 1;
   if (t < a + .14) { const u = (t - a) / .14; return 1 + .2 * (1 - Math.pow(1 - u, 3)); }
@@ -156,11 +192,13 @@ const sub = $("#sub");
     if (i === S.length - 1) { out.push({ words: s.text.split(" "), wt: s.wt, dst: s.dst, cta: true }); return; }
     push(s.text.split(" "), s.wt);
     if (i === 9) push(QW, QW.map((w, k) => [Q.words[k][0], k + 1 < 13 ? Q.words[k + 1][0] : Q.out - .3]));
+    if (i === 19) { const SW = ["^yثرو..تمند", "^yواقعی", "دنبال", "اثبات", "خودش", "به", "یک", "شخص", "دیگه", "^rنیست"], w = TL.state.w;
+      push(SW, SW.map((x, k) => [w[k], k + 1 < 10 ? w[k + 1] : TL.state.out - .2])); }
   });
   window.S2 = out;
 })();
 const SS = window.S2;
-const hide = [[TL.price.in, TL.price.out], [TL.state.in, TL.state.out]];
+const hide = [[TL.price.in, TL.price.out]];
 function setSub(i) {
   if (i < 0) { sub.style.opacity = 0; sub.dataset.i = ""; $("#mk") && ($("#mk").style.opacity = 0); return; }
   const c = SS[i], html = c.words.map(w => { let k = ""; if (w[0] === "^") { k = w[1]; w = w.slice(2); } return `<span class="w ${k}">${w}</span>`; }).join("");
@@ -176,7 +214,7 @@ function subAt(t) { bandAt(t);
   let i = -1; if (!hideSub(t)) for (let k = 0; k < SS.length; k++) { const nx = k + 1 < SS.length ? SS[k + 1].dst[0] - .05 : VE + .15; if (t >= SS[k].dst[0] - .05 && t < Math.min(nx, SS[k].dst[1] + .6)) i = k; }
   if (String(i) !== sub.dataset.i) setSub(i);
   if (i < 0) { sub.style.opacity = 0; return; }
-  sub.style.opacity = 1; sub.style.transform = "none";
+  sub.style.opacity = 1; sub.style.transform = "none"; sub.style.top = subTop(t) + "px";
   const c = SS[i], ws = [...sub.querySelectorAll(".w")];
   let act = -1;
   ws.forEach((w, k) => { const u = (t - (c.wt[k][0] - .06)) / .16, e = Math.max(0, Math.min(1, u)), o = 1 - Math.pow(1 - e, 3);
@@ -190,6 +228,19 @@ function subAt(t) { bandAt(t);
   Object.assign(mk.style, { left: L(A.x, B.x) + "px", top: L(A.y, B.y) + "px", width: L(A.w, B.w) + "px", height: L(A.h, B.h) + "px", opacity: act === 0 ? e : 1 });
 }
 
+// scenes where Sobhan steps down to the bottom of the frame: subtitles ride just above his head
+const A_ = TL.assets, G_ = TL.growth, Q_ = TL.quote;
+const SCN = [
+  { a: 0, b: TL.price.out + .25, kind: "wall" },
+  { a: A_.in, b: A_.out, kind: "navy", s: .6 },
+  { a: Q_.in - .35, b: Q_.out + .15, kind: "tree", s: .74 },
+  { a: TL.ladder.in, b: TL.ladder.out, kind: "wall" },
+  { a: TL.state.in - .1, b: G_.in + .05, kind: "spot" },
+  { a: G_.in, b: G_.out, kind: "navy", s: .6 },
+];
+const smo = u => u * u * (3 - 2 * u), clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+function sceneAt(t) { for (const c of SCN) { if (t >= c.a && t <= c.b) { const k = Math.min(smo(clamp((t - c.a) / .5)), smo(clamp((c.b - t) / .45))); return { ...c, k }; } } return null; }
+function subTop(t) { const c = sceneAt(t); if (!c || !c.s) return 1370; const tgt = c.kind === "tree" ? 975 : 1075; return 1370 + (tgt - 1370) * c.k; }
 // ---------- price card ----------
 const P = TL.price, pn = { v: 0 };
 tl.fromTo("#price", { opacity: 0, y: 70, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, P.in + .05)
@@ -207,22 +258,31 @@ Q.words.forEach(([t], k) => { if (!QW[k]) return; qt.insertAdjacentHTML("beforee
 const qs = qt.querySelectorAll(".q");
 // (quote now rendered as the tree scene, see drawAt)
 // ---------- ladder ----------
-const Lr = TL.ladder;
-tl.fromTo("#ladder", { opacity: 0 }, { opacity: 1, duration: .25 }, Lr.in).fromTo("#ladder .ttl", { opacity: 0, y: -14 }, { opacity: 1, y: 0, duration: .35 }, Lr.in);
-[["#r1", Lr.r1], ["#r2", Lr.r2], ["#r3", Lr.r3]].forEach(([id, t], k) => {
-  tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: .15 }, t - .05).fromTo(id + " .bar", { scaleX: 0, transformOrigin: "100% 50%" }, { scaleX: 1, duration: .45, ease: "power3.out" }, t - .05);
-  if (k < 2) tl.fromTo(id + " .chk", { opacity: 0, scale: .3 }, { opacity: 1, scale: 1, duration: .25, ease: "back.out(3)" }, [Lr.r2, Lr.r3][k] - .05);
-});
-tl.to("#ladder", { opacity: 0, y: -30, duration: .3 }, Lr.out);
-
-// ---------- statement ----------
-const St = TL.state, ss = $$("#state .s");
-tl.to("#shade", { opacity: 1, duration: .4 }, St.in - .1).to("#shade", { opacity: 0, duration: .4 }, St.out)
-  .set("#state", { opacity: 1 }, St.in).to("#state", { opacity: 0, y: -30, duration: .35 }, St.out)
-  .to("#suline", { width: 620, duration: .6, ease: "power2.out" }, St.w[9] - .05);
-ss.forEach((el, k) => tl.fromTo(el, { opacity: 0, y: k < 2 ? 40 : 18, scale: k < 2 ? 1.25 : 1, filter: "blur(8px)" }, { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: k < 2 ? .4 : .26, ease: "power3.out" }, St.w[k] - .06));
-tl.fromTo("#state .neg", { scale: 1 }, { scale: 1.18, duration: .16, yoyo: true, repeat: 1 }, St.w[9] + .2);
-
+// ---------- ladder eyebrow (numbers themselves are painted behind Sobhan) ----------
+tl.fromTo("#l_eb", { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: .4 }, TL.ladder.in + .2).to("#l_eb", { opacity: 0, duration: .3 }, TL.ladder.out - .3);
+// ---------- assets -> consumption ----------
+tl.to("#assets", { opacity: 1, duration: .35 }, A_.in + .1).to("#assets", { opacity: 0, duration: .3 }, A_.out - .3)
+  .fromTo("#a_eb", { opacity: 0 }, { opacity: 1, duration: .4 }, A_.in + .2)
+  .fromTo("#t_gold", { opacity: 0, y: 60, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(1.6)" }, A_.gold - .1)
+  .fromTo("#t_usd", { opacity: 0, y: 60, scale: .9 }, { opacity: 1, y: 0, scale: 1, duration: .45, ease: "back.out(1.6)" }, A_.usd - .1)
+  .to("#t_gold", { x: -255, y: 40, scale: .25, opacity: 0, duration: .45, ease: "power3.in" }, A_.sell - .05)
+  .to("#t_usd", { x: 255, y: 40, scale: .25, opacity: 0, duration: .45, ease: "power3.in" }, A_.sell - .05)
+  .fromTo("#aphone", { opacity: 0, scale: .6, rotate: -12 }, { opacity: 1, scale: 1, rotate: -4, duration: .55, ease: "back.out(1.8)" }, A_.sell + .25)
+  .to("#aphone", { opacity: 0, x: 260, scale: .5, duration: .35, ease: "power2.in" }, A_.cons - .25)
+  .fromTo("#achart", { opacity: 0 }, { opacity: 1, duration: .25 }, A_.cons - .1);
+["#up", "#dn"].forEach((id, k) => { const p = document.querySelector(id), L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+  tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: .9, ease: "power2.out" }, A_.cons + k * .15).fromTo(k ? "#lg_dn" : "#lg_up", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: .3 }, A_.cons + .6 + k * .15); });
+// ---------- growth ----------
+const BH = [200, 290, 380, 480, 620], BAD = [150, 120, 100, 85, 70];
+tl.to("#growth", { opacity: 1, duration: .35 }, G_.in + .1).to("#growth", { opacity: 0, duration: .3 }, G_.out - .25).fromTo("#g_eb", { opacity: 0 }, { opacity: 1, duration: .4 }, G_.in + .2);
+$$(".bars .b").forEach((el, k) => { tl.to(el, { height: BAD[k], background: "linear-gradient(180deg,#ff9aa2,#b8444f)", duration: .35, ease: "power2.out" }, G_.bad - .1 + k * .05)
+  .to(el, { height: BH[k], background: "linear-gradient(180deg,#f8e2ac,#c99a4a)", duration: .5, ease: "back.out(1.4)" }, G_.grow - .1 + k * .07); });
+// ---------- stories avatar ----------
+tl.fromTo("#storyav", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1, duration: .45, ease: "back.out(2)" }, TL.cta - .1)
+  .to("#storyav .ring", { rotate: 360, duration: 2, ease: "none" }, TL.cta)
+  .fromTo("#storyav .tap", { opacity: .9, scale: .3 }, { opacity: 0, scale: 2.4, duration: .6, ease: "power2.out" }, TL.cta + .9)
+  .to("#storyav", { scale: .92, duration: .08, yoyo: true, repeat: 1 }, TL.cta + .9)
+  .to("#storyav", { opacity: 0, duration: .25 }, VE + .05);
 // ---------- outro: particles gather into a ring -> logo forms with a light sweep -> line of text ----------
 const pc = $("#pcv").getContext("2d"), N = 140, CX = 540, CY = 716, parts = [];
 let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
@@ -251,10 +311,9 @@ tl.set({}, {}, T);
 const img = new Image(); let lastIdx = -1;
 window.seek = async t => { tl.seek(t, false); subAt(t); drawParticles(t); if (t < VE + 1.2) await drawAt(Math.min(t, VE - .02), t); };
 // ---------- tree scene: room dissolves, Sobhan (matted) stays in front of a golden forest ----------
-const TS = { a: TL.quote.in - .35, b: TL.quote.out + .15 };
 const off = document.createElement("canvas"); off.width = 1080; off.height = 1920; const ox = off.getContext("2d");
 const tImg = new Image(), mImg = new Image(); let lastT = -1, lastM = -1;
-const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), smo = u => u * u * (3 - 2 * u);
+
 // procedural tree (deterministic), grown by g in [0,1]
 const BR = []; (function grow(x, y, ang, len, w, d, t0) {
   const x2 = x + Math.cos(ang) * len, y2 = y + Math.sin(ang) * len; BR.push({ x, y, x2, y2, w, t0, t1: t0 + .16 + .03 * d, d });
@@ -271,6 +330,26 @@ function drawTree(g) {
   cx.restore();
 }
 async function load(img, src, cur, setCur) { if (cur !== src) { img.src = src; await img.decode(); setCur(src); } }
+function bigText(lines, y0, size, alpha, lift) {
+  cx.save(); cx.globalAlpha = alpha; cx.textAlign = "center"; cx.font = `900 ${size}px Vaz`;
+  const lg = cx.createLinearGradient(0, y0 - size, 0, y0 + size * lines.length); lg.addColorStop(0, "#fff3d0"); lg.addColorStop(1, "#c4953f");
+  cx.fillStyle = lg; cx.shadowColor = "rgba(0,0,0,.35)"; cx.shadowBlur = 40; cx.translate(0, lift);
+  lines.forEach((l, i) => cx.fillText(l, 540, y0 + i * size * 1.02)); cx.restore();
+}
+const LAD = [["۱۰۰", "میلیون"], ["۱", "میلیارد"], ["۱۰", "میلیارد"]];
+function behind(c, t) {                       // painted between the backdrop and Sobhan
+  if (c.kind === "wall") { cx.save(); cx.globalAlpha = c.k * .55; const g = cx.createRadialGradient(540, 700, 60, 540, 700, 700); g.addColorStop(0, "rgba(3,8,22,.75)"); g.addColorStop(1, "rgba(3,8,22,0)"); cx.fillStyle = g; cx.fillRect(0, 0, 1080, 1400); cx.restore(); }
+  if (c.a === 0) { const u = smo(clamp((t - TL.price.count + .15) / .5)); if (u > 0) { bigText(["۷۳۰"], 930, 470, c.k * u * .95, (1 - u) * 50);
+      cx.save(); cx.globalAlpha = c.k * u; cx.textAlign = "center"; cx.font = "800 54px Vaz"; cx.fillStyle = "#f3d58f"; cx.fillText("میلیون تومان", 540, 470 + (1 - u) * 30); cx.restore(); } }
+  if (c.kind === "tree") { const tw = smo(clamp((t - c.a - .25) / .7)); bigText(["WARREN", "BUFFETT"], 400, 170, c.k * tw * .82, (1 - tw) * 40);
+    drawTree(clamp((t - TL.quote.in) / (TL.quote.out - TL.quote.in - .2)) * c.k); }
+  if (c.a === TL.ladder.in) { const L = TL.ladder, ts = [L.r1, L.r2, L.r3]; let j = -1; ts.forEach((x, k) => { if (t >= x - .1) j = k; });
+    if (j >= 0) { const u = smo(clamp((t - ts[j] + .1) / .45)), size = [300, 360, 420][j];
+      if (j > 0 && u < 1) bigText([LAD[j - 1][0]], 900, [300, 360, 420][j - 1], c.k * (1 - u) * .9, -u * 60);
+      bigText([LAD[j][0]], 900, size, c.k * u * .95, (1 - u) * 60);
+      cx.save(); cx.globalAlpha = c.k * u; cx.textAlign = "center"; cx.font = "800 64px Vaz"; cx.fillStyle = "#f3d58f"; cx.fillText(LAD[j][1], 540, 900 - size * .8); cx.restore(); } }
+  if (c.kind === "spot") { const u = smo(clamp((t - TL.state.w[0] + .1) / .5)); bigText(["ثرو..تمند", "واقعی"], 640, 210, c.k * u * .92, (1 - u) * 50); }
+}
 async function drawAt(ft, t) {
   const idx = Math.min(TL.frames - 1, Math.max(0, Math.round(ft * TL.fps_src)));
   if (idx !== lastIdx) { img.src = `frames/f_${String(idx + 1).padStart(5, "0")}.jpg`; await img.decode(); lastIdx = idx; }
@@ -278,25 +357,30 @@ async function drawAt(ft, t) {
   const put = (c, im) => { const zz = z * (1 + u * .03); c.save(); c.translate(fx, fy); c.scale(zz, zz); c.translate(-fx, -fy); c.drawImage(im, 0, 0, 1080, 1920); c.restore(); };
   cx.save(); cx.filter = `contrast(1.06) saturate(1.06) brightness(${1.01 - Math.min(.35, u * .4)})` + (u > 0 ? ` blur(${Math.min(18, u * 22)}px)` : "");
   put(cx, img); cx.restore();
-  const k = t < TS.a || t > TS.b ? 0 : Math.min(smo(clamp((t - TS.a) / .45)), smo(clamp((TS.b - t) / .5)));
-  if (k <= 0) return;
-  const ti = Math.min(470, 1 + Math.floor((t - TS.a) * 30)), mi = idx + 1;
-  if (ti !== lastT) { tImg.src = `bg_tree/t_${String(ti).padStart(4, "0")}.jpg`; await tImg.decode(); lastT = ti; }
+  const c = t < VE ? sceneAt(t) : null; if (!c || c.k <= 0) return;
+  const k = c.k, mi = idx + 1;
   if (mi !== lastM) { mImg.src = `matte/m_${String(mi).padStart(5, "0")}.png`; await mImg.decode(); lastM = mi; }
-  // 1) forest, graded warm-gold and darker, slow push
-  cx.save(); cx.globalAlpha = k; cx.filter = "sepia(.55) saturate(1.25) hue-rotate(-12deg) brightness(.62) contrast(1.12)";
-  const sc = 1.1 - .06 * clamp((t - TS.a) / (TS.b - TS.a)); cx.translate(540, 960); cx.scale(sc, sc); cx.translate(-540, -960); cx.drawImage(tImg, 0, 0, 1080, 1920); cx.restore();
-  cx.save(); cx.globalAlpha = k; const gr = cx.createRadialGradient(540, 700, 80, 540, 900, 1100); gr.addColorStop(0, "rgba(255,200,120,.18)"); gr.addColorStop(1, "rgba(4,8,22,.7)"); cx.fillStyle = gr; cx.fillRect(0, 0, 1080, 1920); cx.restore();
-  // 2) giant WARREN BUFFETT behind him
-  const tw = smo(clamp((t - TS.a - .25) / .7));
-  cx.save(); cx.globalAlpha = k * tw * .8; cx.textAlign = "center"; cx.font = "900 190px Vaz"; const lg = cx.createLinearGradient(0, 330, 0, 820); lg.addColorStop(0, "#fff0c8"); lg.addColorStop(1, "#c89a4e"); cx.fillStyle = lg;
-  cx.shadowColor = "rgba(0,0,0,.45)"; cx.shadowBlur = 40; cx.translate(0, (1 - tw) * 40);
-  cx.fillText("WARREN", 540, 520); cx.fillText("BUFFETT", 540, 720); cx.restore();
-  // 3) golden tree growing behind him
-  drawTree(clamp((t - TL.quote.in) / (TL.quote.out - TL.quote.in - .2)) * k);
-  // 4) Sobhan cut out, with a warm rim glow
+  // backdrop
+  if (c.kind === "tree") {
+    const ti = Math.min(470, 1 + Math.floor((t - c.a) * 30));
+    if (ti !== lastT) { tImg.src = `bg_tree/t_${String(ti).padStart(4, "0")}.jpg`; await tImg.decode(); lastT = ti; }
+    cx.save(); cx.globalAlpha = k; cx.filter = "sepia(.55) saturate(1.25) hue-rotate(-12deg) brightness(.6) contrast(1.12)";
+    const sc = 1.1 - .06 * clamp((t - c.a) / (c.b - c.a)); cx.translate(540, 960); cx.scale(sc, sc); cx.translate(-540, -960); cx.drawImage(tImg, 0, 0, 1080, 1920); cx.restore();
+    cx.save(); cx.globalAlpha = k; const gr = cx.createRadialGradient(540, 700, 80, 540, 900, 1100); gr.addColorStop(0, "rgba(255,200,120,.16)"); gr.addColorStop(1, "rgba(4,8,22,.72)"); cx.fillStyle = gr; cx.fillRect(0, 0, 1080, 1920); cx.restore();
+  } else if (c.kind === "navy" || c.kind === "spot") {
+    cx.save(); cx.globalAlpha = k * (c.kind === "spot" ? .93 : 1);
+    const gr = cx.createRadialGradient(540, 520, 60, 540, 900, 1250); gr.addColorStop(0, "#1d3a7a"); gr.addColorStop(.55, "#0a1636"); gr.addColorStop(1, "#030816"); cx.fillStyle = gr; cx.fillRect(0, 0, 1080, 1920);
+    if (c.kind === "spot") { const sp = cx.createRadialGradient(560, 820, 40, 560, 1000, 760); sp.addColorStop(0, "rgba(255,226,170,.30)"); sp.addColorStop(1, "rgba(255,226,170,0)"); cx.fillStyle = sp;
+      cx.beginPath(); cx.moveTo(430, -20); cx.lineTo(690, -20); cx.lineTo(1080, 1920); cx.lineTo(40, 1920); cx.closePath(); cx.fill(); }
+    cx.restore();
+  }
+  behind(c, t);
+  // Sobhan, cut out; steps down to the bottom of the frame when the scene needs the space
   ox.clearRect(0, 0, 1080, 1920); ox.globalCompositeOperation = "source-over"; put(ox, img); ox.globalCompositeOperation = "destination-in"; put(ox, mImg); ox.globalCompositeOperation = "source-over";
-  cx.save(); cx.globalAlpha = k; cx.shadowColor = "rgba(255,210,140,.55)"; cx.shadowBlur = 36; cx.filter = "contrast(1.06) saturate(1.02) brightness(1.02)"; cx.drawImage(off, 0, 0); cx.restore();
+  const S_ = c.s ? 1 - (1 - c.s) * k : 1;
+  cx.save(); if (c.kind !== "wall") { cx.shadowColor = c.kind === "tree" ? "rgba(255,210,140,.5)" : "rgba(150,190,255,.35)"; cx.shadowBlur = 34; }
+  cx.filter = c.kind === "tree" ? "sepia(.12) contrast(1.05)" : c.kind === "wall" ? "contrast(1.06) saturate(1.06)" : "contrast(1.08) brightness(1.03)";
+  cx.translate(540, 1920); cx.scale(S_, S_); cx.translate(-540, -1920); cx.drawImage(off, 0, 0); cx.restore();
 }
 document.fonts.ready.then(async () => { await Promise.all([...document.images].map(i => i.decode().catch(() => {}))); await window.seek(0); window.ready = true; });
 </script>

@@ -77,6 +77,10 @@ TL = {
     # statement: "ثروتمند واقعی دنبال اثبات خودش به یک شخص دیگه نیست"
     "state": {"in": w(124) - .1, "w": [w(k) for k in range(124, 134)], "out": dst(W[133]["e"]) + .2},
     "cta": w(156),
+    # v2 scenes
+    "assets": {"in": w(19) - .25, "gold": w(20), "usd": w(22), "sell": w(25), "cons": w(28), "out": dst(W[30]["e"]) + .2},
+    "growth": {"in": w(134) - .2, "bad": w(137), "grow": w(142), "out": dst(W[143]["e"]) + .35},
+    "punch": [w(108) - .05, w(113) - .05],
 }
 json.dump(TL, open("tl.json", "w"), ensure_ascii=False, indent=1)
 print("voice_end", VE, "T", TL["T"], "subs", len(subs))
