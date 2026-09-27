@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #f5f7fc; background: #040a1c; }
+.scene { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
+.ph { position: absolute; left: -110px; top: -195px; width: 1300px; height: 2310px; background-size: cover; background-position: center; }
+.tint { position: absolute; inset: 0; }
+.navybg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #1a3572 0%, #0b1a40 45%, #040a1c 100%); }
+.grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(140,196,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(140,196,255,.06) 1px, transparent 1px); background-size: 90px 90px; }
+svg.full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+.abs { position: absolute; }
+.center { left: 0; right: 0; text-align: center; }
+.kicker { font-weight: 700; font-size: 46px; color: #cfe0ff; }
+.h1 { font-weight: 900; font-size: 112px; text-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.card { position: absolute; width: 400px; height: 560px; border-radius: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+  font-weight: 900; font-size: 64px; text-align: center; line-height: 1.25; }
+.badge { position: absolute; padding: 14px 36px; border-radius: 44px; font-weight: 900; font-size: 56px; white-space: nowrap; }
+.tag { position: absolute; font-weight: 700; font-size: 36px; padding: 10px 26px; border-radius: 28px; white-space: nowrap; }
+.glass { position: absolute; border-radius: 36px; background: rgba(8,18,44,.72); border: 2px solid rgba(140,196,255,.35); box-shadow: 0 30px 80px rgba(0,0,0,.45); backdrop-filter: blur(10px); }
+#sub { position: absolute; bottom: 150px; left: 50%; transform: translateX(-50%); padding: 22px 46px; border-radius: 44px; width: max-content; max-width: 900px; text-align: center; line-height: 1.55;
+  background: rgba(2,6,18,.78); border: 1px solid rgba(140,196,255,.25); font-weight: 700; font-size: 50px; opacity: 0; }
+#sub .w { display: inline-block; margin: 0 5px; color: rgba(245,247,252,.45); }
+#sub .w.on { color: #f5f7fc; } #sub .w.on.g { color: #46d696; } #sub .w.on.r { color: #ff6b76; } #sub .w.on.y { color: #f0d9a0; } #sub .w.on.b { color: #8cc4ff; }
+#brand { position: absolute; top: 62px; right: 56px; height: 104px; padding: 0 30px 0 24px; border-radius: 56px; background: rgba(255,255,255,.96); display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35); direction: rtl; }
+#brand img { height: 78px; }
+#brand .t1 { font-weight: 900; font-size: 30px; color: #29386c; line-height: 1.1; }
+#brand .t2 { font-weight: 500; font-size: 19px; color: #b8914a; direction: ltr; text-align: right; letter-spacing: .3px; }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+#redflash { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,40,60,0) 30%, rgba(255,40,60,.55) 100%); opacity: 0; }
+#vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,.6) 100%); pointer-events: none; }
+#grain { position: absolute; inset: -200px; background: url("../../brand/grain.png"); opacity: .06; mix-blend-mode: overlay; }
+#black { position: absolute; inset: 0; background: #000; }
+.chip text, .lbl { font-family: "Vaz"; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ HOOK ============ -->
+<div class="scene" id="s_hook">
+  <div class="ph" id="h_ph" style="background-image:url(ph/money.jpg); filter: brightness(.38) saturate(.8) blur(3px)"></div>
+  <div class="tint" style="background: linear-gradient(180deg, rgba(4,10,28,.75), rgba(11,26,64,.55) 45%, rgba(4,10,28,.9))"></div>
+  <div class="abs center kicker" id="h_k" style="top:300px">کدوم خطرناک‌تره؟</div>
+  <div class="abs center h1" id="h_t" style="top:350px">سود یا ضرر؟</div>
+  <div class="card" id="h_loss" style="left:90px; top:700px; background: linear-gradient(180deg,#3a0f1c,#1d0710); border: 4px solid #ff6b76; color:#ffb3b9; box-shadow: 0 30px 80px rgba(0,0,0,.5)">
+    <svg width="140" height="140" viewBox="0 0 100 100"><path d="M50 15 V78 M22 52 L50 82 L78 52" stroke="#ff6b76" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>ضرر<br>خارج از پلن</div></div>
+  <div class="card" id="h_prof" style="left:570px; top:660px; background: linear-gradient(180deg,#0e3b2c,#07201a); border: 5px solid #46d696; color:#bff5da; box-shadow: 0 0 80px rgba(70,214,150,.45), 0 30px 80px rgba(0,0,0,.5)">
+    <svg width="140" height="140" viewBox="0 0 100 100"><path d="M50 85 V22 M22 48 L50 18 L78 48" stroke="#46d696" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>سود<br>خارج از پلن</div></div>
+  <div class="badge" id="h_bad" style="left:585px; top:1200px; background: linear-gradient(90deg,#ff4b5c,#ff8a3d); color:#fff; box-shadow: 0 0 60px rgba(255,90,90,.75); font-size:60px">
+    <span style="font-family:'DejaVu Sans'">⚠</span> خطرناک‌تر!</div>
+  <svg class="full" id="h_rays"></svg>
+</div>
+
+<!-- ============ CHART ============ -->
+<div class="scene" id="s_chart">
+  <div class="ph" id="c_ph" style="background-image:url(ph/chart_dark.jpg); filter: brightness(.62) saturate(1.1)"></div>
+  <div class="tint" style="background: linear-gradient(180deg, rgba(4,10,28,.7), rgba(4,10,28,.15) 40%, rgba(4,10,28,.85))"></div>
+  <div class="abs center kicker" id="c_k" style="top:300px">معامله‌ای که «جواب داد»...</div>
+  <svg class="full" id="c_svg">
+    <rect id="c_box" x="70" y="960" width="560" height="380" rx="14" fill="#8cc4ff" fill-opacity=".08" stroke="#8cc4ff" stroke-width="5" stroke-dasharray="18 12"/>
+    <text class="lbl" x="610" y="1392" fill="#8cc4ff" font-weight="900" font-size="40" direction="rtl" text-anchor="start" id="c_boxlbl">محدوده پلن</text>
+    <path id="c_arrow" d="M 560 1000 C 660 880 720 780 820 660" stroke="#46d696" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <path id="c_head" d="M 780 650 L 828 652 L 814 698" stroke="#46d696" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="tag" id="c_out" style="left:520px; top:760px; background:rgba(255,107,118,.18); border:3px solid #ff6b76; color:#ffc2c7; font-size:40px">خارج از پلن!</div>
+  <div class="badge" id="c_prof" style="left:560px; top:520px; background:#46d696; color:#062016; box-shadow:0 0 60px rgba(70,214,150,.75)">۰ دلار سود</div>
+  <!-- second beat: account draining -->
+  <div class="abs" id="c_red" style="inset:0; opacity:0">
+    <div class="ph" id="c_ph2" style="background-image:url(ph/trades.jpg); filter: brightness(.35) saturate(.6) blur(2px)"></div>
+    <div class="tint" style="background: radial-gradient(ellipse at 50% 50%, rgba(80,0,10,.25), rgba(20,0,5,.75))"></div>
+    <div class="glass" id="c_acc" style="left:80px; right:80px; top:700px; height:420px">
+      <div class="abs" style="right:50px; top:40px; font-weight:700; font-size:44px; color:#cfe0ff">موجودی حساب</div>
+      <div class="abs" id="c_bal" style="right:50px; top:100px; font-weight:900; font-size:110px; color:#fff; direction:ltr">$10,000</div>
+      <div class="abs" style="left:50px; right:50px; top:280px; height:60px; border-radius:32px; background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.2); overflow:hidden">
+        <div id="c_bar" style="position:absolute; right:0; top:0; bottom:0; width:100%; background:linear-gradient(90deg,#46d696,#8cc4ff)"></div></div>
+      <div class="abs" id="c_pct" style="left:50px; top:40px; font-weight:900; font-size:52px; color:#ff6b76; opacity:0">▼ ۶۸٪</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CASINO ============ -->
+<div class="scene" id="s_casino">
+  <div class="ph" id="k_ph" style="background-image:url(ph/casino.jpg); filter: brightness(.75) saturate(1.15)"></div>
+  <div class="tint" id="k_tint" style="background: linear-gradient(180deg, rgba(4,10,28,.35), rgba(4,10,28,.1) 45%, rgba(4,10,28,.85))"></div>
+  <div class="abs" id="k_dark" style="inset:0; background: rgba(3,8,20,.0)"></div>
+  <div class="badge" id="k_win" style="left:90px; top:560px; background:#46d696; color:#062016; box-shadow:0 0 60px rgba(70,214,150,.7); font-size:64px; direction:ltr">+$500</div>
+  <div class="badge" id="k_5050" style="right:70px; top:700px; background:rgba(8,18,44,.85); border:3px solid #f0d9a0; color:#f0d9a0; font-size:60px">شانس ۵۰/۵۰</div>
+  <svg class="full" id="k_svg">
+    <g id="k_wheelG" opacity="0"><g id="k_wheel"></g><g id="k_ballG"><circle id="k_ball" cx="540" cy="620" r="20" fill="#fff" stroke="#999" stroke-width="3"/></g></g>
+    <g id="k_loop" opacity="0"><path id="k_loopP" d="M 540 390 A 450 450 0 1 1 539 390" stroke="#ff6b76" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="40 26"/></g>
+    <g id="k_chips"></g>
+  </svg>
+  <div class="abs center" id="k_again" style="top:420px; font-weight:900; font-size:84px; color:#ff6b76; text-shadow:0 0 30px rgba(255,80,90,.6); opacity:0">دوباره...</div>
+  <div class="glass" id="k_accG" style="left:230px; right:230px; top:1330px; height:150px; opacity:0">
+    <div class="abs" style="right:36px; top:30px; font-weight:700; font-size:36px; color:#cfe0ff">سود قمار</div>
+    <div class="abs" id="k_acc" style="left:36px; top:18px; font-weight:900; font-size:80px; color:#46d696; direction:ltr">$500</div></div>
+  <div class="badge" id="k_stamp" style="left:140px; top:760px; background:rgba(20,2,8,.92); border:8px solid #ff4b5c; color:#ff6b76; font-size:86px; opacity:0; box-shadow:0 0 60px rgba(255,75,92,.6)">پس گرفته شد!</div>
+</div>
+
+<!-- ============ DOMINO ============ -->
+<div class="scene" id="s_domino">
+  <div class="navybg"></div><div class="grid"></div>
+  <div class="abs" id="d_photoCard" style="left:140px; top:520px; width:800px; height:800px; border-radius:40px; overflow:hidden; box-shadow:0 0 0 6px #f0d9a0, 0 40px 100px rgba(0,0,0,.6)">
+    <div id="d_photo" style="position:absolute; inset:0; background:url(ph/domino_s.jpg) center/cover"></div></div>
+  <div class="abs center h1" id="d_t" style="top:230px; font-size:100px">اثر دومینو</div>
+  <svg class="full" id="d_svg"></svg>
+  <div id="d_list"></div>
+</div>
+
+<!-- ============ SOBHAN ============ -->
+<div class="scene" id="s_sobhan">
+  <div class="ph" id="o_ph" style="background-image:url(ph/desk.jpg); filter: brightness(.42) saturate(.7) blur(5px)"></div>
+  <div class="tint" style="background: linear-gradient(180deg, rgba(4,10,28,.85), rgba(11,26,64,.55) 45%, rgba(4,10,28,.92))"></div>
+  <div class="abs center h1" id="o_t" style="top:200px; font-size:92px; line-height:1.3">جلوی <span style="color:#f0d9a0">اولین دومینو</span><br>رو بگیر</div>
+  <svg class="full" id="o_svg"></svg>
+  <img id="o_sob" src="../../brand/sobhan.png" style="position:absolute; right:-330px; bottom:560px; height:880px; filter: drop-shadow(0 0 30px rgba(240,217,160,.55))">
+  <div class="abs" id="o_name" style="right:70px; top:1370px; padding:14px 36px; border-radius:18px; background:#fff; color:#12245a; font-weight:900; font-size:54px">سبحان صمدی</div>
+</div>
+
+<!-- ============ OUTRO ============ -->
+<div class="scene" id="s_outro">
+  <div class="navybg"></div><div class="grid"></div>
+  <div class="abs" id="u_badge" style="left:50%; top:700px; transform:translateX(-50%); width:max-content; white-space:nowrap; padding:36px 60px; border-radius:60px; background:#fff; display:flex; align-items:center; gap:30px; box-shadow:0 30px 90px rgba(0,0,0,.5), 0 0 0 6px rgba(240,217,160,.8)">
+    <div><div style="font-weight:900; font-size:62px; color:#29386c">آکادمی سبحان صمدی</div><div style="font-weight:500; font-size:34px; color:#b8914a; direction:ltr; text-align:right">Sobhan Samadi Academy</div></div>
+    <img src="../../brand/logo_navy_gold.png" style="height:170px"></div>
+  <div class="abs center" id="u_cta" style="top:1130px; font-weight:900; font-size:58px">سیوش کن و برای رفیق معامله‌گرت بفرست</div>
+  <div class="abs center" id="u_cta2" style="top:1230px; font-weight:700; font-size:44px; color:#f0d9a0">جلوی اولین دومینو رو بگیر</div>
+</div>
+
+<div id="sub"></div>
+<div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+<div id="flash"></div><div id="redflash"></div><div id="vig"></div><div id="grain"></div><div id="black"></div>
+</div>
+
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const NS = "http://www.w3.org/2000/svg", $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+function el(tag, a, p) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
+let seed = 5; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const TL = window.TL, T = window.DUR = TL.T, SC = TL.scenes, SUB = TL.subs;
+const clip = id => TL.clips.find(c => c.id === id).dst;
+const src2dst = (id, s) => { const c = TL.clips.find(c => c.id === id); return c.dst[0] + (s - c.src[0]); };
+const fa = n => Math.round(n).toLocaleString("fa-IR");
+const tl = gsap.timeline({ paused: true });
+
+// ---------- subtitles ----------
+const sub = $("#sub");
+function setSub(t) {
+  if (!t) { sub.style.opacity = 0; return; }
+  sub.innerHTML = t.split(" ").map(w => { let c = ""; if (w[0] === "^") { c = { g: "g", r: "r", y: "y", b: "b" }[w[1]]; w = w.slice(2); } return `<span class="w ${c}">${w}</span>`; }).join(" ");
+  sub.style.opacity = 1;
+}
+function karaoke(p) { const ws = sub.querySelectorAll(".w"), n = ws.length; ws.forEach((w, i) => w.classList.toggle("on", i < p * n + .3)); }
+SUB.forEach(({ dst: [a, b], text }, i) => {
+  tl.call(setSub, [text], a - .04);
+  const o = { p: 0 }; tl.to(o, { p: 1, duration: Math.max(.25, b - a - .05), ease: "none", onUpdate: () => karaoke(o.p) }, a);
+  const next = SUB[i + 1]; if (!next || next.dst[0] - b > .6) tl.call(setSub, [""], b + .3);
+});
+gsap.set("#sub", { y: 0 });
+
+// ---------- scene visibility + transitions ----------
+function showScene(id, s, e, inFx, outFx) {
+  const el_ = "#s_" + id;
+  tl.set(el_, { opacity: 1 }, s);
+  if (inFx === "fade") tl.fromTo(el_, { opacity: 0 }, { opacity: 1, duration: .35 }, s);
+  if (inFx === "zoom") tl.fromTo(el_, { scale: 1.25, filter: "blur(14px)" }, { scale: 1, filter: "blur(0px)", duration: .45, ease: "power3.out" }, s);
+  if (inFx === "whip") tl.fromTo(el_, { x: 1080, filter: "blur(18px)" }, { x: 0, filter: "blur(0px)", duration: .4, ease: "power3.out" }, s);
+  tl.set(el_, { opacity: 0 }, e + .45);
+}
+showScene("hook", SC.hook[0], SC.hook[1]);
+showScene("chart", SC.chart[0], SC.chart[1], "whip");
+showScene("casino", SC.casino[0], SC.casino[1], "zoom");
+showScene("domino", SC.domino[0], SC.domino[1], "zoom");
+showScene("sobhan", SC.sobhan[0], SC.sobhan[1], "fade");
+showScene("outro", SC.outro[0], SC.outro[1], "fade");
+// outgoing moves (on top of the incoming scene the old one leaves)
+tl.to("#s_hook", { x: -1080, filter: "blur(18px)", duration: .4, ease: "power3.in" }, SC.hook[1] - .05);
+tl.to("#s_chart", { scale: 1.4, opacity: 0, filter: "blur(10px)", duration: .45, ease: "power2.in" }, SC.chart[1]);
+tl.to("#s_casino", { scale: .7, opacity: 0, duration: .45, ease: "power2.in" }, SC.casino[1]);
+tl.to("#s_domino", { opacity: 0, duration: .4 }, SC.domino[1] + .05);
+tl.to("#s_sobhan", { opacity: 0, duration: .45 }, SC.sobhan[1] + .05);
+[SC.chart[0], SC.casino[0], SC.domino[0]].forEach(t => tl.to("#flash", { opacity: .35, duration: .05 }, t).to("#flash", { opacity: 0, duration: .3 }, t + .05));
+tl.to("#black", { opacity: 0, duration: .6 }, 0).to("#black", { opacity: 1, duration: .4 }, T - .4);
+tl.to("#brand", { opacity: 0, y: -20, duration: .3 }, SC.outro[0] - .2);
+gsap.set("#brand", { opacity: 0, y: -24 }); tl.to("#brand", { opacity: 1, y: 0, duration: .6, ease: "back.out(2)" }, .5);
+function shake(t, amp = 14, n = 6) { for (let i = 0; i < n; i++) tl.to("#stage", { x: (i % 2 ? -1 : 1) * amp * (1 - i / n), y: (i % 3 - 1) * amp * .6 * (1 - i / n), duration: .035 }, t + i * .035); tl.to("#stage", { x: 0, y: 0, duration: .05 }, t + n * .035); }
+
+// =============== HOOK ===============
+(() => {
+  const [a] = clip("c0"), hit = src2dst("c0", 1.95);
+  tl.fromTo("#h_ph", { scale: 1.18 }, { scale: 1.02, duration: SC.hook[1] + .5, ease: "power1.out" }, 0);
+  tl.from("#h_k", { opacity: 0, y: 30, filter: "blur(12px)", duration: .6, ease: "power3.out" }, .25)
+    .from("#h_t", { opacity: 0, y: 60, scale: 1.2, filter: "blur(20px)", duration: .8, ease: "back.out(1.6)" }, .4)
+    .fromTo("#h_prof", { rotationY: 90, x: 300, opacity: 0, transformPerspective: 1400 }, { rotationY: 0, rotation: 6, x: 0, opacity: 1, duration: .7, ease: "back.out(1.4)" }, a + .1)
+    .fromTo("#h_loss", { rotationY: -90, x: -300, opacity: 0, transformPerspective: 1400 }, { rotationY: 0, rotation: -7, x: 0, opacity: 1, duration: .7, ease: "back.out(1.4)" }, a + .3)
+    .to("#h_prof", { y: -12, duration: 1.2, repeat: 3, yoyo: true, ease: "sine.inOut" }, a + .9)
+    .fromTo("#h_bad", { scale: 3, opacity: 0, rotation: 20 }, { scale: 1, opacity: 1, rotation: -4, duration: .35, ease: "back.out(2.5)" }, hit)
+    .to("#h_loss", { opacity: .45, scale: .88, filter: "blur(2px)", duration: .5 }, hit)
+    .to("#h_prof", { boxShadow: "0 0 120px rgba(255,90,90,.8), 0 30px 80px rgba(0,0,0,.5)", borderColor: "#ff6b76", duration: .3 }, hit)
+    .to("#redflash", { opacity: 1, duration: .08 }, hit).to("#redflash", { opacity: 0, duration: .6 }, hit + .1);
+  shake(hit, 18, 8);
+  const rays = $("#h_rays");
+  for (let i = 0; i < 16; i++) { const an = i / 16 * Math.PI * 2; const l = el("line", { x1: 770 + Math.cos(an) * 330, y1: 940 + Math.sin(an) * 330, x2: 770 + Math.cos(an) * 400, y2: 940 + Math.sin(an) * 400, stroke: "#ff6b76", "stroke-width": 8, "stroke-linecap": "round", opacity: 0 }, rays);
+    tl.fromTo(l, { opacity: .9, attr: { x2: 770 + Math.cos(an) * 340, y2: 940 + Math.sin(an) * 340 } }, { opacity: 0, attr: { x2: 770 + Math.cos(an) * 470, y2: 940 + Math.sin(an) * 470 }, duration: .6, ease: "power2.out" }, hit); }
+})();
+
+// =============== CHART ===============
+(() => {
+  const s = SC.chart[0], [a, b] = clip("c1"), beat2 = src2dst("c1", 10.06), capital = src2dst("c1", 13.0);
+  tl.fromTo("#c_ph", { scale: 1.2, rotation: -2 }, { scale: 1.02, rotation: 0, duration: beat2 - s, ease: "power1.inOut" }, s);
+  tl.from("#c_k", { opacity: 0, y: 30, duration: .5 }, s + .3);
+  const box = $("#c_box"), per = 2 * (560 + 380);
+  gsap.set(box, { attr: { "stroke-dasharray": `${per} ${per}`, "stroke-dashoffset": per } });
+  tl.to(box, { attr: { "stroke-dashoffset": 0 }, duration: 1.0, ease: "power2.inOut" }, a + .1)
+    .set(box, { attr: { "stroke-dasharray": "18 12" } }, a + 1.12)
+    .from("#c_boxlbl", { opacity: 0, x: 30, duration: .4 }, a + .7);
+  ["#c_arrow", "#c_head"].forEach((p, i) => { const L = $(p).getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+    tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: i ? .2 : .8, ease: "power2.out" }, a + 1.4 + i * .75); });
+  tl.fromTo("#c_out", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(2.4)" }, a + 1.9);
+  const prof = $("#c_prof"), o = { v: 0 };
+  tl.fromTo(prof, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(2.4)" }, a + 2.2)
+    .to(o, { v: 2400, duration: 1.6, ease: "power2.out", onUpdate: () => prof.textContent = fa(o.v) + " دلار سود" }, a + 2.2)
+    .to(prof, { scale: 1.1, duration: .2, yoyo: true, repeat: 1 }, a + 3.8);
+  // beat 2: account drains
+  tl.to("#c_red", { opacity: 1, duration: .35 }, beat2 - .15)
+    .fromTo("#c_acc", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: .5, ease: "power3.out" }, beat2 - .1)
+    .fromTo("#c_ph2", { scale: 1.15 }, { scale: 1.0, duration: b - beat2 + .5, ease: "none" }, beat2);
+  const bal = $("#c_bal"), ob = { v: 10000 };
+  tl.to(ob, { v: 3200, duration: 2.6, ease: "power2.in", onUpdate: () => { bal.textContent = "$" + Math.round(ob.v).toLocaleString("en-US"); } }, beat2 + .6)
+    .to("#c_bar", { width: "32%", background: "linear-gradient(90deg,#ff6b76,#ff8a3d)", duration: 2.6, ease: "power2.in" }, beat2 + .6)
+    .to(bal, { color: "#ff6b76", duration: 1.2 }, beat2 + 1.6)
+    .fromTo("#c_pct", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(3)" }, capital + .3)
+    .to("#redflash", { opacity: .8, duration: .1 }, capital + .2).to("#redflash", { opacity: 0, duration: .8 }, capital + .3);
+  shake(capital + .2, 12, 6);
+})();
+
+// =============== CASINO ===============
+(() => {
+  const s = SC.casino[0], [a2, b2] = clip("c2"), [a3, b3] = clip("c3"), [a4, b4] = clip("c4"), [a5, b5] = clip("c5");
+  const t5050 = src2dst("c2", 1166.75);
+  tl.fromTo("#k_ph", { scale: 1.3, y: 120 }, { scale: 1.05, y: 0, duration: a3 - s, ease: "power1.inOut" }, s);
+  // winning chips pile up while "people leave the casino with profit"
+  const chips = $("#k_chips"), cols = ["#c7303f", "#122452", "#2d8a64", "#d6b270"], chipEls = [];
+  for (let i = 0; i < 18; i++) {
+    const g = el("g", { opacity: 0 }, chips), c = cols[i % 4];
+    el("circle", { r: 46, fill: c, stroke: "#fff", "stroke-width": 7, "stroke-dasharray": "14 10" }, g); el("circle", { r: 28, fill: "none", stroke: "#fff", "stroke-width": 3 }, g);
+    const tx = el("text", { y: 12, fill: "#fff", "font-weight": 900, "font-size": 30, "text-anchor": "middle", "font-family": "Vaz" }, g); tx.textContent = "$";
+    chipEls.push(g);
+    const px = 120 + (i % 6) * 22 + Math.floor(i / 6) * 150, py = 1250 - (i % 6) * 26;
+    g.dataset.px = px; g.dataset.py = py;
+    tl.fromTo(g, { opacity: 0, attr: { transform: `translate(${px} ${py - 500}) scale(.8)` } }, { opacity: 1, attr: { transform: `translate(${px} ${py}) scale(.8)` }, duration: .45, ease: "bounce.out" }, a2 + .6 + i * .18);
+  }
+  tl.fromTo("#k_win", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(2.4)" }, a2 + .5)
+    .fromTo("#k_accG", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .5 }, a2 + 1.2).to("#k_win", { opacity: 0, y: -30, duration: .4 }, a2 + 2.6);
+  const acc = $("#k_acc"), oa = { v: 500 };
+  tl.to(oa, { v: 4800, duration: 5, ease: "power1.in", onUpdate: () => acc.textContent = "$" + Math.round(oa.v).toLocaleString("en-US") }, a2 + 1.2);
+  tl.fromTo("#k_5050", { scale: 0, opacity: 0, rotation: -12 }, { scale: 1, opacity: 1, rotation: -3, duration: .45, ease: "back.out(2.4)" }, t5050);
+  tl.to("#k_win", { opacity: 0, duration: .3 }, a3 - .2).to("#k_5050", { opacity: 0, duration: .3 }, a3 - .2);
+  // roulette wheel (built procedurally)
+  const W = $("#k_wheel"), cx = 540, cy = 830, n = 18;
+  el("circle", { cx, cy, r: 380, fill: "#3b2a12", stroke: "#d6b270", "stroke-width": 16 }, W);
+  for (let i = 0; i < n; i++) { const a0 = i / n * 2 * Math.PI, a1 = (i + 1) / n * 2 * Math.PI, R = 350, R2 = 220, pt = (an, rr) => `${cx + Math.cos(an) * rr} ${cy + Math.sin(an) * rr}`;
+    el("path", { d: `M ${pt(a0, R2)} L ${pt(a0, R)} A ${R} ${R} 0 0 1 ${pt(a1, R)} L ${pt(a1, R2)} A ${R2} ${R2} 0 0 0 ${pt(a0, R2)} Z`, fill: i % 2 ? "#c7303f" : "#122452", stroke: "#d6b270", "stroke-width": 3 }, W);
+    const am = (a0 + a1) / 2, tx = el("text", { x: cx + Math.cos(am) * 300, y: cy + Math.sin(am) * 300 + 11, fill: "#fff", "font-weight": 900, "font-size": 30, "text-anchor": "middle", "font-family": "Vaz", transform: `rotate(${am * 180 / Math.PI + 90} ${cx + Math.cos(am) * 300} ${cy + Math.sin(am) * 300})` }, W); tx.textContent = (i * 7) % 36 + 1; }
+  el("circle", { cx, cy, r: 210, fill: "#1a1f36", stroke: "#d6b270", "stroke-width": 8 }, W);
+  for (let i = 0; i < 8; i++) { const an = i / 8 * Math.PI * 2; el("line", { x1: cx, y1: cy, x2: cx + Math.cos(an) * 180, y2: cy + Math.sin(an) * 180, stroke: "#d6b270", "stroke-width": 10, "stroke-linecap": "round" }, W); }
+  el("circle", { cx, cy, r: 48, fill: "#d6b270" }, W);
+  gsap.set("#k_wheel", { svgOrigin: `${cx} ${cy}` }); gsap.set("#k_ballG", { svgOrigin: `${cx} ${cy}` }); gsap.set("#k_ball", { attr: { cx, cy: cy - 330 } });
+  tl.to("#k_dark", { background: "rgba(3,8,20,.72)", duration: .5 }, a3 - .3)
+    .fromTo("#k_wheelG", { opacity: 0, scale: .4, svgOrigin: `${cx} ${cy}` }, { opacity: 1, scale: 1, duration: .6, ease: "back.out(1.6)" }, a3 - .2)
+    .to("#k_wheel", { rotation: 1440, duration: b4 - a3 + .3, ease: "power2.out" }, a3 - .2)
+    .to("#k_ballG", { rotation: -2160, duration: b4 - a3 + .3, ease: "power3.out" }, a3 - .2)
+    .fromTo("#k_again", { opacity: 0, scale: .6 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(2)" }, a3 + .2)
+    .set("#k_again", { opacity: 0 }, a4 - .3)
+    .fromTo("#k_loop", { opacity: 0, svgOrigin: `${cx} ${cy}`, scale: .9 }, { opacity: 1, scale: 1, duration: .4 }, a3 + .3)
+    .to("#k_loop", { rotation: 360, svgOrigin: `${cx} ${cy}`, duration: b3 - a3, ease: "none" }, a3 + .3)
+    .to("#k_loop", { opacity: 0, duration: .3 }, a4 - .3);
+  // money drains while it repeats; then "loses it!"
+  tl.to(oa, { v: 900, duration: b3 - a3, ease: "power2.in", onUpdate: () => acc.textContent = "$" + Math.round(oa.v).toLocaleString("en-US") }, a3 + .5)
+    .to(acc, { color: "#ff6b76", duration: .8 }, a3 + 2)
+    .to(oa, { v: 0, duration: .5, ease: "power4.in", onUpdate: () => acc.textContent = "$" + Math.round(oa.v).toLocaleString("en-US") }, a4)
+    .to("#redflash", { opacity: 1, duration: .08 }, a4 + .1).to("#redflash", { opacity: 0, duration: .7 }, a4 + .2);
+  shake(a4 + .1, 16, 7);
+  // chips fly back into the wheel
+  chipEls.forEach((g, i) => { const px = +g.dataset.px, py = +g.dataset.py, t0 = a5 + .6 + i * .12;
+    tl.to(g, { attr: { transform: `translate(${cx + (rnd() - .5) * 100} ${cy + (rnd() - .5) * 100}) scale(.2)` }, opacity: 0, duration: .7, ease: "power2.in" }, t0); });
+  tl.to("#k_wheel", { rotation: "+=720", duration: b5 - a5, ease: "power1.inOut" }, a5)
+    .fromTo("#k_stamp", { opacity: 0, scale: 2.6, rotation: -8 }, { opacity: 1, scale: 1, rotation: -8, duration: .35, ease: "back.out(2)" }, src2dst("c5", 1219.9))
+    .to("#k_accG", { opacity: 0, duration: .4 }, b5 - .2);
+  shake(src2dst("c5", 1219.9) + .3, 14, 6);
+})();
+
+// =============== DOMINO ===============
+const labels = ["سود خارج از پلن", "اعتمادبه‌نفس کاذب", "حجم بیشتر", "تکرار اشتباه", "ضرر بزرگ", "حساب صفر"];
+const DPOS = [[905, 1.3], [730, 1.15], [575, 1.02], [440, .92], [320, .83], [210, .75]];
+const FALLEN = [-76, -62, -46, -30, -14, 0];
+function buildDominoes(svg, prefix, withShadow = true, POS = DPOS) {
+  const defs = el("defs", {}, svg);
+  defs.innerHTML = `<linearGradient id="${prefix}dm" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f7f9fd"/><stop offset="1" stop-color="#cdd8ec"/></linearGradient>
+    <linearGradient id="${prefix}dmR" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff8a93"/><stop offset="1" stop-color="#c7303f"/></linearGradient>`;
+  el("path", { d: "M 0 1330 L 1080 1330 L 1080 1920 L 0 1920 Z", fill: "#07122e" }, svg);
+  el("line", { x1: 0, y1: 1330, x2: 1080, y2: 1330, stroke: "#8cc4ff", "stroke-width": 3, opacity: .7 }, svg);
+  return POS.map(([x, s], i) => {
+    const w = 100 * s, h = 280 * s, last = i === POS.length - 1;
+    if (withShadow) el("ellipse", { cx: x, cy: 1336, rx: w * .9, ry: 10 * s, fill: "#000", opacity: .4 }, svg);
+    const g = el("g", { transform: `translate(${x} 1330)` }, svg), r = el("g", {}, g);
+    r.innerHTML = `<rect x="${-w / 2}" y="${-h}" width="${w}" height="${h}" rx="${14 * s}" fill="url(#${prefix}${last ? "dmR" : "dm"})" stroke="#121a38" stroke-width="${5 * s}"/>
+      <line x1="${-w / 2 + 10 * s}" y1="${-h / 2}" x2="${w / 2 - 10 * s}" y2="${-h / 2}" stroke="#121a38" stroke-width="${4 * s}"/>
+      <circle cx="0" cy="${-h * .75}" r="${9 * s}" fill="#121a38"/><circle cx="0" cy="${-h * .25}" r="${9 * s}" fill="#121a38"/>`;
+    gsap.set(r, { svgOrigin: `${-w / 2} 0` });
+    return r;
+  });
+}
+(() => {
+  const s = SC.domino[0], [a, b] = clip("c6"), f0 = src2dst("c6", 771.37);
+  const doms = buildDominoes($("#d_svg"), "d");
+  // photo intro card then fly-through into the drawn scene
+  tl.fromTo("#d_photoCard", { scale: .6, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: 0, duration: .5, ease: "back.out(1.6)" }, s)
+    .fromTo("#d_photo", { scale: 1 }, { scale: 1.25, duration: 1.4, ease: "power1.in" }, s)
+    .to("#d_photoCard", { scale: 3, opacity: 0, duration: .45, ease: "power3.in" }, f0 - .9)
+    .from("#d_t", { opacity: 0, y: -40, filter: "blur(12px)", duration: .5 }, f0 - .6)
+    .from("#d_svg", { opacity: 0, duration: .4 }, f0 - .7);
+  // the chain list on the right
+  const list = $("#d_list");
+  labels.forEach((t, i) => { const last = i === labels.length - 1;
+    list.insertAdjacentHTML("beforeend", `<div class="tag dl" style="right:70px; top:${520 + i * 90}px; font-size:36px; display:flex; gap:18px; align-items:center; background:rgba(12,26,62,.9); border:2px solid rgba(140,196,255,.35); color:rgba(255,255,255,.45)">
+      <span style="display:inline-block; width:44px; height:44px; line-height:44px; text-align:center; border-radius:50%; background:#8cc4ff; color:#0b1a40; font-weight:900">${fa(i + 1)}</span>${t}</div>`); });
+  const items = $$(".dl");
+  tl.from(items, { opacity: 0, x: 60, duration: .35, stagger: .06 }, f0 - .5);
+  const gap = (b - f0 - .2) / DPOS.length;
+  doms.forEach((d, i) => { const t = f0 + i * gap;
+    tl.to(d, { rotation: FALLEN[i] === 0 ? -8 : FALLEN[i], duration: .34, ease: "power2.in" }, t);
+    const last = i === labels.length - 1;
+    tl.to(items[i], { color: "#fff", borderColor: last ? "#ff8a93" : "#8cc4ff", background: last ? "#c7303f" : "rgba(20,44,100,.95)", scale: 1.06, duration: .2 }, t + .2).to(items[i], { scale: 1, duration: .2 }, t + .4); });
+  shake(f0 + (DPOS.length - 1) * gap + .3, 16, 7);
+})();
+
+// =============== SOBHAN ===============
+(() => {
+  const s = SC.sobhan[0], [a7] = clip("c7"), [a8, b8] = clip("c8"), stopT = src2dst("c8", 793.2);
+  const svg = $("#o_svg"); el("circle", { cx: 300, cy: 1100, r: 300, fill: "#f0d9a0", opacity: .0, id: "o_glow" }, svg);
+  const OPOS = [[320, 1.1], [205, .98], [110, .88], [30, .8]];
+  const doms = buildDominoes(svg, "o", true, OPOS);
+  doms.forEach((d, i) => gsap.set(d, { rotation: FALLEN[i] === 0 ? -8 : FALLEN[i] }));
+  tl.fromTo("#o_ph", { scale: 1.15 }, { scale: 1.02, duration: SC.sobhan[1] - s + .5, ease: "none" }, s);
+  // rewind: dominoes stand back up, last to first
+  doms.slice().reverse().forEach((d, k) => tl.to(d, { rotation: 0, duration: .35, ease: "back.out(2)" }, a7 + .2 + k * .12));
+  tl.fromTo("#o_sob", { x: 500, opacity: 0 }, { x: 0, opacity: 1, duration: .7, ease: "power3.out" }, a7)
+    .fromTo("#o_name", { x: 300, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "back.out(1.8)" }, a7 + .5)
+    .to("#o_glow", { opacity: .3, duration: .6 }, stopT)
+    .from("#o_t", { opacity: 0, y: -40, filter: "blur(14px)", duration: .6, ease: "power3.out" }, stopT - .3);
+  // stop sign on the first domino
+  const stop = el("g", { transform: "translate(320 900)", opacity: 0 }, svg);
+  stop.innerHTML = `<polygon points="-50,-120 50,-120 120,-50 120,50 50,120 -50,120 -120,50 -120,-50" transform="scale(.7)" fill="#c7303f" stroke="#fff" stroke-width="10"/>
+    <text y="16" fill="#fff" font-family="Vaz" font-weight="900" font-size="46" text-anchor="middle">ایست</text>`;
+  gsap.set(stop, { svgOrigin: "320 900" });
+  tl.fromTo(stop, { opacity: 0, scale: 2.5 }, { opacity: 1, scale: 1, duration: .35, ease: "back.out(2.5)" }, stopT);
+  const ring = el("circle", { cx: 320, cy: 1175, r: 190, fill: "none", stroke: "#f0d9a0", "stroke-width": 6, "stroke-dasharray": "6 12", opacity: 0 }, svg);
+  gsap.set(ring, { svgOrigin: "320 1175" });
+  tl.fromTo(ring, { opacity: 0, scale: .5 }, { opacity: .95, scale: 1, duration: .5, ease: "back.out(2)" }, stopT + .1).to(ring, { rotation: 90, duration: b8 - stopT + 1, ease: "none" }, stopT);
+  shake(stopT + .05, 10, 5);
+})();
+
+// =============== OUTRO ===============
+(() => {
+  const s = SC.outro[0];
+  tl.fromTo("#u_badge", { scale: .4, opacity: 0 }, { scale: 1, opacity: 1, duration: .7, ease: "back.out(1.8)" }, s + .1)
+    .from("#u_cta", { opacity: 0, y: 30, duration: .5 }, s + .6)
+    .from("#u_cta2", { opacity: 0, y: 30, duration: .5 }, s + .9);
+})();
+
+tl.set({}, {}, T);
+let frame = 0;
+window.seek = t => { tl.seek(t, false); frame++; $("#grain").style.transform = `translate(${(frame * 37) % 200 - 100}px, ${(frame * 53) % 200 - 100}px)`; };
+window.ready = true;
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+engine/node_modules/
+*.wav
+reels/**/part_*.mp4
+reels/**/st_*.jpg
