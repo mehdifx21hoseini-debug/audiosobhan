@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #f5f7fc; background: #000; }
+#gl { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+.abs { position: absolute; }
+.center { left: 0; right: 0; text-align: center; }
+.big { font-weight: 900; font-size: 118px; line-height: 1.15; text-shadow: 0 10px 50px rgba(0,0,0,.8); }
+.mid { font-weight: 900; font-size: 84px; text-shadow: 0 8px 40px rgba(0,0,0,.8); }
+.w { display: inline-block; }
+svg.full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+.bar { position: absolute; left: 0; right: 0; height: 0; background: #000; }
+#brand { position: absolute; top: 140px; right: 56px; height: 104px; padding: 0 30px 0 24px; border-radius: 56px; background: rgba(255,255,255,.96); display: flex; align-items: center; gap: 16px; box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+#brand img { height: 78px; }
+#brand .t1 { font-weight: 900; font-size: 30px; color: #29386c; line-height: 1.1; }
+#brand .t2 { font-weight: 500; font-size: 19px; color: #b8914a; direction: ltr; text-align: right; }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; mix-blend-mode: screen; }
+#vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0) 50%, rgba(0,0,0,.65) 100%); }
+#grain { position: absolute; inset: -200px; background: url("../../brand/grain.png"); opacity: .09; mix-blend-mode: overlay; }
+#black { position: absolute; inset: 0; background: #000; }
+.pct { position: absolute; font-weight: 900; direction: ltr; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="gl" width="1080" height="1920"></canvas>
+  <svg class="full" id="fx"></svg>
+
+  <div class="abs center big" id="t_eye" style="top:1180px">سریع‌ترین<br><span style="color:#46d696">معامله‌گر؟</span></div>
+  <div class="pct" id="p_up" style="left:80px; top:330px; font-size:130px; color:#46d696; text-shadow:0 0 50px rgba(70,214,150,.8)">+0%</div>
+  <div class="abs center mid" id="t_run" style="top:1330px">سود <span style="color:#46d696">سریع</span>...</div>
+  <div class="pct" id="p_dn" style="left:80px; top:330px; font-size:150px; color:#ff4b5c; text-shadow:0 0 60px rgba(255,60,80,.9)">-90%</div>
+  <div class="abs center big" id="t_crash" style="top:1280px; color:#ff6b76">یه اشتباه<br>کافیه.</div>
+  <div class="abs center big" id="t_tort" style="top:330px">آروم،<br><span style="color:#f0d9a0">ولی پیوسته</span></div>
+
+  <div class="abs" id="end" style="inset:0; opacity:0">
+    <div class="abs" style="inset:0; background:rgba(4,10,28,.55)"></div>
+    <div class="abs center" id="e_t" style="top:560px; font-weight:900; font-size:120px; direction:rtl">دیسیپلین <span style="color:#f0d9a0">&gt;</span> سرعت</div>
+    <div class="abs" id="e_badge" style="left:50%; top:860px; transform:translateX(-50%); width:max-content; white-space:nowrap; padding:30px 52px; border-radius:56px; background:#fff; display:flex; align-items:center; gap:26px; box-shadow:0 30px 90px rgba(0,0,0,.5), 0 0 0 6px rgba(240,217,160,.8)">
+      <div><div style="font-weight:900; font-size:56px; color:#29386c">آکادمی سبحان صمدی</div><div style="font-weight:500; font-size:30px; color:#b8914a; direction:ltr; text-align:right">Sobhan Samadi Academy</div></div>
+      <img src="../../brand/logo_navy_gold.png" style="height:150px"></div>
+  </div>
+
+  <div class="bar" id="barT" style="top:0"></div><div class="bar" id="barB" style="bottom:0"></div>
+  <div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+  <div id="flash"></div><div id="vig"></div><div id="grain"></div><div id="black"></div>
+</div>
+
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const $ = s => document.querySelector(s), NS = "http://www.w3.org/2000/svg";
+function el(tag, a, p) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
+const TL = window.TL, T = window.DUR = TL.T, S = TL.shots, BEAT = 60 / TL.bpm;
+const tl = gsap.timeline({ paused: true });
+
+// ================= WebGL: depth-parallax camera =================
+const gl = $("#gl").getContext("webgl", { preserveDrawingBuffer: true, antialias: false });
+const VS = `attribute vec2 p; varying vec2 uv; void main(){ uv = p * .5 + .5; uv.y = 1. - uv.y; gl_Position = vec4(p, 0., 1.); }`;
+const FS = `precision highp float; varying vec2 uv;
+uniform sampler2D img, dep; uniform vec2 fit, focus, cam; uniform float zoom, focusD, blur, rgb, bright, sat, t;
+uniform vec3 tint; uniform float tintA;
+vec2 proj(vec2 u){ vec2 c = focus + (u - .5) * fit / zoom; float d = texture2D(dep, c).r; return c + cam * (d - focusD); }
+vec3 samp(vec2 u){ vec2 q = proj(u); return vec3(texture2D(img, q + vec2(rgb, 0.)).r, texture2D(img, q).g, texture2D(img, q - vec2(rgb, 0.)).b); }
+void main(){
+  vec3 col = vec3(0.); vec2 dir = uv - vec2(.5, .45);
+  for (int i = 0; i < 12; i++) { float k = float(i) / 11.; col += samp(uv - dir * blur * k); }
+  col /= 12.;
+  float l = dot(col, vec3(.299, .587, .114)); col = mix(vec3(l), col, sat);
+  col = mix(col, col * tint * 1.6, tintA) * bright;
+  col = col / (1. + col * .15) * 1.12;
+  gl_FragColor = vec4(col, 1.);
+}`;
+function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; }
+const prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog); gl.useProgram(prog);
+const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+const loc = gl.getAttribLocation(prog, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+const U = n => gl.getUniformLocation(prog, n);
+function tex(im) { const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
+  for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, k, v); return t; }
+const load = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+// per-shot camera state (animated by GSAP)
+const SHOT = {
+  eye:   { f: "eye4",   zoom: 1, fx: .5, fy: .5, cx: 0, cy: 0, fd: .7, blur: 0, rgb: 0, bright: 1, sat: 1, tint: [.55, .75, 1.0], tintA: .25 },
+  run:   { f: "run2",   zoom: 1, fx: .5, fy: .5, cx: 0, cy: 0, fd: .6, blur: 0, rgb: 0, bright: 1, sat: 1.1, tint: [.6, .8, 1.0], tintA: .2 },
+  crash: { f: "crash2", zoom: 1, fx: .5, fy: .5, cx: 0, cy: 0, fd: .5, blur: 0, rgb: 0, bright: 1, sat: .9, tint: [1.0, .35, .35], tintA: .45 },
+  tort:  { f: "tort5",  zoom: 1, fx: .5, fy: .5, cx: 0, cy: 0, fd: .7, blur: 0, rgb: 0, bright: 1, sat: 1.05, tint: [1.0, .82, .5], tintA: .25 },
+};
+function draw(time) {
+  const cur = Object.keys(SHOT).filter(k => S[k][0] <= time + 1e-4).pop() || "eye", s = SHOT[cur]; gl.viewport(0, 0, 1080, 1920);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, s.ti); gl.uniform1i(U("img"), 0);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, s.td); gl.uniform1i(U("dep"), 1);
+  const ia = s.w / s.h, ca = 1080 / 1920; gl.uniform2f(U("fit"), ia > ca ? ca / ia : 1, ia > ca ? 1 : ia / ca);
+  gl.uniform2f(U("focus"), s.fx, s.fy); gl.uniform2f(U("cam"), s.cx, s.cy); gl.uniform1f(U("zoom"), s.zoom); gl.uniform1f(U("focusD"), s.fd);
+  gl.uniform1f(U("blur"), s.blur); gl.uniform1f(U("rgb"), s.rgb); gl.uniform1f(U("bright"), s.bright); gl.uniform1f(U("sat"), s.sat);
+  gl.uniform3fv(U("tint"), s.tint); gl.uniform1f(U("tintA"), s.tintA); gl.uniform1f(U("t"), time);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+}
+
+// ================= helpers =================
+function flash(t, a = .8, d = .35) { tl.to("#flash", { opacity: a, duration: .04 }, t).to("#flash", { opacity: 0, duration: d }, t + .04); }
+function shake(t, amp = 16, n = 7) { for (let i = 0; i < n; i++) tl.to("#stage", { x: (i % 2 ? -1 : 1) * amp * (1 - i / n), y: (i % 3 - 1) * amp * .6 * (1 - i / n), duration: .03 }, t + i * .03); tl.to("#stage", { x: 0, y: 0, duration: .04 }, t + n * .03); }
+function words(sel) { const e = $(sel); e.innerHTML = e.innerHTML.split(/(<br>|<span[^>]*>.*?<\/span>|\s+)/).filter(x => x && x.trim()).map(x => x === "<br>" ? x : `<span class="w">${x}</span>`).join(" "); return e.querySelectorAll(".w"); }
+function slam(sel, t, stagger = .08) { const ws = words(sel); tl.fromTo(ws, { opacity: 0, scale: 2.2, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out", stagger }, t); return ws; }
+const fx = $("#fx");
+
+// ================= EYE (0 - 1.5): slow push into the eye, heartbeat =================
+(() => {
+  const s = SHOT.eye, [a, b] = S.eye;
+  Object.assign(s, { fx: .58, fy: .36, fd: .8 });
+  tl.to("#black", { opacity: 0, duration: .35 }, 0)
+    .fromTo(s, { zoom: 1.12, cx: -.02, cy: .006 }, { zoom: 1.5, cx: .02, cy: -.006, duration: b - a, ease: "power2.in" }, a)
+    .fromTo(s, { bright: .6 }, { bright: 1.05, duration: .6 }, a)
+    // heartbeat punches on the beat
+    .to(s, { zoom: "+=.05", duration: .06, yoyo: true, repeat: 1 }, .5).to(s, { zoom: "+=.07", duration: .06, yoyo: true, repeat: 1 }, 1.0)
+    // whoosh INTO the eye
+    .to(s, { blur: .35, zoom: "+=1.2", duration: .25, ease: "power3.in" }, b - .25);
+  const ws = slam("#t_eye", .25, .1);
+  tl.to("#t_eye", { opacity: 0, scale: 1.3, filter: "blur(10px)", duration: .2 }, b - .2);
+  gsap.set(["#barT", "#barB"], { height: 0 }); tl.to(["#barT", "#barB"], { height: 110, duration: .5, ease: "power3.out" }, 0);
+  // brand pill
+  gsap.set("#brand", { opacity: 0, y: -24 }); tl.to("#brand", { opacity: 1, y: 0, duration: .5, ease: "back.out(2)" }, .3);
+})();
+
+// ================= RUN (1.5 - 4.0): speed-ramped charge + green candles =================
+(() => {
+  const s = SHOT.run, [a, b] = S.run;
+  Object.assign(s, { fx: .55, fy: .55, fd: .75 });
+  flash(a, .9, .3);
+  tl.fromTo(s, { zoom: 1.9, blur: .3 }, { zoom: 1.12, blur: 0, duration: .35, ease: "power3.out" }, a)        // punch-in from the eye cut
+    .to(s, { zoom: 1.18, cx: .02, duration: .45, ease: "none" }, a + .35)                                        // slow-mo moment
+    .to(s, { zoom: 1.75, cx: -.05, cy: -.02, blur: .12, duration: b - a - .8, ease: "power2.in" }, a + .8);      // ramp up: charge at camera
+  for (let x = a + .5; x < b - .05; x += BEAT) tl.to(s, { zoom: "+=.06", duration: .05, yoyo: true, repeat: 1 }, x), shake(x, 6, 3);
+  tl.to(s, { rgb: .004, duration: .1, yoyo: true, repeat: 1 }, b - .3);
+  // speed lines
+  for (let i = 0; i < 26; i++) { const an = (i / 26) * Math.PI * 2 + i * .7, r0 = 380 + (i * 97) % 300;
+    const l = el("line", { x1: 540 + Math.cos(an) * r0, y1: 1000 + Math.sin(an) * r0, x2: 540 + Math.cos(an) * (r0 + 60), y2: 1000 + Math.sin(an) * (r0 + 60), stroke: "#fff", "stroke-width": 3 + (i % 3) * 2, "stroke-linecap": "round", opacity: 0 }, fx);
+    const t0 = a + .8 + (i % 9) * .17;
+    tl.fromTo(l, { opacity: .7, attr: { x2: 540 + Math.cos(an) * (r0 + 40), y2: 1000 + Math.sin(an) * (r0 + 40) } },
+      { opacity: 0, attr: { x1: 540 + Math.cos(an) * (r0 + 500), y1: 1000 + Math.sin(an) * (r0 + 500), x2: 540 + Math.cos(an) * (r0 + 900), y2: 1000 + Math.sin(an) * (r0 + 900) }, duration: .35, ease: "power2.in", immediateRender: false }, t0)
+      .fromTo(l, { opacity: .6 }, { opacity: 0, duration: .35, immediateRender: false }, t0 + .9); }
+  // rising green candles (right side)
+  const cg = el("g", { opacity: 0 }, fx), cand = [];
+  for (let i = 0; i < 8; i++) { const x = 700 + i * 44, h = 60 + i * 38, y = 1250 - i * 70;
+    el("line", { x1: x + 13, y1: y - 30, x2: x + 13, y2: y + h + 20, stroke: "#46d696", "stroke-width": 4 }, cg);
+    cand.push(el("rect", { x, y, width: 26, height: h, rx: 4, fill: "#46d696" }, cg)); }
+  tl.to(cg, { opacity: .9, duration: .1 }, a + .8).from(cand, { attr: { height: 0 }, duration: .18, stagger: .16, ease: "power2.out" }, a + .8).to(cg, { opacity: 0, duration: .05 }, b);
+  // % counter
+  const o = { v: 0 }, up = $("#p_up"); gsap.set(up, { opacity: 0 });
+  tl.to(up, { opacity: 1, duration: .1 }, a + .8).to(o, { v: 300, duration: b - a - .9, ease: "power2.in", onUpdate: () => up.textContent = "+" + Math.round(o.v) + "%" }, a + .8)
+    .to(up, { opacity: 0, duration: .05 }, b);
+  slam("#t_run", a + .9, .12); tl.to("#t_run", { opacity: 0, duration: .05 }, b);
+})();
+
+// ================= CRASH (4.0 - 5.5): glitch drop =================
+(() => {
+  const s = SHOT.crash, [a, b] = S.crash;
+  Object.assign(s, { fx: .62, fy: .6, fd: .5 });
+  flash(a, 1, .25); shake(a, 30, 10);
+  tl.fromTo(s, { zoom: 1.6, rgb: .02, blur: .2, bright: 1.6 }, { zoom: 1.25, rgb: 0, blur: 0, bright: 1, duration: .45, ease: "power4.out" }, a)
+    .to(s, { zoom: 1.4, cx: .04, cy: .02, duration: b - a - .45, ease: "none" }, a + .45);
+  [a + .55, a + .8, a + 1.05].forEach((t, i) => tl.to(s, { rgb: .012 - i * .003, cx: "+=.03", duration: .03 }, t).to(s, { rgb: 0, cx: "-=.03", duration: .06 }, t + .05));
+  // red falling chart
+  const path = el("path", { d: "M 60 420 L 200 380 L 300 520 L 420 480 L 540 760 L 660 700 L 800 1050 L 1020 1180", stroke: "#ff4b5c", "stroke-width": 12, fill: "none", "stroke-linejoin": "round", "stroke-linecap": "round", opacity: 0, filter: "drop-shadow(0 0 20px #ff4b5c)" }, fx);
+  const L = 1600; gsap.set(path, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+  tl.set(path, { opacity: .95 }, a + .1).to(path, { attr: { "stroke-dashoffset": 0 }, duration: .6, ease: "power2.in" }, a + .1).to(path, { opacity: 0, duration: .05 }, b);
+  gsap.set("#p_dn", { opacity: 0 });
+  tl.fromTo("#p_dn", { opacity: 0, scale: 2.5 }, { opacity: 1, scale: 1, duration: .2, ease: "back.out(2)" }, a + .5).to("#p_dn", { opacity: 0, duration: .05 }, b);
+  slam("#t_crash", a + .35, .12);
+  tl.to("#t_crash", { opacity: 0, duration: .15 }, b - .1).to(s, { bright: 0, duration: .15 }, b - .15);
+})();
+
+// ================= TORTOISE (5.5 - 7.0): calm, steady, warm =================
+(() => {
+  const s = SHOT.tort, [a, b] = S.tort;
+  Object.assign(s, { fx: .5, fy: .55, fd: .7 });
+  tl.fromTo(s, { bright: 0, zoom: 1.08, cx: -.025 }, { bright: 1.05, duration: .4 }, a)
+    .to(s, { zoom: 1.28, cx: .025, cy: -.01, duration: b - a + 1, ease: "sine.inOut" }, a);
+  // steady green line
+  const p = el("path", { d: "M 80 1500 L 1000 1180", stroke: "#46d696", "stroke-width": 10, fill: "none", "stroke-linecap": "round", opacity: 0, filter: "drop-shadow(0 0 16px #46d696)" }, fx);
+  gsap.set(p, { attr: { "stroke-dasharray": 1000, "stroke-dashoffset": 1000 } });
+  tl.set(p, { opacity: .9 }, a + .2).to(p, { attr: { "stroke-dashoffset": 0 }, duration: 1.3, ease: "none" }, a + .2).to(p, { opacity: 0, duration: .3 }, b);
+  const ws = words("#t_tort");
+  tl.fromTo(ws, { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power2.out", stagger: .18 }, a + .2)
+    .to("#t_tort", { opacity: 0, duration: .25 }, b - .1);
+})();
+
+// ================= END (7.0 - 8.0) =================
+(() => {
+  const [a, b] = S.end, s = SHOT.tort;
+  tl.to(s, { blur: .06, bright: .7, duration: .4 }, a)
+    .to("#end", { opacity: 1, duration: .25 }, a)
+    .fromTo("#e_t", { opacity: 0, scale: 1.6, filter: "blur(14px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .3, ease: "power3.out" }, a)
+    .fromTo("#e_badge", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1, duration: .4, ease: "back.out(1.8)" }, a + .2)
+    .to("#brand", { opacity: 0, duration: .2 }, a)
+    .to("#black", { opacity: 1, duration: .2 }, T - .2);
+  flash(a, .4, .3);
+})();
+
+tl.set({}, {}, T);
+let frame = 0;
+window.seek = t => { tl.seek(t, false); draw(t); frame++; $("#grain").style.transform = `translate(${(frame * 37) % 200 - 100}px, ${(frame * 53) % 200 - 100}px)`; };
+Promise.all(Object.values(SHOT).map(async s => { const [i, d] = await Promise.all([load(`img/${s.f}.png`), load(`img/${s.f}_d.png`)]); s.ti = tex(i); s.td = tex(d); s.w = i.width; s.h = i.height; }))
+  .then(() => { window.seek(0); window.ready = true; });
+</script>
+</body>
+</html>
