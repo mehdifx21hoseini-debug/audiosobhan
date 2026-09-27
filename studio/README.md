@@ -24,6 +24,7 @@ studio/
   engine/     render_par.js (رندر فریم‌به‌فریم با کروم)، chars.js (خرگوش و لاک‌پشت)
   reels/
     domino/         ریلز «اثر دومینو» (reel.html + tl.json + reel_audio.py + عکس‌ها)
+    sanctions/      ریلز «تحریم، تتر و والت» (reel.html + tl.json + make_tl.py + reel_audio.py)
     tortoise-hare/  تست سطح ۱ خرگوش و لاک‌پشت (scene2.html)
     python-v1/      موتور قدیمی پایتون (فقط مرجع؛ مسیرهایش به‌روز نیست)
   voice/
@@ -36,7 +37,7 @@ studio/
 
 | فایل | موضوع | ریلز |
 |---|---|---|
-| `voice1_sanctions_usdt.m4a` | واریز و برداشت، تتر و بروکر در شرایط تحریم | ریلز «تحریم» |
+| `voice1_sanctions_usdt.m4a` | واریز و برداشت، تتر و بروکر در شرایط تحریم | ریلز «تحریم» (`output/sanctions_usdt_reel.mp4`) |
 | `voice2_discipline.m4a` | دیسیپلین، لاک‌پشت و خرگوش، گلوله برفی | ریلز خرگوش و لاک‌پشت |
 | `voice3_profit_outside_plan.m4a` | سود خارج از پلن، کازینو، اثر دومینو | ریلز «اثر دومینو» |
 
@@ -62,6 +63,27 @@ ffmpeg -f concat -safe 0 -i parts.txt -i reel_mix.wav -c:v copy -c:a aac -b:a 19
 ```
 
 متغیرهای محیطی: `FFMPEG` (مسیر ffmpeg)، `CHROME` (مسیر کروم/کرومیوم)، `VOICE_CLEAN` (مسیر ویس تمیزشده).
+
+## ریلز «تحریم، تتر و والت» (ویس ۱)
+
+۶۸ ثانیه، بدون عکس بیرونی (همه‌ی گرافیک‌ها SVG). صحنه‌ها:
+هوک (واریز/برداشت، تتر، بروکر ← مهر «تحریم») · شبکه (صرافی تحریم‌شده ← همه‌ی کیف‌پول‌های مرتبط شناسایی و لیبل‌دار می‌شن) ·
+تجربه‌ی خود سبحان (۸۰۰۰ دلار مسدود شد) · والت لیبل‌خورده رو کنار بذار، والت جدید رایگانه · مسیر امن‌تر صرافی ← ولت ۱ ← ولت ۲ با ریسک‌سنج ·
+«اگه درست و اصولی پیش بره، جای نگرانی نیست» · پایان.
+
+`make_tl.py` تکه‌ها رو از ویس برمی‌داره و لبه‌ی برش‌ها رو روی کم‌صداترین فریم نزدیک می‌ذاره و `tl.json` رو می‌سازه
+(برای عوض کردن تکه یا زیرنویس، `PLAN` و `SUBS` رو ویرایش کن و دوباره اجرا کن). ساخت: مثل دومینو، با ویس ۱:
+
+```bash
+cd studio/reels/sanctions
+ffmpeg -i ../../voice/originals/voice1_sanctions_usdt.m4a -ac 1 -ar 48000 -af "<همان فیلتر بالا>" voice1_clean48.wav
+python3 make_tl.py && python3 reel_audio.py
+for k in 0 1 2 3; do node ../../engine/render_par.js reel.html 60 part_$k.mp4 --part $k/4 & done; wait
+# سپس concat مثل بالا -> ../../output/sanctions_usdt_reel.mp4
+```
+
+متن دقیق ویس ۱ (مدل medium) در `voice/transcripts/voice1_accurate.txt`.
+نکته: اگه ffmpeg نصب نیست، `pip install imageio-ffmpeg` یه ffmpeg کامل (با libx264) می‌ده.
 
 ## عکس‌ها
 
