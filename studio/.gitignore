@@ -4,3 +4,10 @@ reels/**/part_*.mp4
 reels/**/st_*.jpg
 reels/**/frames/
 output/*_v[0-9]*.mp4
+reels/**/matte/
+reels/**/bg_*/
+reels/**/tp_*.mp4
+reels/**/st/
+reels/**/log_*.txt
+reels/**/audio_log.txt
+reels/**/tp.txt

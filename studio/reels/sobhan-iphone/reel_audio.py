@@ -38,6 +38,21 @@ whoosh(St["in"], .8, .28); boom(St["w"][0], .38, 36); tick(St["w"][9], .2, 1200)
 riser(VE + 1.15, 1.1, .22); boom(VE + 1.15, .6, 34); chime(VE + 1.2, .14, 1046.5); chime(VE + 1.62, .08, 2093)
 whoosh(VE + .05, .9, .22)
 
+# music bed: the guitar track from Sobhan's own reference reel (separated from its voice with demucs), looped to length
+MUS = os.environ.get("MUSIC")
+if MUS:
+    m, msr = sf.read(MUS); m = m.mean(1) if m.ndim > 1 else m
+    if msr != SR: m = np.interp(np.arange(int(len(m) * SR / msr)) * msr / SR, np.arange(len(m)), m)
+    xf = int(1.5 * SR); bed = m[:N].copy()
+    while len(bed) < N:                                     # crossfade loop
+        nxt = m[int(3 * SR):]; ov = min(xf, len(bed)); w = np.linspace(0, 1, ov)
+        bed = np.concatenate([bed[:-ov], bed[-ov:] * (1 - w) + nxt[:ov] * w, nxt[ov:]])
+    bed = bed[:N]; env = np.ones(N); tt = np.arange(N) / SR
+    for a_, b_, gdb in ((TL["quote"]["in"] - .4, TL["quote"]["out"] + .2, 5), (VE, T, 8)):
+        rise = np.clip((tt - a_) / .6, 0, 1) * np.clip((b_ - tt) / .6 + (1 if b_ >= T else 0), 0, 1); env *= 10 ** (gdb * rise / 20)
+    env *= np.clip(tt / 1.0, 0, 1)
+    MEAS = pyln.Meter(SR); bed *= 10 ** ((-17.2 - 15 - MEAS.integrated_loudness(bed)) / 20)   # ~15 LU under the voice
+    sfx += bed * env
 meter = pyln.Meter(SR); g = 10 ** ((-17.2 - meter.integrated_loudness(voice[:int(VE * SR)])) / 20)
 voice *= g; sfx *= g * .9
 fade = np.ones(N); fl = int(.3 * SR); fade[-fl:] = np.linspace(1, 0, fl)
