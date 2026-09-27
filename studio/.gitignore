@@ -2,3 +2,5 @@ engine/node_modules/
 *.wav
 reels/**/part_*.mp4
 reels/**/st_*.jpg
+reels/**/frames/
+output/*_v[0-9]*.mp4
