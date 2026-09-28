@@ -72,7 +72,7 @@ canvas.full { position: absolute; left: 0; top: 0; }
 .colm .h { font-weight: 900; font-size: 64px; line-height: 1.2; }
 .colm .row { margin-top: 54px; font-weight: 800; font-size: 40px; display: flex; align-items: center; justify-content: center; gap: 14px; }
 .colm .ic { width: 54px; height: 54px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 32px; flex: none; }
-#stamp { position: absolute; left: 110px; top: 555px; padding: 8px 30px; border: 6px solid #ff6b76; color: #ff6b76; border-radius: 16px; font-weight: 900; font-size: 54px; transform: rotate(-10deg); opacity: 0; }
+#stamp { position: absolute; left: 190px; top: 600px; padding: 4px 22px; border: 5px solid #ff6b76; color: #ff6b76; border-radius: 14px; font-weight: 900; font-size: 44px; transform: rotate(-10deg); opacity: 0; }
 .bars { position: absolute; left: 150px; right: 150px; top: 250px; height: 520px; display: flex; align-items: flex-end; justify-content: space-between; direction: ltr; }
 .bars .b { width: 118px; border-radius: 20px 20px 8px 8px; background: linear-gradient(180deg, #f8e2ac, #c99a4a); height: 0; }
 .seg { position: absolute; left: 170px; right: 170px; top: 360px; display: flex; gap: 12px; direction: ltr; }
@@ -206,7 +206,7 @@ tl.fromTo("#phone", { x: -40, y: 30, rotate: -8 }, { x: 0, y: 0, rotate: -4, dur
 tl.fromTo("#aPhoto", { scale: 1.06 }, { scale: 1, duration: 2.4, ease: "power1.out" }, A.in).fromTo("#aPhoto img", { scale: 1.12 }, { scale: 1, duration: 3, ease: "none" }, A.in)
   .fromTo("#aGold", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .35 }, A.gold - .05).fromTo("#aUsd", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .35 }, A.usd - .05)
   .to(["#aPhoto", "#aGold", "#aUsd"], { opacity: 0, y: -30, duration: .35, ease: "power2.in" }, A.sell - .1)
-  .fromTo("#aChart", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, A.sell + .15)
+  .fromTo("#aChart", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, A.sell + .32)
   .fromTo("#aPhone", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: .4, ease: "power3.out" }, A.cons);
 const CD = TL.gold.candles, chx = $("#ch").getContext("2d"), lo = Math.min(...CD.map(c => c[3])), hi = Math.max(...CD.map(c => c[2]));
 function drawChart(p) {
@@ -218,8 +218,8 @@ function drawChart(p) {
     chx.beginPath(); chx.moveTo(x, y(h)); chx.lineTo(x, y(l)); chx.stroke(); const t0 = y(Math.max(o, c)), b0 = y(Math.min(o, c)); chx.fillRect(x - cw * .3, t0, cw * .6, Math.max(1.5, b0 - t0)); }
 }
 const pc = { p: 0 }; drawChart(0);
-tl.to(pc, { p: 1, duration: 1.9, ease: "power1.inOut", onUpdate: () => { drawChart(pc.p); const k = Math.max(0, Math.min(CD.length - 1, Math.floor(pc.p * CD.length) - 1));
-  $("#pct").textContent = "+" + Math.max(0, Math.round((CD[k][4] / CD[0][1] - 1) * 100)) + "%"; } }, A.sell + .35);
+tl.to(pc, { p: 1, duration: 1.75, ease: "power1.inOut", onUpdate: () => { drawChart(pc.p); const k = Math.max(0, Math.min(CD.length - 1, Math.floor(pc.p * CD.length) - 1));
+  $("#pct").textContent = "+" + Math.max(0, Math.round((CD[k][4] / CD[0][1] - 1) * 100)) + "%"; } }, A.sell + .5);
 
 // buffett photo -> quote
 tl.fromTo("#bPhoto", { rotate: -6, y: 60 }, { rotate: 2.5, y: 0, duration: .6, ease: "back.out(1.4)" }, S[8].dst[0]).fromTo("#bPhoto img", { scale: 1.1 }, { scale: 1, duration: 3.5, ease: "none" }, S[8].dst[0])
@@ -248,7 +248,7 @@ const SENT = [];
   const SW = { words: "^yثرو..تمند ^yواقعی دنبال اثبات خودش به یک شخص دیگه ^rنیست".split(" "), wt: st.w.map((x, k) => [x, k < 9 ? st.w[k + 1] : st.out - .2]) };
   let cur = null;
   S.forEach((s, i) => { const ws = s.text.split(" ");
-    if (cur && cur.words.length + ws.length <= 8 && s.dst[0] - cur.wt[cur.wt.length - 1][1] < .35) { cur.words.push(...ws); cur.wt.push(...s.wt); }
+    if (cur && cur.words.length + ws.length <= 6 && s.dst[0] - cur.wt[cur.wt.length - 1][1] < .35) { cur.words.push(...ws); cur.wt.push(...s.wt); }
     else { cur = { words: [...ws], wt: [...s.wt] }; SENT.push(cur); }
     if (i === 9) { SENT.push(QS); cur = null; } if (i === 19) { SENT.push(SW); cur = null; } });
   SENT.sort((a, b) => a.wt[0][0] - b.wt[0][0]); }
@@ -259,7 +259,8 @@ function subAt(t, sp, pop) {
   if (String(i) !== sub.dataset.i) { sub.dataset.i = i; sub.innerHTML = i < 0 ? "" : SENT[i].words.map(w => { let c = ""; if (w[0] === "^") { c = w[1]; w = w.slice(2); } return `<span class="w ${c}">${w}</span>`; }).join(""); }
   if (i < 0) { sub.style.opacity = 0; return; }
   const c = SENT[i], ws = [...sub.children]; sub.style.opacity = 1;
-  const full = 1560, seam = 900 + 58, anchor = full + (seam - full) * sp + (1720 - seam) * pop * sp; sub.style.bottom = (1920 - anchor) + "px";
+  const below = 900 + 44, h = sub.offsetHeight, fullTop = 1560 - h, popTop = 1720 - h;
+  const top = fullTop + (below - fullTop) * sp + (popTop - below) * pop * sp; sub.style.top = top + "px"; sub.style.bottom = "auto";
   let act = -1; ws.forEach((w, k) => { const o = eo((t - (c.wt[k][0] - .06)) / .16); w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 22}px)`; if (t >= c.wt[k][0] - .04) act = k; });
   const end = c.wt[c.wt.length - 1][1]; ws.forEach((w, k) => w.classList.toggle("now", k === act && t < end + .2));
 }
