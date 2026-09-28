@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-ExtraBold.ttf"); font-weight: 800; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #fff; }
+.abs { position: absolute; }
+canvas.full { position: absolute; left: 0; top: 0; }
+.gold { background: linear-gradient(180deg, #fff0c4 0%, #f0c978 45%, #c69440 100%); -webkit-background-clip: text; color: transparent; }
+
+/* ---------- panel (top half in split mode) ---------- */
+#panel { position: absolute; left: 0; top: 0; width: 1080px; height: 900px; overflow: hidden; }
+#grain { position: absolute; inset: -60px; background: url("../../../brand/grain.png"); opacity: .06; mix-blend-mode: overlay; }
+.eyebrow { position: absolute; left: 0; right: 0; top: 64px; text-align: center; font-weight: 500; font-size: 21px; letter-spacing: 8px; color: rgba(243,213,143,.66); direction: ltr; }
+.grp { position: absolute; inset: 0; opacity: 0; }
+.title { position: absolute; left: 40px; right: 40px; top: 106px; text-align: center; font-weight: 900; font-size: 64px; line-height: 1.2; }
+.glass { position: absolute; border-radius: 34px; overflow: hidden; background: linear-gradient(155deg, rgba(255,255,255,.10), rgba(255,255,255,.03) 60%);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(255,255,255,.11); box-shadow: 0 18px 40px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.12); }
+.photo { position: absolute; border-radius: 26px; overflow: hidden; border: 5px solid #fff; box-shadow: 0 22px 50px rgba(0,0,0,.45); }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ntag { position: absolute; padding: 12px 24px; border-radius: 14px; background: #fff; color: #0b0b0e; box-shadow: 0 14px 30px rgba(0,0,0,.35); display: flex; flex-direction: column; gap: 2px; }
+.ntag .n { font-weight: 900; font-size: 36px; direction: ltr; } .ntag .d { font-weight: 700; font-size: 22px; color: #6b6b73; }
+.pill { position: absolute; padding: 10px 26px; border-radius: 999px; font-weight: 800; font-size: 34px; white-space: nowrap; }
+
+/* price */
+#pcard { left: 70px; right: 70px; top: 250px; height: 520px; background: linear-gradient(160deg, rgba(255,255,255,.14), rgba(255,255,255,.04)); }
+#pglow { left: 20px; top: 20px; width: 460px; height: 480px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,210,190,.28), rgba(255,210,190,0)); }
+#phone { left: 40px; top: 10px; height: 500px; filter: drop-shadow(0 26px 30px rgba(0,0,0,.55)); }
+#pcard .brand { right: 50px; top: 80px; font-weight: 500; font-size: 24px; letter-spacing: 6px; color: rgba(255,255,255,.6); direction: ltr; }
+#pcard .model { right: 50px; top: 116px; font-weight: 800; font-size: 52px; direction: ltr; }
+#pcard .spec { right: 50px; top: 196px; font-weight: 500; font-size: 27px; color: rgba(255,255,255,.66); }
+#pcard .amt { right: 50px; top: 262px; direction: ltr; display: flex; align-items: flex-end; }
+#pcard .cur { right: 50px; top: 400px; font-weight: 700; font-size: 34px; color: rgba(255,255,255,.8); }
+.roll { display: flex; align-items: flex-end; direction: ltr; }
+.roll .col { overflow: hidden; }
+.roll .strip { display: flex; flex-direction: column; }
+.roll span { display: block; text-align: center; font-weight: 900; color: #f3d58f; }
+
+/* assets */
+#aPhoto { left: 120px; right: 120px; top: 225px; height: 420px; }
+#aChart { left: 70px; right: 70px; top: 215px; height: 480px; opacity: 0; }
+#ch { position: absolute; left: 30px; top: 118px; }
+#aChart .lbl { position: absolute; right: 38px; top: 34px; font-weight: 800; font-size: 32px; }
+#aChart .src { position: absolute; left: 38px; top: 42px; font-weight: 500; font-size: 19px; color: rgba(255,255,255,.45); direction: ltr; letter-spacing: 1px; }
+#pct { position: absolute; left: 38px; top: 58px; font-weight: 900; font-size: 60px; color: #5fe0a4; direction: ltr; }
+
+/* buffett + quote */
+#bPhoto { left: 320px; top: 140px; width: 440px; height: 520px; }
+#bTag { left: 350px; top: 610px; }
+#qTxt { position: absolute; left: 80px; right: 80px; top: 250px; text-align: center; font-weight: 800; font-size: 64px; line-height: 1.55; }
+#qTxt .q { display: inline-block; margin: 0 6px; opacity: 0; } #qTxt .k { color: #f3d58f; }
+#qBy { position: absolute; left: 0; right: 0; top: 640px; display: flex; justify-content: center; align-items: center; gap: 18px; opacity: 0; }
+#qBy img { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; border: 3px solid #fff; }
+#qBy span { font-weight: 700; font-size: 30px; color: rgba(243,213,143,.9); }
+
+/* ladder */
+.lrow { position: absolute; left: 150px; right: 150px; height: 150px; display: flex; align-items: center; justify-content: space-between; padding: 0 44px; opacity: 0; }
+.lrow .u { font-weight: 800; font-size: 42px; color: rgba(255,255,255,.8); }
+.lrow.top { border-color: rgba(243,213,143,.5); }
+
+/* checklist / compare / growth / cta */
+.item { position: absolute; right: 120px; left: 120px; height: 120px; display: flex; align-items: center; gap: 28px; padding: 0 40px; opacity: 0; }
+.item .ck { width: 64px; height: 64px; border-radius: 50%; background: #5fe0a4; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 38px; color: #04180f; flex: none; }
+.item .tx { font-weight: 800; font-size: 48px; }
+.colm { position: absolute; top: 230px; width: 450px; height: 460px; padding: 48px 30px; opacity: 0; text-align: center; }
+.colm .h { font-weight: 900; font-size: 64px; line-height: 1.2; }
+.colm .row { margin-top: 54px; font-weight: 800; font-size: 40px; display: flex; align-items: center; justify-content: center; gap: 14px; }
+.colm .ic { width: 54px; height: 54px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 32px; flex: none; }
+#stamp { position: absolute; left: 110px; top: 555px; padding: 8px 30px; border: 6px solid #ff6b76; color: #ff6b76; border-radius: 16px; font-weight: 900; font-size: 54px; transform: rotate(-10deg); opacity: 0; }
+.bars { position: absolute; left: 150px; right: 150px; top: 250px; height: 520px; display: flex; align-items: flex-end; justify-content: space-between; direction: ltr; }
+.bars .b { width: 118px; border-radius: 20px 20px 8px 8px; background: linear-gradient(180deg, #f8e2ac, #c99a4a); height: 0; }
+.seg { position: absolute; left: 170px; right: 170px; top: 360px; display: flex; gap: 12px; direction: ltr; }
+.seg i { flex: 1; height: 10px; border-radius: 5px; background: rgba(255,255,255,.18); overflow: hidden; position: relative; }
+.seg i b { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #fff; }
+
+/* ---------- subtitles: whole sentence, spoken word in gold ---------- */
+#sub { position: absolute; left: 44px; right: 44px; bottom: 360px; text-align: center; font-weight: 900; font-size: 70px; line-height: 1.32; opacity: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,.8), 0 6px 26px rgba(0,0,0,.6); }
+#sub .w { display: inline-block; margin: 0 9px; color: #fff; }
+#sub .w.now { color: #f3d58f; }
+#sub .w.y { color: #f3d58f; } #sub .w.g { color: #6ff0b4; } #sub .w.r { color: #ff8a93; }
+
+/* ---------- outro ---------- */
+#ov { position: absolute; inset: 0; opacity: 0; background: radial-gradient(ellipse 70% 55% at 50% 40%, #1b3a80 0%, #0a1740 45%, #030817 100%); }
+#glow { position: absolute; left: 50%; top: 700px; width: 900px; height: 900px; margin: -450px 0 0 -450px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,215,140,.35), rgba(255,215,140,0)); opacity: 0; }
+#gl2 { position: absolute; left: 0; top: 0; }
+#oName { position: absolute; left: 0; right: 0; top: 1030px; text-align: center; font-weight: 900; font-size: 70px; clip-path: inset(0 50% 0 50%); }
+#black { position: absolute; inset: 0; background: #000; opacity: 0; }
+</style>
+<script type="importmap">{"imports":{"three":"../../../engine/node_modules/three/build/three.module.js","three/addons/":"../../../engine/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv" class="full" width="1080" height="1920"></canvas>
+
+  <div id="panel">
+    <div id="grain"></div>
+    <div class="eyebrow">SOBHAN SAMADI  ·  FINANCIAL IQ</div>
+
+    <div class="grp" id="gPrice">
+      <div class="glass" id="pcard"><div class="abs" id="pglow"></div><img class="abs" id="phone" src="assets4/iphone.png">
+        <div class="abs brand">APPLE</div><div class="abs model">iPhone 18 Pro Max</div><div class="abs spec">۵۱۲ گیگابایت · زرشکی</div>
+        <div class="abs amt"><div class="roll" id="rollP"></div></div><div class="abs cur">تومان</div></div>
+    </div>
+
+    <div class="grp" id="gAssets">
+      <div class="title">دارایی&nbsp;&nbsp;<span style="color:rgba(255,255,255,.4)">←</span>&nbsp;&nbsp;<span class="gold">مصرف</span></div>
+      <div class="photo" id="aPhoto"><img src="assets4/goldbars.jpg"></div>
+      <div class="pill" id="aGold" style="right:150px; top:590px; background:#f3d58f; color:#1b1405; opacity:0">طلا</div>
+      <div class="pill" id="aUsd" style="right:270px; top:590px; background:#6ff0b4; color:#04180f; opacity:0">دلار</div>
+      <div class="glass" id="aChart"><div class="lbl">طلا · ۲ سال اخیر</div><div id="pct">+0%</div><div class="src">GOLD · COMEX · WEEKLY</div><canvas id="ch" width="880" height="340"></canvas></div>
+      <div class="pill" id="aPhone" style="left:110px; top:640px; background:#ff6b76; color:#fff; opacity:0">گوشی: ارزشش هر روز کمتر</div>
+    </div>
+
+    <div class="grp" id="gBuffett">
+      <div class="photo" id="bPhoto"><img src="buffett_photo.jpg" style="object-position:50% 18%"></div>
+      <div class="ntag" id="bTag"><span class="n">Warren Buffett</span><span class="d">ثروتمندترین سرمایه‌گذار جهان</span></div>
+    </div>
+    <div class="grp" id="gQuote"><div id="qTxt"></div><div id="qBy"><img src="buffett_photo.jpg"><span>— وارن بافت</span></div></div>
+
+    <div class="grp" id="gLadder">
+      <div class="title">اول <span class="gold">مدیریت</span>، بعد مقدار</div>
+      <div class="lrow glass" id="l1" style="top:270px"><div class="roll" id="r1"></div><div class="u">میلیون</div></div>
+      <div class="lrow glass" id="l2" style="top:440px"><div class="roll" id="r2"></div><div class="u">میلیارد</div></div>
+      <div class="lrow glass top" id="l3" style="top:610px"><div class="roll" id="r3"></div><div class="u gold">میلیارد</div></div>
+    </div>
+
+    <div class="grp" id="gCheck">
+      <div class="title">کسی که <span class="gold">مدیریت</span> کرد</div>
+      <div class="item glass" id="i1" style="top:250px"><div class="ck">✓</div><div class="tx">مدیریت ۱۰۰ میلیون</div></div>
+      <div class="item glass" id="i2" style="top:390px"><div class="ck">✓</div><div class="tx">مدیریت ۱ میلیارد</div></div>
+      <div class="item glass" id="i3" style="top:530px"><div class="ck">✓</div><div class="tx">مدیریت <span class="gold">۱۰ میلیارد</span></div></div>
+    </div>
+
+    <div class="grp" id="gCompare">
+      <div class="title">یادت <span class="gold">باشه</span></div>
+      <div class="colm glass" id="cR" style="right:70px; border-color:rgba(243,213,143,.4)"><div class="h gold">ثرو..تمند<br>واقعی</div>
+        <div class="row"><span class="ic" style="background:#5fe0a4; color:#04180f">✓</span>دارایی می‌سازه</div></div>
+      <div class="colm glass" id="cL" style="left:70px"><div class="h" style="color:#ff9aa2">پز<br>ثروت</div>
+        <div class="row"><span class="ic" style="background:#ff6b76; color:#fff">✕</span>اثبات به دیگران</div></div>
+      <div id="stamp">نیست!</div>
+    </div>
+
+    <div class="grp" id="gGrowth">
+      <div class="title">هوش <span class="gold">مالی</span></div>
+      <div class="bars"><div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div><div class="b"></div></div>
+    </div>
+
+    <div class="grp" id="gCta">
+      <div class="title">نکات <span class="gold">روزانه</span></div>
+      <div class="seg"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+      <div class="abs" style="left:0; right:0; top:420px; text-align:center; font-weight:700; font-size:38px; color:rgba(255,255,255,.75)">هر روز در استوری‌ها</div>
+    </div>
+  </div>
+
+  <canvas id="fg" class="full" width="1080" height="1920"></canvas>
+  <div id="sub"></div>
+
+  <div id="ov"><div id="glow"></div><canvas id="gl2" width="1080" height="1920"></canvas><div id="oName" class="gold">آکادمی سبحان صمدی</div></div>
+  <div id="black"></div>
+</div>
+<script src="../../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script type="module">
+import * as THREE from "three";
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const TL = window.TL, S = TL.subs, VE = TL.voice_end, OUT = 4.6, T = window.DUR = VE + OUT;
+const smo = u => u * u * (3 - 2 * u), clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), eo = u => 1 - Math.pow(1 - clamp(u), 3);
+const fa = n => n.toLocaleString("fa-IR");
+const tl = gsap.timeline({ paused: true });
+const P = TL.price, A = TL.assets, Q = TL.quote, L = TL.ladder, st = TL.state, G = TL.growth;
+
+// ---------- layout windows ----------
+const SPL = [[0, P.out + .35], [A.in, A.out], [S[8].dst[0] - .15, L.out], [S[17].dst[0] - .15, G.out], [S[24].dst[0] - .25, VE]];
+const POP = [S[17].dst[0] - .15, st.out + .05];
+function splitAt(t) { if (t >= VE) return 0; for (const [a, b] of SPL) if (t >= a - .02 && t <= b) return Math.min(a === 0 ? 1 : smo(clamp((t - a) / .5)), smo(clamp((b - t) / .45))); return 0; }
+const popAt = t => (t < POP[0] || t > POP[1]) ? 0 : Math.min(eo((t - POP[0]) / .55), eo((POP[1] - t) / .45));
+const shiftAt = t => splitAt(t) * (290 - 250 * popAt(t));
+
+// ---------- panel groups ----------
+const grp = (id, a, b) => { tl.fromTo(id, { opacity: 0, y: 34, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power3.out" }, Math.max(0, a))
+  .to(id, { opacity: 0, y: -24, filter: "blur(8px)", duration: .32, ease: "power2.in" }, b - .3); };
+grp("#gPrice", 0, SPL[0][1]); grp("#gAssets", A.in + .1, A.out); grp("#gBuffett", S[8].dst[0], Q.in + .05); grp("#gQuote", Q.in, L.in + .1); grp("#gLadder", L.in + .05, L.out);
+grp("#gCheck", SPL[3][0] + .05, S[19].dst[0] - .1); grp("#gCompare", S[19].dst[0] - .1, G.in + .1); grp("#gGrowth", G.in + .05, G.out); grp("#gCta", SPL[4][0] + .1, VE + .05);
+
+// rolling digits
+const PD = "۰۱۲۳۴۵۶۷۸۹";
+function roller(el, str, size, at) {
+  el.innerHTML = ""; let k = 0;
+  [...str].forEach(ch => { const d = PD.indexOf(ch);
+    if (d < 0) { el.insertAdjacentHTML("beforeend", `<span style="font-size:${size}px; height:${size * 1.15}px; line-height:${size * 1.15}px">${ch}</span>`); return; }
+    const c = document.createElement("div"); c.className = "col"; c.style.height = size * 1.15 + "px"; const s = document.createElement("div"); s.className = "strip";
+    s.innerHTML = [...Array(30)].map((_, i) => `<span style="font-size:${size}px; height:${size * 1.15}px; line-height:${size * 1.15}px">${PD[i % 10]}</span>`).join(""); c.appendChild(s); el.appendChild(c);
+    tl.fromTo(s, { y: 0 }, { y: -(20 + d) * size * 1.15, duration: .95 + k * .05, ease: "power3.out" }, at + k * .03); k++; });
+}
+roller($("#rollP"), "۷۳۰٬۰۰۰٬۰۰۰", 66, P.count - .2);
+tl.fromTo("#phone", { x: -40, y: 30, rotate: -8 }, { x: 0, y: 0, rotate: -4, duration: .8, ease: "power3.out" }, .05)
+  .fromTo(["#pcard .brand", "#pcard .model", "#pcard .spec", "#pcard .cur"], { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: .4, stagger: .07 }, .2);
+
+// assets: photo + chips -> real gold chart -> phone pill
+tl.fromTo("#aPhoto", { scale: 1.06 }, { scale: 1, duration: 2.4, ease: "power1.out" }, A.in).fromTo("#aPhoto img", { scale: 1.12 }, { scale: 1, duration: 3, ease: "none" }, A.in)
+  .fromTo("#aGold", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .35 }, A.gold - .05).fromTo("#aUsd", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: .35 }, A.usd - .05)
+  .to(["#aPhoto", "#aGold", "#aUsd"], { opacity: 0, y: -30, duration: .35, ease: "power2.in" }, A.sell - .1)
+  .fromTo("#aChart", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, A.sell + .15)
+  .fromTo("#aPhone", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: .4, ease: "power3.out" }, A.cons);
+const CD = TL.gold.candles, chx = $("#ch").getContext("2d"), lo = Math.min(...CD.map(c => c[3])), hi = Math.max(...CD.map(c => c[2]));
+function drawChart(p) {
+  const W = 880, H = 340, n = CD.length, cw = W / n, y = v => H - 16 - (v - lo) / (hi - lo) * (H - 40), m = Math.floor(n * p);
+  chx.clearRect(0, 0, W, H); chx.strokeStyle = "rgba(255,255,255,.06)"; for (let g = 0; g < 4; g++) { const yy = 16 + g * (H - 32) / 3; chx.beginPath(); chx.moveTo(0, yy); chx.lineTo(W, yy); chx.stroke(); }
+  if (m > 1) { const gr = chx.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, "rgba(243,213,143,.22)"); gr.addColorStop(1, "rgba(243,213,143,0)");
+    chx.beginPath(); chx.moveTo(cw / 2, H); for (let i = 0; i < m; i++) chx.lineTo(i * cw + cw / 2, y(CD[i][4])); chx.lineTo((m - 1) * cw + cw / 2, H); chx.closePath(); chx.fillStyle = gr; chx.fill(); }
+  for (let i = 0; i < m; i++) { const [, o, h, l, c] = CD[i], col = c >= o ? "#5fe0a4" : "#ff6b76", x = i * cw + cw / 2; chx.strokeStyle = col; chx.fillStyle = col; chx.lineWidth = 1.5;
+    chx.beginPath(); chx.moveTo(x, y(h)); chx.lineTo(x, y(l)); chx.stroke(); const t0 = y(Math.max(o, c)), b0 = y(Math.min(o, c)); chx.fillRect(x - cw * .3, t0, cw * .6, Math.max(1.5, b0 - t0)); }
+}
+const pc = { p: 0 }; drawChart(0);
+tl.to(pc, { p: 1, duration: 1.9, ease: "power1.inOut", onUpdate: () => { drawChart(pc.p); const k = Math.max(0, Math.min(CD.length - 1, Math.floor(pc.p * CD.length) - 1));
+  $("#pct").textContent = "+" + Math.max(0, Math.round((CD[k][4] / CD[0][1] - 1) * 100)) + "%"; } }, A.sell + .35);
+
+// buffett photo -> quote
+tl.fromTo("#bPhoto", { rotate: -6, y: 60 }, { rotate: 2.5, y: 0, duration: .6, ease: "back.out(1.4)" }, S[8].dst[0]).fromTo("#bPhoto img", { scale: 1.1 }, { scale: 1, duration: 3.5, ease: "none" }, S[8].dst[0])
+  .fromTo("#bTag", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: .4, ease: "power3.out" }, TL.quote.attr + .1);
+const QW = ["کسی", "که", "زیر", "سایه‌ی", "یک", "درختی", "نشسته،", "سال‌ها", "قبل", "درختش", "رو", "کاشته"], QK = new Set([3, 5, 9, 11]);
+QW.forEach((w, k) => $("#qTxt").insertAdjacentHTML("beforeend", `<span class="q${QK.has(k) ? " k" : ""}">${w}</span> `));
+$$("#qTxt .q").forEach((el, k) => tl.fromTo(el, { opacity: 0, y: 14, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .3, ease: "power2.out" }, Q.words[k][0] - .05));
+tl.fromTo("#qBy", { opacity: 0 }, { opacity: 1, duration: .4 }, Q.in + .2);
+
+// ladder rows roll in on "صد" / "یک" / "ده"
+roller($("#r1"), "۱۰۰", 96, L.r1 - .15); roller($("#r2"), "۱", 96, L.r2 - .15); roller($("#r3"), "۱۰", 96, L.r3 - .15);
+[["#l1", L.r1], ["#l2", L.r2], ["#l3", L.r3]].forEach(([id, t]) => tl.fromTo(id, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .45, ease: "power3.out" }, t - .2));
+
+// checklist / compare / growth / cta
+[["#i1", S[17].dst[0] + .25], ["#i2", S[18].wt[1][0]], ["#i3", S[18].wt[4][0]]].forEach(([id, t]) => tl.fromTo(id, { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: .42, ease: "power3.out" }, t - .1));
+tl.fromTo("#cR", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, st.w[0] - .1).fromTo("#cL", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: .5, ease: "power3.out" }, st.w[3] - .1)
+  .fromTo("#stamp", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .25, ease: "power4.in" }, st.w[9] - .05);
+const BH = [190, 260, 330, 410, 500], BAD = [140, 115, 95, 80, 65];
+$$(".bars .b").forEach((el, k) => tl.to(el, { height: BAD[k], background: "linear-gradient(180deg,#ff9aa2,#b8444f)", duration: .35 }, G.bad - .1 + k * .05)
+  .to(el, { height: BH[k], background: "linear-gradient(180deg,#f8e2ac,#c99a4a)", duration: .5, ease: "power3.out" }, G.grow - .1 + k * .07));
+$$(".seg i b").forEach((el, k) => tl.fromTo(el, { width: "0%" }, { width: "100%", duration: .32, ease: "none" }, SPL[4][0] + .3 + k * .32));
+
+// ---------- subtitles: sentence stays, spoken word turns gold ----------
+const SENT = [];
+{ const QS = { words: QW.map((w, k) => QK.has(k) ? "^y" + w : w), wt: QW.map((w, k) => [Q.words[k][0], k + 1 < 12 ? Q.words[k + 1][0] : Q.out - .3]) };
+  const SW = { words: "^yثرو..تمند ^yواقعی دنبال اثبات خودش به یک شخص دیگه ^rنیست".split(" "), wt: st.w.map((x, k) => [x, k < 9 ? st.w[k + 1] : st.out - .2]) };
+  let cur = null;
+  S.forEach((s, i) => { const ws = s.text.split(" ");
+    if (cur && cur.words.length + ws.length <= 8 && s.dst[0] - cur.wt[cur.wt.length - 1][1] < .35) { cur.words.push(...ws); cur.wt.push(...s.wt); }
+    else { cur = { words: [...ws], wt: [...s.wt] }; SENT.push(cur); }
+    if (i === 9) { SENT.push(QS); cur = null; } if (i === 19) { SENT.push(SW); cur = null; } });
+  SENT.sort((a, b) => a.wt[0][0] - b.wt[0][0]); }
+const sub = $("#sub");
+function subAt(t, sp, pop) {
+  if (t > Q.in - .05 && t < Q.out) { sub.style.opacity = 0; return; }       // the quote plays in the panel itself
+  let i = -1; if (t < VE - .05) SENT.forEach((s, k) => { if (t >= s.wt[0][0] - .06) i = k; });
+  if (String(i) !== sub.dataset.i) { sub.dataset.i = i; sub.innerHTML = i < 0 ? "" : SENT[i].words.map(w => { let c = ""; if (w[0] === "^") { c = w[1]; w = w.slice(2); } return `<span class="w ${c}">${w}</span>`; }).join(""); }
+  if (i < 0) { sub.style.opacity = 0; return; }
+  const c = SENT[i], ws = [...sub.children]; sub.style.opacity = 1;
+  const full = 1560, seam = 900 + 58, anchor = full + (seam - full) * sp + (1720 - seam) * pop * sp; sub.style.bottom = (1920 - anchor) + "px";
+  let act = -1; ws.forEach((w, k) => { const o = eo((t - (c.wt[k][0] - .06)) / .16); w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 22}px)`; if (t >= c.wt[k][0] - .04) act = k; });
+  const end = c.wt[c.wt.length - 1][1]; ws.forEach((w, k) => w.classList.toggle("now", k === act && t < end + .2));
+}
+
+// ---------- outro: 3D logo (white mark, gold lines) + name ----------
+const r2 = new THREE.WebGLRenderer({ canvas: $("#gl2"), antialias: true, alpha: true, preserveDrawingBuffer: true });
+r2.toneMapping = THREE.ACESFilmicToneMapping; r2.toneMappingExposure = 1.3; r2.outputColorSpace = THREE.SRGBColorSpace;
+function studioEnv(rd) { const sc = new THREE.Scene(); sc.background = new THREE.Color(0x2a2f3a);
+  const box = (w, h, x, y, z, rx, ry, c) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide })); m.position.set(x, y, z); m.rotation.set(rx, ry, 0); sc.add(m); };
+  box(10, 4, 0, 6, 0, Math.PI / 2, 0, 0xffffff); box(14, 3, 0, 3, 8, 0, Math.PI, 0xfff4e0); box(4, 10, -7, 1, 2, 0, Math.PI / 2, 0xfff1d6); box(3, 10, 7, 1, -1, 0, -Math.PI / 2, 0xdfe8ff); box(12, 1.5, 0, 1.5, -8, 0, 0, 0xffd9a0);
+  return new THREE.PMREMGenerator(rd).fromScene(sc, .02).texture; }
+const s2 = new THREE.Scene(); s2.environment = studioEnv(r2);
+const c2 = new THREE.PerspectiveCamera(26, 1080 / 1920, .1, 100); c2.position.set(0, 0, 12); c2.lookAt(0, 0, 0);
+const logo = new THREE.Group(); s2.add(logo);
+const mk3 = (polys, mat, depth) => polys.forEach(p => { const sh = new THREE.Shape(p.map(([x, y]) => new THREE.Vector2(x * 1.3, y * 1.3)));
+  const g = new THREE.ExtrudeGeometry(sh, { depth, bevelEnabled: true, bevelThickness: .025, bevelSize: .018, bevelSegments: 4, curveSegments: 6 }); g.translate(0, 0, -depth / 2); logo.add(new THREE.Mesh(g, mat)); });
+mk3(TL.logo.white, new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: .25, roughness: .28, clearcoat: 1, clearcoatRoughness: .08, envMapIntensity: 1.1 }), .16);
+mk3(TL.logo.gold, new THREE.MeshPhysicalMaterial({ color: 0xf6c565, metalness: 1, roughness: .22, clearcoat: .6, envMapIntensity: 1.8 }), .11);
+const spot = new THREE.DirectionalLight(0xffffff, 3.2); s2.add(spot); s2.add(new THREE.HemisphereLight(0xfff3dd, 0x1a2a55, 1.1));
+function renderLogo(u) { const a = eo((u - .3) / 1.6);
+  logo.position.set(0, .75 + .03 * Math.sin(u * 1.6) * clamp(u - 2), -16 * (1 - a)); logo.rotation.set(.25 * (1 - a), -Math.PI * 2.25 * (1 - a) + .1 * Math.sin(u * 1.1) * clamp(u - 2), .1 * (1 - a));
+  logo.scale.setScalar(.6 + .4 * a); spot.position.set(-8 + 16 * clamp((u - 1.1) / 1.6), 3, 6); r2.render(s2, c2); }
+tl.to("#ov", { opacity: 1, duration: .6, ease: "power2.inOut" }, VE + .05)
+  .fromTo("#glow", { opacity: 0, scale: .5 }, { opacity: 1, scale: 1.1, duration: .5, ease: "power2.out" }, VE + 1.85).to("#glow", { opacity: .4, scale: 1, duration: 1.2 }, VE + 2.35)
+  .to("#oName", { clipPath: "inset(0 0% 0 0%)", duration: .8, ease: "power3.inOut" }, VE + 2.15).to("#black", { opacity: 1, duration: .45 }, T - .45);
+tl.set({}, {}, T);
+
+// ---------- canvas: Sobhan (untouched room) + panel backdrop; fg: matted Sobhan when he breaks out ----------
+const cv = $("#cv"), cx = cv.getContext("2d"), fx = $("#fg").getContext("2d"), img = new Image(), mImg = new Image(); let li = -1, lm = -1;
+const tmp = Object.assign(document.createElement("canvas"), { width: 1080, height: 1920 }), tx = tmp.getContext("2d");
+async function frame(t) {
+  const ft = Math.min(t, VE - .02), idx = Math.round(ft * 30);
+  if (idx !== li) { img.src = `../frames/f_${String(idx + 1).padStart(5, "0")}.jpg`; await img.decode(); li = idx; }
+  const u = Math.max(0, t - VE), sp = splitAt(t), sh = shiftAt(t), pop = popAt(t) * sp, seam = 900 * sp;
+  cx.fillStyle = "#000"; cx.fillRect(0, 0, 1080, 1920);
+  cx.save(); cx.filter = `contrast(1.06) saturate(1.05) brightness(${1.01 - Math.min(.4, u * .5)})` + (u > 0 ? ` blur(${Math.min(16, u * 20)}px)` : ""); cx.drawImage(img, 0, sh, 1080, 1920); cx.restore();
+  fx.clearRect(0, 0, 1080, 1920); if (sp <= 0 || u > 0) return;
+  const oy = seam - 900;
+  cx.save(); cx.beginPath(); cx.rect(0, 0, 1080, seam); cx.clip();
+  const g = cx.createLinearGradient(0, oy, 0, oy + 900); g.addColorStop(0, "#050c22"); g.addColorStop(1, "#0c1a42"); cx.fillStyle = g; cx.fillRect(0, oy, 1080, 900);
+  [[300 + 110 * Math.sin(t * .3), 250, "rgba(90,130,255,.18)"], [820 + 80 * Math.cos(t * .25), 620, "rgba(255,190,110,.10)"]].forEach(([x, y, c]) => {
+    const rg = cx.createRadialGradient(x, oy + y, 0, x, oy + y, 520); rg.addColorStop(0, c); rg.addColorStop(1, "rgba(0,0,0,0)"); cx.fillStyle = rg; cx.fillRect(0, oy, 1080, 900); });
+  cx.fillStyle = "rgba(255,255,255,.04)"; for (let yy = 36; yy < 900; yy += 44) for (let xx = 30; xx < 1080; xx += 44) { cx.beginPath(); cx.arc(xx, oy + yy, 1.4, 0, 6.3); cx.fill(); }
+  cx.restore();
+  const sg = cx.createLinearGradient(0, seam, 0, seam + 70); sg.addColorStop(0, "rgba(0,0,0,.4)"); sg.addColorStop(1, "rgba(0,0,0,0)"); cx.fillStyle = sg; cx.fillRect(0, seam, 1080, 70);
+  const gl = cx.createLinearGradient(0, 0, 1080, 0); gl.addColorStop(0, "rgba(243,213,143,0)"); gl.addColorStop(.5, "rgba(243,213,143,.9)"); gl.addColorStop(1, "rgba(243,213,143,0)"); cx.fillStyle = gl; cx.fillRect(0, seam - 1, 1080, 2);
+  if (pop > 0) {            // whole matted figure over panel + seam shadow, so the head reads clean with no band across it
+    if (idx !== lm) { mImg.src = `../matte/m_${String(idx + 1).padStart(5, "0")}.png`; await mImg.decode(); lm = idx; }
+    tx.globalCompositeOperation = "source-over"; tx.clearRect(0, 0, 1080, 1920); tx.filter = "contrast(1.06) saturate(1.05) brightness(1.01)"; tx.drawImage(img, 0, sh, 1080, 1920);
+    tx.filter = "none"; tx.globalCompositeOperation = "destination-in"; tx.drawImage(mImg, 0, sh, 1080, 1920);
+    fx.save(); fx.globalAlpha = pop; fx.shadowColor = "rgba(0,0,0,.3)"; fx.shadowBlur = 26; fx.shadowOffsetY = 6; fx.drawImage(tmp, 0, 0); fx.restore();
+  }
+}
+window.seek = async t => {
+  tl.seek(t, false); const sp = splitAt(t);
+  const pn = $("#panel"); pn.style.transform = `translateY(${900 * sp - 900}px)`; pn.style.opacity = sp > 0 && t < VE ? 1 : 0;
+  subAt(t, sp, popAt(t)); $("#grain").style.transform = `translate(${(Math.floor(t * 24) * 37) % 60 - 30}px, ${(Math.floor(t * 24) * 53) % 60 - 30}px)`;
+  if (t >= VE) renderLogo(t - VE);
+  if (t < VE + 1.2) await frame(t);
+};
+document.fonts.ready.then(async () => { await Promise.all([...document.images].map(i => i.decode().catch(() => {}))); await window.seek(0); window.ready = true; });
+</script>
+</body>
+</html>
