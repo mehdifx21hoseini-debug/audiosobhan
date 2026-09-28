@@ -80,8 +80,9 @@ canvas.full { position: absolute; left: 0; top: 0; }
 .seg i b { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #fff; }
 
 /* ---------- subtitles: whole sentence, spoken word in gold ---------- */
-#sub { position: absolute; left: 44px; right: 44px; bottom: 360px; text-align: center; font-weight: 900; font-size: 70px; line-height: 1.32; opacity: 0;
-  text-shadow: 0 2px 4px rgba(0,0,0,.8), 0 6px 26px rgba(0,0,0,.6); }
+#sub { position: absolute; left: 50%; transform: translateX(-50%); width: max-content; max-width: 980px; bottom: 360px; text-align: center; font-weight: 900; font-size: 66px; line-height: 1.32; opacity: 0;
+  padding: 10px 30px 16px; border-radius: 26px; background: rgba(8,12,26,.42); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  text-shadow: 0 2px 6px rgba(0,0,0,.55); }
 #sub .w { display: inline-block; margin: 0 9px; color: #fff; }
 #sub .w.now { color: #f3d58f; }
 #sub .w.y { color: #f3d58f; } #sub .w.g { color: #6ff0b4; } #sub .w.r { color: #ff8a93; }
@@ -261,7 +262,7 @@ function subAt(t, sp, pop) {
   const c = SENT[i], ws = [...sub.children]; sub.style.opacity = 1;
   const below = 900 + 44, h = sub.offsetHeight, fullTop = 1560 - h, popTop = 1720 - h;
   const top = fullTop + (below - fullTop) * sp + (popTop - below) * pop * sp; sub.style.top = top + "px"; sub.style.bottom = "auto";
-  let act = -1; ws.forEach((w, k) => { const o = eo((t - (c.wt[k][0] - .06)) / .16); w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 22}px)`; if (t >= c.wt[k][0] - .04) act = k; });
+  let act = -1; ws.forEach((w, k) => { const o = eo((t - (c.wt[k][0] - .06)) / .16); w.style.opacity = .38 + .62 * o; w.style.transform = `translateY(${(1 - o) * 6}px)`; if (t >= c.wt[k][0] - .04) act = k; });
   const end = c.wt[c.wt.length - 1][1]; ws.forEach((w, k) => w.classList.toggle("now", k === act && t < end + .2));
 }
 
