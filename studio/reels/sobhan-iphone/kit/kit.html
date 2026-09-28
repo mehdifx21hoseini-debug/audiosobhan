@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-ExtraBold.ttf"); font-weight: 800; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #fff; }
+.abs { position: absolute; }
+canvas.full { position: absolute; left: 0; top: 0; }
+.gold { background: linear-gradient(180deg, #fff0c4 0%, #f0c978 45%, #c69440 100%); -webkit-background-clip: text; color: transparent; }
+
+/* ---------- panel ---------- */
+#panel { position: absolute; left: 0; top: 0; width: 1080px; height: 900px; overflow: hidden; }
+#grain { position: absolute; inset: -60px; background: url("../../../brand/grain.png"); opacity: .07; mix-blend-mode: overlay; }
+.eyebrow { position: absolute; left: 0; right: 0; top: 64px; text-align: center; font-weight: 500; font-size: 22px; letter-spacing: 8px; color: rgba(243,213,143,.72); direction: ltr; }
+.grp { position: absolute; inset: 0; opacity: 0; }
+.title { position: absolute; left: 40px; right: 40px; top: 108px; text-align: center; font-weight: 900; font-size: 66px; line-height: 1.2; }
+.sub2 { position: absolute; left: 0; right: 0; text-align: center; font-weight: 700; font-size: 32px; color: rgba(255,255,255,.62); }
+.glass { position: absolute; border-radius: 38px; overflow: hidden;
+  background: linear-gradient(155deg, rgba(255,255,255,.13), rgba(255,255,255,.035) 55%, rgba(255,255,255,.07));
+  backdrop-filter: blur(22px) saturate(140%); -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border: 1.5px solid rgba(255,255,255,.16); box-shadow: 0 34px 80px rgba(0,0,0,.5), inset 0 1.5px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(255,255,255,.05); }
+.glass .sheen { position: absolute; top: -40%; bottom: -40%; width: 38%; left: -60%; transform: rotate(18deg);
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.16), rgba(255,255,255,0)); }
+#sweep { position: absolute; top: -200px; bottom: -200px; width: 260px; left: -400px; transform: rotate(16deg); background: linear-gradient(90deg, rgba(255,230,170,0), rgba(255,230,170,.18), rgba(255,230,170,0)); }
+
+/* A: rolling counter */
+#cA { left: 80px; right: 80px; top: 250px; height: 380px; }
+.roll { position: absolute; left: 0; right: 0; top: 70px; display: flex; justify-content: center; align-items: flex-end; gap: 2px; direction: ltr; height: 150px; }
+.roll .col { height: 150px; overflow: hidden; }
+.roll .strip { display: flex; flex-direction: column; }
+.roll .strip span, .roll .sep { height: 150px; line-height: 150px; font-weight: 900; font-size: 132px; display: block; text-align: center; color: #f6d68e; text-shadow: 0 0 34px rgba(243,213,143,.35); }
+.roll .sep { width: 34px; }
+#cA .cur { position: absolute; left: 0; right: 0; top: 232px; text-align: center; font-weight: 700; font-size: 38px; color: rgba(255,255,255,.75); }
+#cA .bar { position: absolute; left: 70px; right: 70px; top: 312px; height: 10px; border-radius: 5px; background: rgba(255,255,255,.1); overflow: hidden; }
+#cA .bar i { position: absolute; right: 0; top: 0; bottom: 0; width: 0; background: linear-gradient(270deg, #f3d58f, #5fe0a4); border-radius: 5px; }
+
+/* B: 3D gold */
+#gl { position: absolute; left: 0; top: 0; }
+#bFloor { left: 190px; right: 190px; top: 640px; height: 120px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,200,110,.28), rgba(255,200,110,0)); }
+
+/* C: chart */
+#cC { left: 60px; right: 60px; top: 230px; height: 520px; }
+#ch { position: absolute; left: 30px; top: 110px; }
+#cC .lbl { position: absolute; right: 40px; top: 30px; font-weight: 800; font-size: 34px; }
+#cC .src { position: absolute; left: 40px; top: 40px; font-weight: 500; font-size: 20px; color: rgba(255,255,255,.45); direction: ltr; letter-spacing: 1px; }
+#pct { position: absolute; left: 40px; top: 58px; font-weight: 900; font-size: 64px; color: #5fe0a4; direction: ltr; text-shadow: 0 0 30px rgba(95,224,164,.35); }
+
+/* D: checklist */
+.item { position: absolute; right: 120px; left: 120px; height: 124px; display: flex; align-items: center; gap: 30px; padding: 0 40px; opacity: 0; }
+.item .ck { width: 70px; height: 70px; border-radius: 50%; background: linear-gradient(160deg, #6ff0b4, #2fae76); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 42px; color: #04180f; box-shadow: 0 0 30px rgba(95,224,164,.45); flex: none; }
+.item .tx { font-weight: 800; font-size: 50px; }
+
+/* E: compare */
+.colm { position: absolute; top: 230px; width: 450px; height: 470px; padding: 50px 30px; opacity: 0; text-align: center; }
+.colm .h { font-weight: 900; font-size: 68px; line-height: 1.2; }
+.colm .row { margin-top: 56px; font-weight: 800; font-size: 42px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+.colm .ic { width: 58px; height: 58px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 34px; flex: none; }
+#stamp { position: absolute; left: 110px; top: 560px; padding: 10px 34px; border: 7px solid #ff6b76; color: #ff6b76; border-radius: 18px; font-weight: 900; font-size: 58px; transform: rotate(-10deg); opacity: 0; background: rgba(40,6,12,.35); }
+
+/* ---------- subtitles (sentence stays until the next one starts) ---------- */
+#sub { position: absolute; left: 40px; right: 40px; bottom: 960px; text-align: center; font-weight: 900; font-size: 72px; line-height: 1.3; opacity: 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,.85), 0 4px 22px rgba(0,0,0,.75), 0 0 2px #000; }
+#sub .w { position: relative; z-index: 1; display: inline-block; margin: 0 10px; padding: 0 6px; color: #fff; }
+#sub .w.y { color: #f3d58f; } #sub .w.g { color: #5fe0a4; } #sub .w.r { color: #ff8a93; }
+#sub .w.act { color: #0c1330; text-shadow: none; }
+#mk { position: absolute; z-index: 0; border-radius: 18px; background: linear-gradient(180deg, #f8e2ac, #d8b066); box-shadow: 0 10px 30px rgba(216,176,102,.35); opacity: 0; }
+
+/* ---------- outro ---------- */
+#ov { position: absolute; inset: 0; opacity: 0; background: radial-gradient(ellipse 70% 55% at 50% 40%, #1b3a80 0%, #0a1740 45%, #030817 100%); }
+#rays { position: absolute; left: 50%; top: 36%; width: 2400px; height: 2400px; margin: -1200px 0 0 -1200px; opacity: 0;
+  background: repeating-conic-gradient(from 0deg, rgba(255,220,150,.07) 0deg 4deg, rgba(255,220,150,0) 4deg 15deg);
+  -webkit-mask: radial-gradient(closest-side, #000 0%, rgba(0,0,0,.6) 35%, transparent 70%); mask: radial-gradient(closest-side, #000 0%, rgba(0,0,0,.6) 35%, transparent 70%); }
+#glow { position: absolute; left: 50%; top: 700px; width: 900px; height: 900px; margin: -450px 0 0 -450px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,215,140,.55), rgba(255,215,140,0)); opacity: 0; }
+#gl2 { position: absolute; left: 0; top: 0; }
+#oName { position: absolute; left: 0; right: 0; top: 1000px; text-align: center; font-weight: 900; font-size: 70px; letter-spacing: 1px; clip-path: inset(0 50% 0 50%); }
+#oLine { position: absolute; left: 50%; top: 1112px; height: 2px; width: 0; transform: translateX(-50%); background: linear-gradient(90deg, rgba(232,201,131,0), #e8c983, rgba(232,201,131,0)); }
+#oSlog { position: absolute; left: 0; right: 0; top: 1140px; text-align: center; font-weight: 800; font-size: 54px; }
+#oSlog .t { display: inline-block; margin: 0 8px; opacity: 0; }
+#oEn { position: absolute; left: 0; right: 0; top: 1242px; text-align: center; font-weight: 500; font-size: 24px; letter-spacing: 14px; color: rgba(232,201,131,.8); direction: ltr; opacity: 0; }
+#black { position: absolute; inset: 0; background: #000; opacity: 0; }
+</style>
+<script type="importmap">{"imports":{"three":"../../../engine/node_modules/three/build/three.module.js","three/addons/":"../../../engine/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv" class="full" width="1080" height="1920"></canvas>
+
+  <div id="panel">
+    <div id="grain"></div>
+    <div class="eyebrow">SOBHAN SAMADI  ·  FINANCIAL IQ</div>
+
+    <div class="grp" id="gA">
+      <div class="title">قدم اول: <span class="gold">مدیریت</span></div>
+      <div class="glass" id="cA"><div class="sheen"></div>
+        <div class="roll" id="rollA"></div>
+        <div class="cur">تومان</div>
+        <div class="bar"><i id="barA"></i></div>
+      </div>
+    </div>
+
+    <div class="grp" id="gB">
+      <div class="abs" id="bFloor"></div>
+      <canvas id="gl" width="1080" height="900"></canvas>
+      <div class="title" id="bT"><span class="gold" id="bNum">۱ میلیارد</span></div>
+    </div>
+
+    <div class="grp" id="gC">
+      <div class="title">پو..ل، پو..ل <span class="gold">میاره؟</span></div>
+      <div class="glass" id="cC"><div class="sheen"></div>
+        <div class="lbl">طلا · ۲ سال اخیر</div><div id="pct">+0%</div><div class="src">GOLD · COMEX · WEEKLY</div>
+        <canvas id="ch" width="900" height="390"></canvas>
+      </div>
+    </div>
+
+    <div class="grp" id="gD">
+      <div class="title">کسی که <span class="gold">مدیریت</span> کرد</div>
+      <div class="item glass" id="i1" style="top:250px"><div class="ck">✓</div><div class="tx">مدیریت ۱۰۰ میلیون</div></div>
+      <div class="item glass" id="i2" style="top:394px"><div class="ck">✓</div><div class="tx">مدیریت ۱ میلیارد</div></div>
+      <div class="item glass" id="i3" style="top:538px"><div class="ck">✓</div><div class="tx">مدیریت <span class="gold">۱۰ میلیارد</span></div></div>
+    </div>
+
+    <div class="grp" id="gE">
+      <div class="title">یادت <span class="gold">باشه</span></div>
+      <div class="colm glass" id="cR" style="right:70px; border-color:rgba(243,213,143,.45)"><div class="sheen"></div>
+        <div class="h gold">ثرو..تمند<br>واقعی</div>
+        <div class="row"><span class="ic" style="background:#5fe0a4; color:#04180f">✓</span>دارایی می‌سازه</div></div>
+      <div class="colm glass" id="cL" style="left:70px"><div class="sheen"></div>
+        <div class="h" style="color:#ff9aa2">پز<br>ثروت</div>
+        <div class="row"><span class="ic" style="background:#ff6b76; color:#fff">✕</span>اثبات به دیگران</div></div>
+      <div id="stamp">نیست!</div>
+    </div>
+
+    <div id="sweep"></div>
+  </div>
+
+  <canvas id="fg" class="full" width="1080" height="1920"></canvas>
+  <div id="sub"></div>
+
+  <div id="ov"><div id="rays"></div><canvas id="bk" class="full" width="1080" height="1920"></canvas><div id="glow"></div>
+    <canvas id="gl2" width="1080" height="1920"></canvas>
+    <div id="oName" class="gold">آکادمی سبحان صمدی</div>
+    <div id="oLine"></div>
+    <div id="oSlog"><span class="t">ثروت،</span><span class="t">مهارته؛</span><span class="t gold">نه</span><span class="t gold">شانس.</span></div>
+    <div id="oEn">SOBHAN SAMADI ACADEMY</div>
+  </div>
+  <div id="black"></div>
+</div>
+<script src="../../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script type="module">
+import * as THREE from "three";
+
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const TL = window.TL, S = TL.subs, fa = n => n.toLocaleString("fa-IR");
+const smo = u => u * u * (3 - 2 * u), clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), eo = u => 1 - Math.pow(1 - clamp(u), 3);
+const OFF = S[10].dst[0] - .12, END = TL.state.out + .05, D = END - OFF, OUT = 5.2, T = window.DUR = D + OUT;
+const R = t => OFF + t;                                     // demo time -> reel time
+const r = x => x - OFF;                                     // reel time -> demo time
+const tl = gsap.timeline({ paused: true });
+
+// ---------- segments (demo time) ----------
+const L = TL.ladder, st = TL.state;
+const SEG = { A: [0, r(S[12].dst[0] - .15)], B: [r(S[12].dst[0] - .15), r(S[15].dst[0] - .15)], C: [r(S[15].dst[0] - .15), r(S[17].dst[0] - .15)],
+  D: [r(S[17].dst[0] - .15), r(S[19].dst[0] - .15)], E: [r(S[19].dst[0] - .15), D] };
+const POP = [SEG.D[0], D];                                   // Sobhan breaks out of the frame over the panel
+const popAt = t => t < POP[0] ? 0 : t > POP[1] ? 0 : Math.min(eo((t - POP[0]) / .55), 1);
+const SHIFT = t => 290 - 250 * popAt(t);
+
+// ---------- template in/out ----------
+const G = (id, [a, b]) => { tl.fromTo(id, { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, Math.max(0, a + .02));
+  if (b < D - .01) tl.to(id, { opacity: 0, y: -30, filter: "blur(10px)", duration: .35, ease: "power2.in" }, b - .3); else tl.to(id, { opacity: 0, duration: .3 }, D - .05); };
+G("#gA", SEG.A); G("#gB", SEG.B); G("#gC", SEG.C); G("#gD", SEG.D); G("#gE", SEG.E);
+[SEG.B[0], SEG.C[0], SEG.D[0], SEG.E[0]].forEach(a => tl.fromTo("#sweep", { x: 0 }, { x: 1900, duration: .75, ease: "power2.inOut" }, a - .1));
+$$(".glass .sheen").forEach(el => { const g = el.closest(".grp"), id = g.id[1]; tl.fromTo(el, { x: 0 }, { x: 1600, duration: 1.1, ease: "power2.inOut" }, SEG[id][0] + .35); });
+
+// ---------- A: rolling digits ----------
+const PD = "۰۱۲۳۴۵۶۷۸۹";
+function buildRoller(el, str) {
+  el.innerHTML = ""; const cols = [];
+  [...str].forEach(ch => { const d = PD.indexOf(ch);
+    if (d < 0) { el.insertAdjacentHTML("beforeend", `<span class="sep">${ch}</span>`); return; }
+    const c = document.createElement("div"); c.className = "col"; const s = document.createElement("div"); s.className = "strip";
+    s.innerHTML = [...Array(30)].map((_, i) => `<span>${PD[i % 10]}</span>`).join(""); c.appendChild(s); el.appendChild(c); cols.push([s, d]); });
+  return cols;
+}
+const rA = buildRoller($("#rollA"), "۱۰۰٬۰۰۰٬۰۰۰");
+rA.forEach(([s, d], k) => tl.fromTo(s, { y: 0 }, { y: -(20 + d) * 150, duration: 1.1 + k * .07, ease: "power3.out" }, r(L.r1) - .25 + k * .03));
+tl.fromTo("#barA", { width: "0%" }, { width: "33%", duration: 1, ease: "power2.out" }, r(L.r1) + .2);
+
+// ---------- B: title swap ----------
+tl.set("#bNum", { textContent: "۱ میلیارد" }, SEG.B[0]).to("#bT", { scale: 1.12, duration: .12, yoyo: true, repeat: 1 }, r(L.r3) - .05).set("#bNum", { textContent: "۱۰ میلیارد" }, r(L.r3) + .07);
+
+// ---------- C: candles (real weekly COMEX gold, Yahoo Finance) ----------
+const CD = TL.gold.candles, ch = $("#ch").getContext("2d"), lo = Math.min(...CD.map(c => c[3])), hi = Math.max(...CD.map(c => c[2]));
+const chg = CD[CD.length - 1][4] / CD[0][1] - 1;
+function drawChart(p) {
+  const W = 900, H = 390, n = CD.length, cw = W / n, y = v => H - 20 - (v - lo) / (hi - lo) * (H - 50);
+  ch.clearRect(0, 0, W, H); ch.strokeStyle = "rgba(255,255,255,.07)"; ch.lineWidth = 1;
+  for (let g = 0; g < 4; g++) { const yy = 20 + g * (H - 40) / 3; ch.beginPath(); ch.moveTo(0, yy); ch.lineTo(W, yy); ch.stroke(); }
+  const m = Math.floor(n * p), frac = n * p - m;
+  if (m > 1) { const gr = ch.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, "rgba(243,213,143,.28)"); gr.addColorStop(1, "rgba(243,213,143,0)");
+    ch.beginPath(); ch.moveTo(cw / 2, H); for (let i = 0; i < m; i++) ch.lineTo(i * cw + cw / 2, y(CD[i][4])); ch.lineTo((m - 1) * cw + cw / 2, H); ch.closePath(); ch.fillStyle = gr; ch.fill(); }
+  for (let i = 0; i < Math.min(n, m + 1); i++) { const [, o, h, l, c] = CD[i], a = i < m ? 1 : frac; if (a <= 0) continue;
+    const up = c >= o, col = up ? "#5fe0a4" : "#ff6b76", x = i * cw + cw / 2; ch.globalAlpha = a; ch.strokeStyle = col; ch.fillStyle = col; ch.lineWidth = 1.6;
+    ch.beginPath(); ch.moveTo(x, y(h)); ch.lineTo(x, y(l)); ch.stroke(); const t0 = y(Math.max(o, c)), b0 = y(Math.min(o, c)); ch.fillRect(x - cw * .32, t0, cw * .64, Math.max(1.5, b0 - t0)); }
+  ch.globalAlpha = 1;
+  if (m > 0) { const i = Math.min(n - 1, m - 1), x = i * cw + cw / 2, yy = y(CD[i][4]); ch.shadowColor = "#f3d58f"; ch.shadowBlur = 18; ch.fillStyle = "#fff4d6"; ch.beginPath(); ch.arc(x, yy, 7, 0, 6.3); ch.fill(); ch.shadowBlur = 0; }
+}
+const pc = { p: 0 };
+tl.to(pc, { p: 1, duration: 2.5, ease: "power1.inOut", onUpdate: () => { drawChart(pc.p); const k = Math.min(CD.length - 1, Math.floor(pc.p * (CD.length - 1)));
+  $("#pct").textContent = (CD[k][4] / CD[0][1] - 1 >= 0 ? "+" : "") + Math.round((CD[k][4] / CD[0][1] - 1) * 100) + "%"; } }, SEG.C[0] + .35);
+drawChart(0);
+
+// ---------- D: checklist ----------
+[["#i1", S[17].dst[0] + .25], ["#i2", S[18].wt[1][0]], ["#i3", S[18].wt[4][0]]].forEach(([id, t]) => {
+  tl.fromTo(id, { opacity: 0, x: 120, scale: .95 }, { opacity: 1, x: 0, scale: 1, duration: .45, ease: "back.out(1.6)" }, r(t) - .1)
+    .fromTo(id + " .ck", { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: .4, ease: "back.out(3)" }, r(t) + .1); });
+
+// ---------- E: compare ----------
+tl.fromTo("#cR", { opacity: 0, y: 60, rotateY: -25 }, { opacity: 1, y: 0, rotateY: 0, duration: .55, ease: "back.out(1.4)" }, r(st.w[0]) - .1)
+  .fromTo("#cL", { opacity: 0, y: 60, rotateY: 25 }, { opacity: 1, y: 0, rotateY: 0, duration: .55, ease: "back.out(1.4)" }, r(st.w[3]) - .1)
+  .fromTo("#stamp", { opacity: 0, scale: 2.4 }, { opacity: 1, scale: 1, duration: .28, ease: "power4.in" }, r(st.w[9]) - .05)
+  .to("#cL", { x: -8, duration: .05, repeat: 5, yoyo: true }, r(st.w[9]) + .23);
+
+// ---------- subtitles: whole sentence stays; words land one by one; marker slides under the spoken word ----------
+const SENT = [[10, 11], [12], [13], [14], [15, 16], [17, 18], [19]].map(g => ({ words: g.flatMap(i => S[i].text.split(" ")), wt: g.flatMap(i => S[i].wt) }));
+SENT.push({ words: "^yثرو..تمند ^yواقعی دنبال اثبات خودش به یک شخص دیگه ^rنیست".split(" "), wt: st.w.map((x, k) => [x, k < 9 ? st.w[k + 1] : st.out - .2]) });
+const sub = $("#sub");
+function setSub(i) { if (i < 0) { sub.style.opacity = 0; sub.dataset.i = ""; return; }
+  sub.innerHTML = `<div id="mk"></div>` + SENT[i].words.map(w => { let k = ""; if (w[0] === "^") { k = w[1]; w = w.slice(2); } return `<span class="w ${k}">${w}</span>`; }).join(""); sub.dataset.i = i; }
+function subAt(t, seam, pop) {
+  const tr = R(t); let i = -1; if (t < D - .1) SENT.forEach((s, k) => { if (tr >= s.wt[0][0] - .06) i = k; });
+  if (String(i) !== sub.dataset.i) setSub(i); if (i < 0) { sub.style.opacity = 0; return; }
+  const c = SENT[i], ws = [...sub.querySelectorAll(".w")]; let act = -1;
+  sub.style.opacity = t > D - .35 ? clamp((D - .05 - t) / .3) : 1;
+  const anchor = seam + 58 + (1720 - seam - 58) * pop; sub.style.bottom = (1920 - anchor) + "px";
+  ws.forEach((w, k) => { const o = eo((tr - (c.wt[k][0] - .06)) / .16); w.style.opacity = o; w.style.transform = `translateY(${(1 - o) * 26}px) scale(${.86 + .14 * o})`; if (tr >= c.wt[k][0] - .04) act = k; });
+  const last = c.wt[c.wt.length - 1][1];
+  ws.forEach((w, k) => w.classList.toggle("act", k === act && tr < last + .25));
+  const mk = $("#mk"); if (act < 0 || tr > last + .25) { mk.style.opacity = 0; return; }
+  const rr = el => ({ x: el.offsetLeft - 4, y: el.offsetTop + 10, w: el.offsetWidth + 8, h: el.offsetHeight - 14 });
+  const B = rr(ws[act]), A = act > 0 && ws[act - 1].offsetTop === ws[act].offsetTop ? rr(ws[act - 1]) : B, e = eo((tr - (c.wt[act][0] - .04)) / .12), l = (a, b) => a + (b - a) * e;
+  Object.assign(mk.style, { left: l(A.x, B.x) + "px", top: l(A.y, B.y) + "px", width: l(A.w, B.w) + "px", height: l(A.h, B.h) + "px", opacity: act === 0 ? e : 1 });
+}
+
+// ---------- 3D: studio environment shared by the gold bars and the logo ----------
+function studioEnv(rd) {
+  const sc = new THREE.Scene(); sc.background = new THREE.Color(0x2a2f3a);
+  const box = (w, h, x, y, z, ry, c) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide })); m.position.set(x, y, z); m.rotation.y = ry; sc.add(m); };
+  box(10, 4, 0, 6, 0, 0, 0xffffff); sc.children[0].rotation.x = Math.PI / 2; box(14, 3, 0, 3, 8, Math.PI, 0xfff4e0);
+  box(4, 10, -7, 1, 2, Math.PI / 2, 0xfff1d6); box(3, 10, 7, 1, -1, -Math.PI / 2, 0xdfe8ff); box(12, 1.5, 0, 1.5, -8, 0, 0xffd9a0); box(12, .6, 0, -2.5, 8, Math.PI, 0x8093c0);
+  const pm = new THREE.PMREMGenerator(rd); return pm.fromScene(sc, .02).texture;
+}
+// gold bars
+const r1 = new THREE.WebGLRenderer({ canvas: $("#gl"), antialias: true, alpha: true, preserveDrawingBuffer: true });
+r1.toneMapping = THREE.ACESFilmicToneMapping; r1.toneMappingExposure = 1.35; r1.outputColorSpace = THREE.SRGBColorSpace;
+const s1 = new THREE.Scene(); s1.environment = studioEnv(r1);
+const c1 = new THREE.PerspectiveCamera(30, 1080 / 900, .1, 100);
+s1.add(new THREE.HemisphereLight(0xfff3dd, 0x1a2140, 1.2)); const kl = new THREE.DirectionalLight(0xfff0d0, 3.2); kl.position.set(4, 6, 5); s1.add(kl);
+const barShape = new THREE.Shape(); barShape.moveTo(-.5, 0); barShape.lineTo(.5, 0); barShape.lineTo(.4, .3); barShape.lineTo(-.4, .3); barShape.closePath();
+const barGeo = new THREE.ExtrudeGeometry(barShape, { depth: .44, bevelEnabled: true, bevelThickness: .025, bevelSize: .025, bevelSegments: 3 }); barGeo.translate(0, 0, -.22);
+const goldMat = new THREE.MeshPhysicalMaterial({ color: 0xf6c860, metalness: 1, roughness: .26, clearcoat: .5, clearcoatRoughness: .12, envMapIntensity: 1.6 });
+const SLOTS = []; [[5, 3], [4, 3], [3, 2], [2, 2], [1, 1]].forEach(([nx, nz], ly) => { for (let z = 0; z < nz; z++) for (let x = 0; x < nx; x++) SLOTS.push([(x - (nx - 1) / 2) * 1.08, ly * .34, (z - (nz - 1) / 2) * .52]); });
+const bars = SLOTS.map(() => { const m = new THREE.Mesh(barGeo, goldMat); m.visible = false; s1.add(m); return m; });
+const N1 = 6, N2 = SLOTS.length;   // "۱ میلیارد" -> 6 bars, "۱۰ میلیارد" -> the full stack
+const order = SLOTS.map((s, i) => i).sort((a, b) => SLOTS[a][1] - SLOTS[b][1] || Math.abs(SLOTS[a][0]) - Math.abs(SLOTS[b][0]));
+const firstSix = [SLOTS.findIndex(s => s[1] === 0 && s[0] === 0 && s[2] === 0)];
+function render3D(t) {
+  const tr = R(t), a = r(L.r2) - .1, b = r(L.r3) - .05;
+  const small = [[0, 0, 0], [1.08, 0, 0], [-1.08, 0, 0], [.54, .34, 0], [-.54, .34, 0], [0, .68, 0]];
+  bars.forEach((m, i) => {
+    let tgt, t0;
+    if (t < b) { if (i >= N1) { m.visible = false; return; } tgt = small[i]; t0 = a + i * .09; }
+    else if (i < N1) { const w = eo((t - b) / .5); m.visible = true; m.position.set(...small[i].map((v, j) => v + (SLOTS[i][j] - v) * w)); m.rotation.y = 0; return; }
+    else { const k = order.indexOf(i); tgt = SLOTS[i]; t0 = b + k * .035; }
+    const u = clamp((t - t0) / .45); m.visible = u > 0; if (!m.visible) return;
+    const bounce = u < 1 ? (1 - eo(u)) * 3.2 - Math.sin(u * Math.PI) * .12 * (u > .7 ? 1 : 0) : 0;
+    m.position.set(tgt[0], tgt[1] + bounce, tgt[2]); m.rotation.y = (1 - eo(u)) * .6 * (i % 2 ? 1 : -1);
+  });
+  const pull = eo((t - b) / 1.2), ang = .5 + .18 * Math.sin(t * .45) + .25 * pull, dist = 5.2 + 3.4 * pull;
+  c1.position.set(Math.sin(ang) * dist, 2.1 + 1.2 * pull, Math.cos(ang) * dist); c1.lookAt(0, .35 + .25 * pull, 0);
+  kl.position.set(4 * Math.cos(t * .7), 6, 5 * Math.sin(t * .7) + 2);
+  r1.render(s1, c1);
+}
+
+// logo
+const r2 = new THREE.WebGLRenderer({ canvas: $("#gl2"), antialias: true, alpha: true, preserveDrawingBuffer: true });
+r2.toneMapping = THREE.ACESFilmicToneMapping; r2.toneMappingExposure = 1.3; r2.outputColorSpace = THREE.SRGBColorSpace;
+const s2 = new THREE.Scene(); s2.environment = studioEnv(r2);
+const c2 = new THREE.PerspectiveCamera(26, 1080 / 1920, .1, 100); c2.position.set(0, 0, 12); c2.lookAt(0, 0, 0);
+const logo = new THREE.Group(); s2.add(logo);
+const LS = TL.logo, SCL = 1.3;
+const mk3 = (polys, mat, depth) => polys.forEach(p => { const sh = new THREE.Shape(p.map(([x, y]) => new THREE.Vector2(x * SCL, y * SCL)));
+  const g = new THREE.ExtrudeGeometry(sh, { depth, bevelEnabled: true, bevelThickness: .025, bevelSize: .018, bevelSegments: 4, curveSegments: 6 }); g.translate(0, 0, -depth / 2); logo.add(new THREE.Mesh(g, mat)); });
+mk3(LS.white, new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: .75, roughness: .2, clearcoat: .8, envMapIntensity: 1.8 }), .16);
+mk3(LS.gold, new THREE.MeshPhysicalMaterial({ color: 0xf6c565, metalness: 1, roughness: .22, clearcoat: .6, envMapIntensity: 1.8 }), .11);
+const spot = new THREE.DirectionalLight(0xffffff, 3.5); s2.add(spot); s2.add(new THREE.HemisphereLight(0xfff3dd, 0x1a2a55, 1.1)); const rim = new THREE.DirectionalLight(0xffd9a0, 2.5); rim.position.set(0, 2, -6); s2.add(rim);
+function renderLogo(u) {   // u = seconds into the outro
+  const a = eo((u - .3) / 1.7), b = clamp((u - .3) / 1.7);
+  logo.position.set(0, .75 + .03 * Math.sin(u * 1.6) * clamp(u - 2), -16 * (1 - a));
+  logo.rotation.set(.25 * (1 - a), -Math.PI * 2.25 * (1 - a) + .12 * Math.sin(u * 1.1) * clamp(u - 2), .1 * (1 - a));
+  logo.scale.setScalar(.6 + .4 * a);
+  spot.position.set(-8 + 16 * clamp((u - 1.1) / 1.6), 3, 6);
+  r2.render(s2, c2);
+}
+
+// ---------- outro DOM ----------
+const O = D;
+tl.to("#ov", { opacity: 1, duration: .6, ease: "power2.inOut" }, O + .05).to("#rays", { opacity: 1, duration: 1.4 }, O + .5).fromTo("#rays", { rotate: 0 }, { rotate: 22, duration: OUT, ease: "none" }, O)
+  .fromTo("#glow", { opacity: 0, scale: .4 }, { opacity: 1, scale: 1.25, duration: .35, ease: "power2.out" }, O + 1.95).to("#glow", { opacity: .35, scale: 1, duration: 1.2, ease: "power2.out" }, O + 2.3)
+  .to("#oName", { clipPath: "inset(0 0% 0 0%)", duration: .8, ease: "power3.inOut" }, O + 2.2).to("#oLine", { width: 620, duration: .7, ease: "power2.out" }, O + 2.5)
+  .fromTo("#oEn", { opacity: 0, letterSpacing: "4px" }, { opacity: 1, letterSpacing: "14px", duration: 1, ease: "power2.out" }, O + 3.4)
+  .to("#black", { opacity: 1, duration: .45 }, T - .45);
+$$("#oSlog .t").forEach((el, k) => tl.fromTo(el, { opacity: 0, y: 22, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .45, ease: "power2.out" }, O + 2.75 + k * .16));
+tl.set({}, {}, T);
+// bokeh
+const bk = $("#bk").getContext("2d"); let sd = 11; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+const BOK = [...Array(46)].map(() => ({ x: rnd() * 1080, y: rnd() * 1920, r: 6 + rnd() * 34, v: .2 + rnd() * .8, a: .08 + rnd() * .22 }));
+function drawBokeh(u) { bk.clearRect(0, 0, 1080, 1920); for (const p of BOK) { const y = (p.y - u * 40 * p.v + 1920) % 1920, g = bk.createRadialGradient(p.x, y, 0, p.x, y, p.r);
+  g.addColorStop(0, `rgba(255,214,140,${p.a})`); g.addColorStop(1, "rgba(255,214,140,0)"); bk.fillStyle = g; bk.beginPath(); bk.arc(p.x, y, p.r, 0, 6.3); bk.fill(); } }
+
+// ---------- 2D canvas: Sobhan + panel backdrop; fg canvas: matted Sobhan breaking out over the panel ----------
+const cv = $("#cv"), cx = cv.getContext("2d"), fg = $("#fg"), fx = fg.getContext("2d"), img = new Image(), mImg = new Image(); let li = -1, lm = -1;
+function backdrop(oy, t) {
+  const g = cx.createLinearGradient(0, oy, 0, oy + 900); g.addColorStop(0, "#050c22"); g.addColorStop(1, "#0c1a42"); cx.fillStyle = g; cx.fillRect(0, oy, 1080, 900);
+  [[300 + 120 * Math.sin(t * .35), 250, "rgba(90,130,255,.22)"], [820 + 90 * Math.cos(t * .28), 620, "rgba(255,190,110,.13)"]].forEach(([x, y, c]) => {
+    const rg = cx.createRadialGradient(x, oy + y, 0, x, oy + y, 520); rg.addColorStop(0, c); rg.addColorStop(1, "rgba(0,0,0,0)"); cx.fillStyle = rg; cx.fillRect(0, oy, 1080, 900); });
+  cx.fillStyle = "rgba(255,255,255,.045)"; for (let y = 36; y < 900; y += 44) for (let x = 30; x < 1080; x += 44) { cx.beginPath(); cx.arc(x, oy + y, 1.5, 0, 6.3); cx.fill(); }
+}
+async function frame(t) {
+  const tr = Math.min(R(t), END - .03), idx = Math.round(tr * 30);
+  if (idx !== li) { img.src = `../frames/f_${String(idx + 1).padStart(5, "0")}.jpg`; await img.decode(); li = idx; }
+  const u = Math.max(0, t - D), sh = SHIFT(t), pop = popAt(t), seam = 900;
+  cx.save(); cx.fillStyle = "#000"; cx.fillRect(0, 0, 1080, 1920);
+  cx.filter = `contrast(1.07) saturate(1.06) brightness(${1.01 - Math.min(.4, u * .5)})` + (u > 0 ? ` blur(${Math.min(16, u * 20)}px)` : "");
+  cx.translate(0, sh); cx.drawImage(img, 0, 0, 1080, 1920); cx.restore();
+  if (u > 0) { fx.clearRect(0, 0, 1080, 1920); return; }
+  backdrop(0, t);
+  const s2g = cx.createLinearGradient(0, seam, 0, seam + 90); s2g.addColorStop(0, "rgba(0,0,0,.55)"); s2g.addColorStop(1, "rgba(0,0,0,0)"); cx.fillStyle = s2g; cx.fillRect(0, seam, 1080, 90);
+  const gl = cx.createLinearGradient(0, 0, 1080, 0); gl.addColorStop(0, "rgba(243,213,143,0)"); gl.addColorStop(.5, "rgba(243,213,143,.95)"); gl.addColorStop(1, "rgba(243,213,143,0)"); cx.fillStyle = gl; cx.fillRect(0, seam - 1.5, 1080, 3);
+  fx.clearRect(0, 0, 1080, 1920);
+  if (pop > 0) {
+    if (idx !== lm) { mImg.src = `../matte/m_${String(idx + 1).padStart(5, "0")}.png`; await mImg.decode(); lm = idx; }
+    fx.save(); fx.globalAlpha = pop; fx.beginPath(); fx.rect(0, 0, 1080, seam + 1); fx.clip();
+    fx.shadowColor = "rgba(0,0,0,.55)"; fx.shadowBlur = 40; fx.shadowOffsetY = 12;
+    const tmp = frame.tmp || (frame.tmp = Object.assign(document.createElement("canvas"), { width: 1080, height: 1920 })), tx = tmp.getContext("2d");
+    tx.clearRect(0, 0, 1080, 1920); tx.globalCompositeOperation = "source-over"; tx.filter = "contrast(1.07) saturate(1.06) brightness(1.01)"; tx.drawImage(img, 0, sh, 1080, 1920);
+    tx.filter = "none"; tx.globalCompositeOperation = "destination-in"; tx.drawImage(mImg, 0, sh, 1080, 1920); tx.globalCompositeOperation = "source-over";
+    fx.drawImage(tmp, 0, 0); fx.restore();
+  }
+}
+window.seek = async t => {
+  tl.seek(t, false);
+  const pop = popAt(t); subAt(t, 900, pop);
+  $("#grain").style.transform = `translate(${(Math.floor(t * 24) * 37) % 60 - 30}px, ${(Math.floor(t * 24) * 53) % 60 - 30}px)`;
+  if (t >= SEG.B[0] - .05 && t <= SEG.B[1] + .05) render3D(t);
+  if (t >= D) { drawBokeh(t - D); renderLogo(t - D); }
+  $("#panel").style.opacity = t < D + .6 ? 1 : 0;
+  await frame(t);
+};
+document.fonts.ready.then(async () => { await Promise.all([...document.images].map(i => i.decode().catch(() => {}))); await window.seek(0); window.ready = true; });
+</script>
+</body>
+</html>
