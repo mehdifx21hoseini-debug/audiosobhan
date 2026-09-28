@@ -20,3 +20,5 @@ reels/**/kit/k_*.mp4
 reels/**/kit/k.txt
 reels/**/kit/klog_*.txt
 output/template_*.mp4
+reels/**/kit/st4/
+output/*_mockup.jpg
