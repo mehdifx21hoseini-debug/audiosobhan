@@ -37,21 +37,25 @@ for k, r in enumerate(("r1", "r2", "r3")): tick(L[r] - .02, .22, 1500 + 400 * k)
 whoosh(St["in"], .8, .28); boom(St["w"][0], .38, 36); tick(St["w"][9], .2, 1200)
 riser(VE + 1.15, 1.1, .22); boom(VE + 1.15, .6, 34); chime(VE + 1.2, .14, 1046.5); chime(VE + 1.62, .08, 2093)
 whoosh(VE + .05, .9, .22)
+for a_, b_, _k in TL.get("splits", []) if os.environ.get("SPLIT_SFX") else []:   # v3: a soft whoosh as the panel slides in / out
+    if a_ > .1: whoosh(a_ + .35, .55, .2)
+    if b_ < VE - .1: whoosh(b_ - .1, .5, .16)
 
 # music bed: the guitar track from Sobhan's own reference reel (separated from its voice with demucs), looped to length
 MUS = os.environ.get("MUSIC")
 if MUS:
     m, msr = sf.read(MUS); m = m.mean(1) if m.ndim > 1 else m
+    m = m[int(float(os.environ.get("MUSIC_OFFSET", "0")) * msr):]                 # start on a downbeat of the full groove
     if msr != SR: m = np.interp(np.arange(int(len(m) * SR / msr)) * msr / SR, np.arange(len(m)), m)
     xf = int(1.5 * SR); bed = m[:N].copy()
     while len(bed) < N:                                     # crossfade loop
         nxt = m[int(3 * SR):]; ov = min(xf, len(bed)); w = np.linspace(0, 1, ov)
         bed = np.concatenate([bed[:-ov], bed[-ov:] * (1 - w) + nxt[:ov] * w, nxt[ov:]])
     bed = bed[:N]; env = np.ones(N); tt = np.arange(N) / SR
-    for a_, b_, gdb in ((TL["quote"]["in"] - .4, TL["quote"]["out"] + .2, 5), (VE, T, 8)):
+    for a_, b_, gdb in ((TL["quote"]["in"] - .4, TL["quote"]["out"] + .2, float(os.environ.get("QUOTE_SWELL", "5"))), (VE, T, 8)):
         rise = np.clip((tt - a_) / .6, 0, 1) * np.clip((b_ - tt) / .6 + (1 if b_ >= T else 0), 0, 1); env *= 10 ** (gdb * rise / 20)
-    env *= np.clip(tt / 1.0, 0, 1)
-    MEAS = pyln.Meter(SR); bed *= 10 ** ((-17.2 - 15 - MEAS.integrated_loudness(bed)) / 20)   # ~15 LU under the voice
+    env *= np.clip(tt / float(os.environ.get("MUSIC_FADEIN", "1.0")), 0, 1)
+    MEAS = pyln.Meter(SR); bed *= 10 ** ((-17.2 - float(os.environ.get("MUSIC_UNDER", "15")) - MEAS.integrated_loudness(bed)) / 20)   # N LU under the voice
     sfx += bed * env
 meter = pyln.Meter(SR); g = 10 ** ((-17.2 - meter.integrated_loudness(voice[:int(VE * SR)])) / 20)
 voice *= g; sfx *= g * .9
