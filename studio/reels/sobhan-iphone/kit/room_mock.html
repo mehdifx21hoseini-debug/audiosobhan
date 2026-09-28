@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-ExtraBold.ttf"); font-weight: 800; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1920px; overflow: hidden; background: #000; font-family: "Vaz"; color: #fff; }
+#cv { position: absolute; inset: 0; }
+.pill { position: absolute; left: 50%; bottom: 250px; transform: translateX(-50%); white-space: nowrap; padding: 14px 40px 20px; border-radius: 999px;
+  background: rgba(255,255,255,.93); color: #0b0b0e; font-weight: 900; font-size: 62px; box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+.pill .k { color: #b07d25; }
+</style></head><body>
+<canvas id="cv" width="1080" height="1920"></canvas>
+<div id="ui"></div>
+<script>
+const SC = new URLSearchParams(location.search).get("s") || "price";
+const F = { price: 95, chart: 1000, quote: 640, bill: 610, oak: 700, gold: 905 }[SC];
+const PILL = { bill: 'این صحبت <span class="k">وارن بافت</span>', oak: 'کسی که زیر <span class="k">سایه‌ی یک درخت</span> نشسته', gold: 'می‌تونی <span class="k">ده تومنت</span> رو هم مدیریت کنی', price: 'آیفون ۱۸ پرومکس، <span class="k">۷۳۰ میلیون</span>', chart: 'پولش براش <span class="k">پو..ل</span> میاره؟', quote: 'سال‌ها قبل <span class="k">درختش رو کاشته</span>' }[SC];
+const BILL = [432, 630, 968, 856], MON = [752, 968, 998, 1172];      // print area of the framed bill, the monitor screen (1080x1920 space)
+const cv = document.getElementById("cv"), cx = cv.getContext("2d");
+const load = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+const pad = n => String(n).padStart(5, "0");
+function screen([x0, y0, x1, y1], draw, glow = .35) {           // a lit display: dark glass, content, soft spill on the wall around it
+  const w = x1 - x0, h = y1 - y0;
+  cx.save(); cx.globalAlpha = glow; const sp = cx.createRadialGradient((x0 + x1) / 2, (y0 + y1) / 2, 10, (x0 + x1) / 2, (y0 + y1) / 2, w * .9);
+  sp.addColorStop(0, "rgba(255,205,130,.55)"); sp.addColorStop(1, "rgba(255,205,130,0)"); cx.fillStyle = sp; cx.fillRect(x0 - w * .6, y0 - h, w * 2.2, h * 3); cx.restore();
+  cx.save(); cx.beginPath(); cx.rect(x0, y0, w, h); cx.clip();
+  const bg = cx.createLinearGradient(x0, y0, x0, y1); bg.addColorStop(0, "#0d0d10"); bg.addColorStop(1, "#1a1712"); cx.fillStyle = bg; cx.fillRect(x0, y0, w, h);
+  draw(x0, y0, w, h);
+  const gl = cx.createLinearGradient(x0, y0, x1, y1); gl.addColorStop(0, "rgba(255,255,255,.10)"); gl.addColorStop(.45, "rgba(255,255,255,0)"); cx.fillStyle = gl; cx.fillRect(x0, y0, w, h);   // glass reflection
+  cx.restore();
+}
+(async () => {
+  for (const f of ["900 100px Vaz", "800 30px Vaz", "700 30px Vaz", "500 30px Vaz"]) await document.fonts.load(f);
+  const [fr, mt] = await Promise.all([load(`../frames/f_${pad(F)}.jpg`), load(`../matte/m_${pad(F)}.png`)]);
+  // real room, graded warm and a touch darker, gentle vignette
+  cx.filter = "contrast(1.08) saturate(.95) brightness(.86) sepia(.08)"; cx.drawImage(fr, 0, 0, 1080, 1920); cx.filter = "none";
+  const vg = cx.createRadialGradient(560, 1000, 300, 560, 1000, 1250); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.55)"); cx.fillStyle = vg; cx.fillRect(0, 0, 1080, 1920);
+  const gold = (y0, y1) => { const g = cx.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, "#fff0c4"); g.addColorStop(.5, "#e9c77f"); g.addColorStop(1, "#b8862b"); return g; };
+  cx.textAlign = "center";
+  if (SC === "price") {
+    screen(BILL, (x, y, w, h) => { cx.font = "500 18px Vaz"; cx.fillStyle = "rgba(233,199,127,.8)"; cx.fillText("IPHONE 18 PRO MAX · 512GB", x + w / 2, y + 44);
+      cx.font = "900 92px Vaz"; cx.fillStyle = gold(y + 60, y + 160); cx.fillText("۷۳۰٬۰۰۰٬۰۰۰", x + w / 2, y + 150); cx.font = "700 30px Vaz"; cx.fillStyle = "rgba(255,255,255,.75)"; cx.fillText("تومان", x + w / 2, y + 196); });
+    const ph = await load("../iphone18_burgundy.png");
+    screen(MON, (x, y, w, h) => { cx.drawImage(ph, x + w / 2 - 55, y + 12, 110, 110 * ph.height / ph.width); }, .25);
+  }
+  if (SC === "chart") {
+    const tl = await (await fetch("tl.json")).json(), C = tl.gold.candles, lo = Math.min(...C.map(c => c[3])), hi = Math.max(...C.map(c => c[2]));
+    screen(BILL, (x, y, w, h) => { cx.font = "900 84px Vaz"; cx.fillStyle = gold(y + 60, y + 150); cx.fillText("۵۷٪+", x + w / 2, y + 130); cx.font = "700 26px Vaz"; cx.fillStyle = "rgba(255,255,255,.7)"; cx.fillText("طلا · ۲ سال اخیر", x + w / 2, y + 180); });
+    screen(MON, (x, y, w, h) => { const X = i => x + 10 + i / (C.length - 1) * (w - 20), Y = v => y + h - 14 - (v - lo) / (hi - lo) * (h - 34);
+      C.forEach((c, i) => { cx.strokeStyle = c[4] >= c[1] ? "#5fe0a4" : "#ff6b76"; cx.lineWidth = 1.4; cx.beginPath(); cx.moveTo(X(i), Y(c[2])); cx.lineTo(X(i), Y(c[3])); cx.stroke(); }); }, .3);
+  }
+  if (SC === "quote") {
+    screen(BILL, (x, y, w, h) => { cx.font = "800 40px Vaz"; cx.fillStyle = "#f5f1e8"; cx.fillText("«کسی که زیر سایه‌ی درخت نشسته،", x + w / 2, y + 80); cx.fillText("سال‌ها قبل درختش رو کاشته»", x + w / 2, y + 136);
+      cx.font = "500 20px Vaz"; cx.fillStyle = "rgba(233,199,127,.85)"; cx.fillText("WARREN BUFFETT", x + w / 2, y + 190); });
+    screen(MON, (x, y, w, h) => { let s = 5; const rnd = () => (s = s * 16807 % 2147483647) / 2147483647; cx.strokeStyle = "#e9c77f"; cx.lineCap = "round";
+      (function br(px, py, a, l, lw, d) { const x2 = px + Math.cos(a) * l, y2 = py + Math.sin(a) * l; cx.lineWidth = lw; cx.beginPath(); cx.moveTo(px, py); cx.lineTo(x2, y2); cx.stroke();
+        if (d < 6) { br(x2, y2, a - .4 - rnd() * .2, l * .75, lw * .7, d + 1); br(x2, y2, a + .4 + rnd() * .2, l * .75, lw * .7, d + 1); } })(x + w / 2, y + h - 6, -Math.PI / 2, 52, 5, 0); }, .3);
+  }
+  const photoIn = async (rect, src, grade, over) => { const im = await load(src); screen(rect, (x, y, w, h) => { const s = Math.max(w / im.width, h / im.height);
+    cx.filter = grade; cx.drawImage(im, x + (w - im.width * s) / 2, y + (h - im.height * s) / 2, im.width * s, im.height * s); cx.filter = "none"; if (over) over(x, y, w, h); }, .3); };
+  if (SC === "bill") { const pt = await load("bill_buffett_patch.png"); cx.drawImage(pt, 636, 638);
+    screen(MON, (x, y, w, h) => { cx.font = "700 20px Vaz"; cx.fillStyle = "#f5f1e8"; cx.fillText("«سایه‌ی درخت،", x + w / 2, y + 80); cx.fillText("سال‌ها قبل کاشته شده»", x + w / 2, y + 112);
+      cx.font = "500 13px Vaz"; cx.fillStyle = "rgba(233,199,127,.9)"; cx.fillText("WARREN BUFFETT", x + w / 2, y + 150); }, .25); }
+  if (SC === "oak") await photoIn(BILL, "ph_oak.jpg", "sepia(.35) saturate(1.1) brightness(.8) contrast(1.1)", (x, y, w, h) => {
+      const gg = cx.createLinearGradient(0, y + h * .45, 0, y + h); gg.addColorStop(0, "rgba(0,0,0,0)"); gg.addColorStop(1, "rgba(0,0,0,.75)"); cx.fillStyle = gg; cx.fillRect(x, y, w, h);
+      cx.font = "800 38px Vaz"; cx.fillStyle = "#fff6e2"; cx.fillText("سال‌ها قبل، درختش رو کاشته", x + w / 2, y + h - 34); });
+  if (SC === "gold") { await photoIn(BILL, "ph_goldbars.jpg", "saturate(1.15) brightness(.85) contrast(1.12)", (x, y, w, h) => {
+      const gg = cx.createLinearGradient(x, 0, x + w, 0); gg.addColorStop(0, "rgba(0,0,0,.7)"); gg.addColorStop(.55, "rgba(0,0,0,0)"); cx.fillStyle = gg; cx.fillRect(x, y, w, h);
+      cx.textAlign = "left"; cx.font = "900 96px Vaz"; cx.fillStyle = "#fff0c4"; cx.fillText("۱۰", x + 36, y + 140); cx.font = "800 40px Vaz"; cx.fillText("میلیارد", x + 36, y + 196); cx.textAlign = "center"; });
+    screen(MON, (x, y, w, h) => { cx.font = "700 18px Vaz"; cx.fillStyle = "rgba(255,255,255,.6)"; cx.fillText("۱۰۰ میلیون ← ۱ میلیارد ← ۱۰ میلیارد", x + w / 2, y + 60);
+      [.25, .5, 1].forEach((v, i) => { cx.fillStyle = i === 2 ? "#e9c77f" : "rgba(233,199,127,.45)"; const bw = 44, bh = 110 * v; cx.fillRect(x + w / 2 - 90 + i * 66, y + h - 20 - bh, bw, bh); }); }, .25); }
+  // Sobhan in front of the displays (matte only matters where his head crosses the bill frame)
+  const off = document.createElement("canvas"); off.width = 1080; off.height = 1920; const ox = off.getContext("2d");
+  ox.filter = "contrast(1.08) saturate(.95) brightness(.86) sepia(.08)"; ox.drawImage(fr, 0, 0, 1080, 1920); ox.filter = "none";
+  ox.globalCompositeOperation = "destination-in"; ox.drawImage(mt, 0, 0, 1080, 1920);
+  cx.save(); cx.beginPath(); cx.rect(0, 560, 1080, 700); cx.clip(); cx.drawImage(off, 0, 0); cx.restore();
+  cx.fillStyle = vg; cx.fillRect(0, 0, 1080, 1920);
+  document.getElementById("ui").innerHTML = `<div class="pill">${PILL}</div>`;
+  document.title = "done";
+})();
+</script></body></html>
