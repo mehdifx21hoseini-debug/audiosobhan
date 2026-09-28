@@ -16,8 +16,8 @@ body { width: 1080px; height: 1920px; overflow: hidden; background: #000; font-f
 <div id="ui"></div>
 <script>
 const SC = new URLSearchParams(location.search).get("s") || "price";
-const F = { price: 95, chart: 1000, quote: 640 }[SC];
-const PILL = { price: 'آیفون ۱۸ پرومکس، <span class="k">۷۳۰ میلیون</span>', chart: 'پولش براش <span class="k">پو..ل</span> میاره؟', quote: 'سال‌ها قبل <span class="k">درختش رو کاشته</span>' }[SC];
+const F = { price: 95, chart: 1000, quote: 640, bill: 610, oak: 700, gold: 905 }[SC];
+const PILL = { bill: 'این صحبت <span class="k">وارن بافت</span>', oak: 'کسی که زیر <span class="k">سایه‌ی یک درخت</span> نشسته', gold: 'می‌تونی <span class="k">ده تومنت</span> رو هم مدیریت کنی', price: 'آیفون ۱۸ پرومکس، <span class="k">۷۳۰ میلیون</span>', chart: 'پولش براش <span class="k">پو..ل</span> میاره؟', quote: 'سال‌ها قبل <span class="k">درختش رو کاشته</span>' }[SC];
 const BILL = [432, 630, 968, 856], MON = [752, 968, 998, 1172];      // print area of the framed bill, the monitor screen (1080x1920 space)
 const cv = document.getElementById("cv"), cx = cv.getContext("2d");
 const load = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
@@ -59,6 +59,19 @@ function screen([x0, y0, x1, y1], draw, glow = .35) {           // a lit display
       (function br(px, py, a, l, lw, d) { const x2 = px + Math.cos(a) * l, y2 = py + Math.sin(a) * l; cx.lineWidth = lw; cx.beginPath(); cx.moveTo(px, py); cx.lineTo(x2, y2); cx.stroke();
         if (d < 6) { br(x2, y2, a - .4 - rnd() * .2, l * .75, lw * .7, d + 1); br(x2, y2, a + .4 + rnd() * .2, l * .75, lw * .7, d + 1); } })(x + w / 2, y + h - 6, -Math.PI / 2, 52, 5, 0); }, .3);
   }
+  const photoIn = async (rect, src, grade, over) => { const im = await load(src); screen(rect, (x, y, w, h) => { const s = Math.max(w / im.width, h / im.height);
+    cx.filter = grade; cx.drawImage(im, x + (w - im.width * s) / 2, y + (h - im.height * s) / 2, im.width * s, im.height * s); cx.filter = "none"; if (over) over(x, y, w, h); }, .3); };
+  if (SC === "bill") { const pt = await load("bill_buffett_patch.png"); cx.drawImage(pt, 636, 638);
+    screen(MON, (x, y, w, h) => { cx.font = "700 20px Vaz"; cx.fillStyle = "#f5f1e8"; cx.fillText("«سایه‌ی درخت،", x + w / 2, y + 80); cx.fillText("سال‌ها قبل کاشته شده»", x + w / 2, y + 112);
+      cx.font = "500 13px Vaz"; cx.fillStyle = "rgba(233,199,127,.9)"; cx.fillText("WARREN BUFFETT", x + w / 2, y + 150); }, .25); }
+  if (SC === "oak") await photoIn(BILL, "ph_oak.jpg", "sepia(.35) saturate(1.1) brightness(.8) contrast(1.1)", (x, y, w, h) => {
+      const gg = cx.createLinearGradient(0, y + h * .45, 0, y + h); gg.addColorStop(0, "rgba(0,0,0,0)"); gg.addColorStop(1, "rgba(0,0,0,.75)"); cx.fillStyle = gg; cx.fillRect(x, y, w, h);
+      cx.font = "800 38px Vaz"; cx.fillStyle = "#fff6e2"; cx.fillText("سال‌ها قبل، درختش رو کاشته", x + w / 2, y + h - 34); });
+  if (SC === "gold") { await photoIn(BILL, "ph_goldbars.jpg", "saturate(1.15) brightness(.85) contrast(1.12)", (x, y, w, h) => {
+      const gg = cx.createLinearGradient(x, 0, x + w, 0); gg.addColorStop(0, "rgba(0,0,0,.7)"); gg.addColorStop(.55, "rgba(0,0,0,0)"); cx.fillStyle = gg; cx.fillRect(x, y, w, h);
+      cx.textAlign = "left"; cx.font = "900 96px Vaz"; cx.fillStyle = "#fff0c4"; cx.fillText("۱۰", x + 36, y + 140); cx.font = "800 40px Vaz"; cx.fillText("میلیارد", x + 36, y + 196); cx.textAlign = "center"; });
+    screen(MON, (x, y, w, h) => { cx.font = "700 18px Vaz"; cx.fillStyle = "rgba(255,255,255,.6)"; cx.fillText("۱۰۰ میلیون ← ۱ میلیارد ← ۱۰ میلیارد", x + w / 2, y + 60);
+      [.25, .5, 1].forEach((v, i) => { cx.fillStyle = i === 2 ? "#e9c77f" : "rgba(233,199,127,.45)"; const bw = 44, bh = 110 * v; cx.fillRect(x + w / 2 - 90 + i * 66, y + h - 20 - bh, bw, bh); }); }, .25); }
   // Sobhan in front of the displays (matte only matters where his head crosses the bill frame)
   const off = document.createElement("canvas"); off.width = 1080; off.height = 1920; const ox = off.getContext("2d");
   ox.filter = "contrast(1.08) saturate(.95) brightness(.86) sepia(.08)"; ox.drawImage(fr, 0, 0, 1080, 1920); ox.filter = "none";
