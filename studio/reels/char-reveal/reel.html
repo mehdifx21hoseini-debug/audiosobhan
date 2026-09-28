@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head><meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #f5f7fc; background: #000; }
+#gl { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+.abs { position: absolute; } .center { left: 0; right: 0; text-align: center; }
+.big { font-weight: 900; font-size: 116px; line-height: 1.2; text-shadow: 0 10px 50px rgba(0,0,0,.85); }
+.w { display: inline-block; }
+#sweep { position: absolute; inset: -20%; background: linear-gradient(105deg, rgba(255,220,150,0) 40%, rgba(255,220,150,.22) 50%, rgba(255,220,150,0) 60%); mix-blend-mode: screen; opacity: 0; }
+#grade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,10,28,.55) 0%, rgba(4,10,28,0) 25%, rgba(4,10,28,0) 60%, rgba(4,10,28,.8) 100%); }
+#vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, rgba(0,0,0,0) 50%, rgba(0,0,0,.6) 100%); }
+#grain { position: absolute; inset: -200px; background: url("../../brand/grain.png"); opacity: .08; mix-blend-mode: overlay; }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+#black { position: absolute; inset: 0; background: #000; }
+.bar { position: absolute; left: 0; right: 0; height: 0; background: #000; }
+#brand { position: absolute; top: 150px; right: 56px; height: 96px; padding: 0 28px 0 22px; border-radius: 52px; background: rgba(255,255,255,.95); display: flex; align-items: center; gap: 14px; box-shadow: 0 12px 36px rgba(0,0,0,.3); }
+#brand img { height: 72px; } #brand .t1 { font-weight: 900; font-size: 28px; color: #29386c; line-height: 1.1; } #brand .t2 { font-weight: 500; font-size: 18px; color: #b8914a; direction: ltr; text-align: right; }
+#name { position: absolute; right: 70px; top: 1330px; }
+#name .n { padding: 14px 36px; border-radius: 18px 18px 0 18px; background: #fff; color: #12245a; font-weight: 900; font-size: 60px; }
+#name .r { display: inline-block; margin-top: 10px; padding: 8px 26px; border-radius: 12px; background: #d6b270; color: #1a1406; font-weight: 700; font-size: 34px; }
+</style></head>
+<body><div id="stage">
+  <canvas id="gl" width="1080" height="1920"></canvas>
+  <div id="sweep"></div><div id="grade"></div><div id="vig"></div>
+  <svg class="abs" id="dust" width="1080" height="1920" style="left:0;top:0"></svg>
+  <div class="abs center" id="h1" style="top:640px; font-weight:700; font-size:54px; color:#cfd6e6">بهم گفتن:</div>
+  <div class="abs center big" id="h2" style="top:740px; color:#ff6b76">«ترید قماره‌ست.»</div>
+  <div class="abs center big" id="h3" style="top:1440px; font-size:84px">ثابت کردم <span style="color:#f0d9a0">اشتباه</span> می‌کنن.</div>
+  <div id="name"><div class="n">سبحان صمدی</div><div style="text-align:right"><span class="r">معامله‌گر · بنیان‌گذار آکادمی</span></div></div>
+  <div class="bar" id="barT" style="top:0"></div><div class="bar" id="barB" style="bottom:0"></div>
+  <div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+  <div id="flash"></div><div id="grain"></div><div id="black"></div>
+</div>
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const $ = s => document.querySelector(s), NS = "http://www.w3.org/2000/svg";
+const TL = window.TL, T = window.DUR = TL.T, [R0] = TL.reveal, BEAT = 60 / TL.bpm;
+const tl = gsap.timeline({ paused: true });
+// ---- WebGL depth-parallax camera (same shader family as reels/hare-ai) ----
+const gl = $("#gl").getContext("webgl", { preserveDrawingBuffer: true });
+const VS = `attribute vec2 p; varying vec2 uv; void main(){ uv = p*.5+.5; uv.y = 1.-uv.y; gl_Position = vec4(p,0.,1.); }`;
+const FS = `precision highp float; varying vec2 uv; uniform sampler2D img, dep; uniform vec2 fit, focus, cam; uniform float zoom, focusD, blur, bright, sat;
+vec2 proj(vec2 u){ vec2 c = focus + (u-.5)*fit/zoom; float d = texture2D(dep,c).r; return c + cam*(d-focusD); }
+void main(){ vec3 col = vec3(0.);
+  for (int i=0;i<16;i++){ float a = float(i)*2.39996; float r = sqrt(float(i)/15.)*blur; col += texture2D(img, proj(uv + vec2(cos(a),sin(a))*r*vec2(1.,.5625))).rgb; }
+  col /= 16.; float l = dot(col, vec3(.299,.587,.114)); col = mix(vec3(l), col, sat) * bright; gl_FragColor = vec4(col,1.); }`;
+function sh(t, s) { const x = gl.createShader(t); gl.shaderSource(x, s); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(x); return x; }
+const pr = gl.createProgram(); gl.attachShader(pr, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(pr, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(pr); gl.useProgram(pr);
+gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
+const lp = gl.getAttribLocation(pr, "p"); gl.enableVertexAttribArray(lp); gl.vertexAttribPointer(lp, 2, gl.FLOAT, false, 0, 0);
+const U = n => gl.getUniformLocation(pr, n);
+function tex(im) { const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
+  [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR], [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]].forEach(([k, v]) => gl.texParameteri(gl.TEXTURE_2D, k, v)); return t; }
+const S = { zoom: 1.02, fx: .53, fy: .40, cx: 0, cy: 0, fd: .75, blur: .03, bright: .18, sat: .4 };
+function draw() { gl.viewport(0, 0, 1080, 1920);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, S.ti); gl.uniform1i(U("img"), 0);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, S.td); gl.uniform1i(U("dep"), 1);
+  const ia = S.w / S.h, ca = 1080 / 1920; gl.uniform2f(U("fit"), ia > ca ? ca / ia : 1, ia > ca ? 1 : ia / ca);
+  gl.uniform2f(U("focus"), S.fx, S.fy); gl.uniform2f(U("cam"), S.cx, S.cy); gl.uniform1f(U("zoom"), S.zoom); gl.uniform1f(U("focusD"), S.fd);
+  gl.uniform1f(U("blur"), S.blur); gl.uniform1f(U("bright"), S.bright); gl.uniform1f(U("sat"), S.sat); gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4); }
+// ---- helpers ----
+const words = sel => { const e = $(sel); e.innerHTML = e.innerHTML.split(/(<span[^>]*>.*?<\/span>|\s+)/).filter(x => x && x.trim()).map(x => `<span class="w">${x}</span>`).join(" "); return e.querySelectorAll(".w"); };
+function shake(t, a = 16, n = 7) { for (let i = 0; i < n; i++) tl.to("#stage", { x: (i % 2 ? -1 : 1) * a * (1 - i / n), y: (i % 3 - 1) * a * .5 * (1 - i / n), duration: .03 }, t + i * .03); tl.to("#stage", { x: 0, y: 0, duration: .04 }, t + n * .03); }
+// ---- HOOK: dark, blurred, heartbeat ----
+tl.to("#black", { opacity: 0, duration: .4 }, 0).to(["#barT", "#barB"], { height: 120, duration: .5, ease: "power3.out" }, 0);
+tl.fromTo("#h1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .4 }, .35);
+tl.fromTo(words("#h2"), { opacity: 0, scale: 2.4, filter: "blur(16px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .22, ease: "power4.out", stagger: .14 }, .95);
+shake(1.05, 14, 6);
+[.6, 1.2, 1.8, 2.4].forEach(t => tl.to(S, { zoom: "+=.025", duration: .06, yoyo: true, repeat: 1 }, t));
+tl.to(S, { blur: .06, duration: 2.6, ease: "none" }, .3);
+tl.to(["#h1", "#h2"], { opacity: 0, scale: .9, filter: "blur(10px)", duration: .25 }, R0 - .35);
+// ---- REVEAL: flash, focus pull, dolly-in, gold light sweep ----
+tl.to("#flash", { opacity: .9, duration: .04 }, R0).to("#flash", { opacity: 0, duration: .5 }, R0 + .04);
+tl.to(S, { blur: 0, bright: 1.06, sat: 1.08, duration: .5, ease: "power2.out" }, R0)
+  .fromTo(S, { zoom: 1.12, cx: -.04, cy: .01 }, { zoom: 1.0, cx: .05, cy: -.01, duration: T - R0, ease: "power2.out" }, R0)
+  .to(["#barT", "#barB"], { height: 0, duration: .6, ease: "power2.inOut" }, R0 + .1);
+tl.fromTo("#sweep", { opacity: 1, x: -900 }, { x: 900, duration: 2.2, ease: "power1.inOut" }, R0 + .6).to("#sweep", { opacity: 0, duration: .3 }, R0 + 2.8);
+tl.fromTo(words("#h3"), { opacity: 0, y: 40, filter: "blur(12px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .4, ease: "power3.out", stagger: .12 }, R0 + .7)
+  .to("#h3", { opacity: 0, y: -20, duration: .3 }, R0 + 3.6);
+tl.fromTo("#name", { opacity: 0, x: 300 }, { opacity: 1, x: 0, duration: .5, ease: "back.out(1.7)" }, R0 + 4.0);
+gsap.set("#brand", { opacity: 0, y: -24 }); tl.to("#brand", { opacity: 1, y: 0, duration: .5, ease: "back.out(2)" }, R0 + 4.3);
+tl.to("#black", { opacity: 1, duration: .35 }, T - .35);
+// gold dust
+const dust = $("#dust"); let seed = 9; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+for (let i = 0; i < 40; i++) { const c = document.createElementNS(NS, "circle"), x = rnd() * 1080, y = 900 + rnd() * 1000, r = 1.5 + rnd() * 4;
+  c.setAttribute("r", r); c.setAttribute("fill", "#f0d9a0"); dust.appendChild(c); gsap.set(c, { attr: { cx: x, cy: y }, opacity: 0 });
+  tl.to(c, { opacity: .25 + rnd() * .5, duration: .6 }, R0 + .3 + rnd()).to(c, { attr: { cy: y - 500 - rnd() * 500, cx: x + (rnd() - .5) * 200 }, duration: T - R0, ease: "none" }, R0); }
+tl.set({}, {}, T);
+let frame = 0;
+window.seek = t => { tl.seek(t, false); draw(); frame++; $("#grain").style.transform = `translate(${(frame * 37) % 200 - 100}px, ${(frame * 53) % 200 - 100}px)`; };
+const load = s => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = s; });
+Promise.all([load("img/char.png"), load("img/char_d.png")]).then(([i, d]) => { S.ti = tex(i); S.td = tex(d); S.w = i.width; S.h = i.height; document.fonts.ready.then(() => { window.seek(0); window.ready = true; }); });
+</script></body></html>
