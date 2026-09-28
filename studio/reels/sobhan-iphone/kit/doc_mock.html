@@ -24,13 +24,17 @@ body { width: 1080px; height: 1920px; overflow: hidden; background: #000; font-f
 </style></head><body>
 <div id="root"></div>
 <script>
-const SC = new URLSearchParams(location.search).get("s");
+const QS = new URLSearchParams(location.search), SC = QS.get("s"), ST = +(QS.get("p") ?? 9);
 const F = n => `../frames/f_${String(n).padStart(5, "0")}.jpg`;
 const S = {
-  hook: `<img class="bg" src="${F(95)}">
-    <div class="photo" style="left:120px; top:190px; width:840px; height:560px; transform:rotate(-2deg)"><img src="../../../reels/sobhan-iphone/kit/ph_iphone.jpg" style="object-position:70% 50%"></div>
-    <div class="chip" style="right:150px; top:700px; transform:rotate(2deg)">۷۳۰ میلیون تومان</div>
-    <div class="cap">آیفون ۱۸ پرومکس، <span class="now">۷۳۰</span> میلیون تومن</div>`,
+  hook: `<img class="bg" src="${F([30, 55, 70, 95, 118][Math.min(ST, 4)] || 95)}">
+    <div class="photo" style="left:120px; top:190px; width:840px; height:560px; ${[
+      "opacity:0",
+      "transform:translateY(260px) rotate(6deg) scale(.86); opacity:.55; filter:blur(6px)",
+      "transform:rotate(-2deg)", "transform:rotate(-2deg)",
+      "transform:translateY(-70px) rotate(-4deg) scale(.96); opacity:.4; filter:blur(5px)"][Math.min(ST, 4)] || "transform:rotate(-2deg)"}"><img src="../../../reels/sobhan-iphone/kit/ph_iphone.jpg" style="object-position:70% 50%"></div>
+    <div class="chip" style="right:150px; top:700px; ${ST < 3 ? "opacity:0; transform:scale(.4)" : ST === 4 ? "opacity:0" : "transform:rotate(2deg)"}">۷۳۰ میلیون تومان</div>
+    <div class="cap">${["آیفون", "آیفون ۱۸ <span class=now>پرومکس</span>", "آیفون ۱۸ پرومکس، <span class=now>۷۳۰</span>", "آیفون ۱۸ پرومکس، ۷۳۰ <span class=now>میلیون</span> تومن", "کسی که <span class=now>توانمنده</span> می‌گیره"][Math.min(ST, 4)]}</div>`,
   buffett: `<img class="bg" src="${F(560)}">
     <div class="photo" style="right:90px; top:170px; width:560px; height:700px; transform:rotate(2.5deg)"><img src="buffett_photo.jpg" style="object-position:50% 20%"></div>
     <div class="tag" style="right:360px; top:790px; transform:rotate(-1.5deg)"><span class="n" style="direction:ltr">Warren Buffett</span><span class="d">ثروتمندترین سرمایه‌گذار جهان</span></div>
