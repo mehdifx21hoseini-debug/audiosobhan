@@ -82,6 +82,14 @@ TL = {
     "growth": {"in": w(134) - .2, "bad": w(137), "grow": w(142), "out": dst(W[143]["e"]) + .35},
     "punch": [w(108) - .05, w(113) - .05],
 }
+# v3 split-screen windows (info panel on top, Sobhan below); between them the frame is full-screen Sobhan
+TL["splits"] = [
+    [0.0, TL["price"]["out"] + .3, "price"],
+    [TL["assets"]["in"], TL["assets"]["out"], "assets"],
+    [w(41) - .15, TL["ladder"]["out"], "quote"],          # "این صحبت وارن بافت…" through the money ladder
+    [TL["state"]["in"] - .1, TL["growth"]["out"], "state"],
+    [w(156) - .25, VE, "cta"],
+]
 json.dump(TL, open("tl.json", "w"), ensure_ascii=False, indent=1)
 print("voice_end", VE, "T", TL["T"], "subs", len(subs))
 print("price", TL["price"], "quote in/out", TL["quote"]["in"], TL["quote"]["out"], "ladder", TL["ladder"], "state", TL["state"]["in"], TL["state"]["out"])
