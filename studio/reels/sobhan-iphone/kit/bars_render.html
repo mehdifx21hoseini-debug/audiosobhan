@@ -1,0 +1,50 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<canvas id="gl" width="1080" height="900"></canvas>
+<script type="importmap">{"imports":{"three":"../../../engine/node_modules/three/build/three.module.js","three/addons/":"../../../engine/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from "three";
+const $ = s => document.querySelector(s), clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x)), eo = u => 1 - Math.pow(1 - clamp(u), 3);
+// ---------- 3D: studio environment shared by the gold bars and the logo ----------
+function studioEnv(rd) {
+  const sc = new THREE.Scene(); sc.background = new THREE.Color(0x2a2f3a);
+  const box = (w, h, x, y, z, ry, c) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide })); m.position.set(x, y, z); m.rotation.y = ry; sc.add(m); };
+  box(10, 4, 0, 6, 0, 0, 0xffffff); sc.children[0].rotation.x = Math.PI / 2; box(14, 3, 0, 3, 8, Math.PI, 0xfff4e0);
+  box(4, 10, -7, 1, 2, Math.PI / 2, 0xfff1d6); box(3, 10, 7, 1, -1, -Math.PI / 2, 0xdfe8ff); box(12, 1.5, 0, 1.5, -8, 0, 0xffd9a0); box(12, .6, 0, -2.5, 8, Math.PI, 0x8093c0);
+  const pm = new THREE.PMREMGenerator(rd); return pm.fromScene(sc, .02).texture;
+}
+// gold bars
+const r1 = new THREE.WebGLRenderer({ canvas: $("#gl"), antialias: true, alpha: true, preserveDrawingBuffer: true });
+r1.toneMapping = THREE.ACESFilmicToneMapping; r1.toneMappingExposure = 1.35; r1.outputColorSpace = THREE.SRGBColorSpace;
+const s1 = new THREE.Scene(); s1.environment = studioEnv(r1);
+const c1 = new THREE.PerspectiveCamera(30, 1080 / 900, .1, 100);
+s1.add(new THREE.HemisphereLight(0xfff3dd, 0x1a2140, 1.2)); const kl = new THREE.DirectionalLight(0xfff0d0, 3.2); kl.position.set(4, 6, 5); s1.add(kl);
+const barShape = new THREE.Shape(); barShape.moveTo(-.5, 0); barShape.lineTo(.5, 0); barShape.lineTo(.4, .3); barShape.lineTo(-.4, .3); barShape.closePath();
+const barGeo = new THREE.ExtrudeGeometry(barShape, { depth: .44, bevelEnabled: true, bevelThickness: .025, bevelSize: .025, bevelSegments: 3 }); barGeo.translate(0, 0, -.22);
+const goldMat = new THREE.MeshPhysicalMaterial({ color: 0xf6c860, metalness: 1, roughness: .26, clearcoat: .5, clearcoatRoughness: .12, envMapIntensity: 1.6 });
+const SLOTS = []; [[5, 3], [4, 3], [3, 2], [2, 2], [1, 1]].forEach(([nx, nz], ly) => { for (let z = 0; z < nz; z++) for (let x = 0; x < nx; x++) SLOTS.push([(x - (nx - 1) / 2) * 1.08, ly * .34, (z - (nz - 1) / 2) * .52]); });
+const bars = SLOTS.map(() => { const m = new THREE.Mesh(barGeo, goldMat); m.visible = false; s1.add(m); return m; });
+const N1 = 6, N2 = SLOTS.length;   // "۱ میلیارد" -> 6 bars, "۱۰ میلیارد" -> the full stack
+const order = SLOTS.map((s, i) => i).sort((a, b) => SLOTS[a][1] - SLOTS[b][1] || Math.abs(SLOTS[a][0]) - Math.abs(SLOTS[b][0]));
+const firstSix = [SLOTS.findIndex(s => s[1] === 0 && s[0] === 0 && s[2] === 0)];
+function render3D(t) {
+  const tr = R(t), a = r(L.r2) - .1, b = r(L.r3) - .05;
+  const small = [[0, 0, 0], [1.08, 0, 0], [-1.08, 0, 0], [.54, .34, 0], [-.54, .34, 0], [0, .68, 0]];
+  bars.forEach((m, i) => {
+    let tgt, t0;
+    if (t < b) { if (i >= N1) { m.visible = false; return; } tgt = small[i]; t0 = a + i * .09; }
+    else if (i < N1) { const w = eo((t - b) / .5); m.visible = true; m.position.set(...small[i].map((v, j) => v + (SLOTS[i][j] - v) * w)); m.rotation.y = 0; return; }
+    else { const k = order.indexOf(i); tgt = SLOTS[i]; t0 = b + k * .035; }
+    const u = clamp((t - t0) / .45); m.visible = u > 0; if (!m.visible) return;
+    const bounce = u < 1 ? (1 - eo(u)) * 3.2 - Math.sin(u * Math.PI) * .12 * (u > .7 ? 1 : 0) : 0;
+    m.position.set(tgt[0], tgt[1] + bounce, tgt[2]); m.rotation.y = (1 - eo(u)) * .6 * (i % 2 ? 1 : -1);
+  });
+  const pull = eo((t - b) / 1.2), ang = .5 + .18 * Math.sin(t * .45) + .25 * pull, dist = 5.2 + 3.4 * pull;
+  c1.position.set(Math.sin(ang) * dist, 2.1 + 1.2 * pull, Math.cos(ang) * dist); c1.lookAt(0, .35 + .25 * pull, 0);
+  kl.position.set(4 * Math.cos(t * .7), 6, 5 * Math.sin(t * .7) + 2);
+  r1.render(s1, c1);
+}
+
+
+bars.forEach((m, i) => { m.visible = true; m.position.set(...SLOTS[i]); });
+const ang = .75, dist = 8.6; c1.position.set(Math.sin(ang) * dist, 3.3, Math.cos(ang) * dist); c1.lookAt(0, .6, 0); r1.render(s1, c1); document.title = "done";
+</script></body></html>
