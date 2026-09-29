@@ -4,7 +4,7 @@ const { chromium } = require("playwright-core"); const { spawn } = require("chil
 (async () => {
   const [html, fpsS, out, mode] = process.argv.slice(2); const FPS = +fpsS; const TL = JSON.parse(fs.readFileSync(path.join(path.dirname(path.resolve(html)), "tl.json"), "utf8"));
   const b = await chromium.launch({ executablePath: process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--allow-file-access-from-files", "--disable-web-security", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
-  const p = await b.newPage({ viewport: { width: 1080, height: 1920 } });
+  const p = await b.newPage({ viewport: { width: TL.W || 1080, height: TL.H || 1920 } });
   await p.addInitScript(t => { window.TL = t; }, TL);
   await p.goto("file://" + path.resolve(html)); await p.waitForFunction(() => window.ready === true); await p.evaluate(() => document.fonts.ready);
   const T = await p.evaluate(() => window.DUR); const N = Math.round(T * FPS);
