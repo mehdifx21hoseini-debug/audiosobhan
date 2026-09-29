@@ -1,0 +1,134 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-ExtraBold.ttf"); font-weight: 800; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Regular.ttf"); font-weight: 400; }
+:root{--ink:#16181d;--sub:#5b6170;--mute:#9aa0ab;--line:#ececea;--paper:#ffffff;--bg:#f3f2ef;--panel:#f7f6f3;--acc:#e8590c;--hl:rgba(255,212,59,.55);--red:#d9480f;--loss:#c92a2a;--ok:#2b8a3e;--ice:#1c7ed6}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:"Vaz";color:var(--ink);background:var(--bg)}
+.slide{position:absolute;left:56px;right:56px;top:44px;bottom:140px;background:var(--paper);border-radius:22px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 18px 50px rgba(22,24,29,.06)}
+.f{position:absolute;inset:0;display:none}
+.abs{position:absolute}
+.hdr{position:absolute;top:84px;right:120px;left:120px;display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:22px;color:var(--mute)}
+.hdr b{font-weight:700;color:var(--sub)} .hdr .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--acc);margin-left:12px;vertical-align:middle}
+.panel{position:absolute;left:120px;top:150px;width:720px;height:640px;border-radius:18px;background:var(--panel)}
+.col{position:absolute;right:120px;top:170px;width:820px}
+.lbl{font-weight:700;font-size:24px;color:var(--acc);letter-spacing:.3px;margin-bottom:14px}
+.ttl{font-weight:900;font-size:76px;line-height:1.15;margin-bottom:10px}
+.st{font-weight:500;font-size:34px;color:var(--sub);margin-bottom:40px}
+.def{border-right:4px solid var(--ink);padding:4px 26px 4px 0;font-weight:500;font-size:32px;line-height:1.75;color:var(--sub);margin-bottom:34px}
+.def b{color:var(--ink);font-weight:800}
+.hl{background:linear-gradient(transparent 55%,var(--hl) 55%,var(--hl) 92%,transparent 92%);padding:0 4px}
+.note{display:flex;gap:18px;align-items:flex-start;padding:22px 26px;border-radius:14px;background:var(--panel);font-weight:500;font-size:28px;line-height:1.65;color:var(--sub)}
+.note .k{flex:none;font-weight:800;font-size:22px;color:var(--acc);border:2px solid var(--acc);border-radius:8px;padding:0 10px;line-height:36px;margin-top:4px}
+.q{font-weight:800;font-size:44px;line-height:1.5;color:var(--ink)}
+.row{display:flex;align-items:center;gap:22px;padding:20px 0;border-bottom:1px solid var(--line);font-weight:700;font-size:34px;color:var(--mute)}
+.row:last-child{border-bottom:0}
+.row svg{flex:none}
+.row.on{color:var(--ink)} .row small{font-weight:500;font-size:22px;color:var(--mute);margin-right:auto;direction:ltr}
+#cap{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);font-weight:700;font-size:38px;color:var(--ink);white-space:nowrap}
+#cap .d{color:#bfc3ca} #cap .a{color:var(--acc)}
+.bar{position:absolute;bottom:118px;left:56px;right:56px;height:3px;background:var(--line)}
+.bar b{position:absolute;right:0;top:0;bottom:0;background:var(--ink)}
+svg text{font-family:"Vaz"}
+</style></head><body><div id="stage"><div class="slide"></div>
+<div class="hdr"><span><span class="dot"></span><b>روانشناسی معامله‌گری</b> · درس اول: هیجان و تصمیم</span><span id="pg" style="direction:ltr;font-weight:700"></span></div>
+
+<!-- F0 -->
+<div class="f"><div class="panel"></div>
+  <svg class="abs" style="left:120px;top:150px" width="720" height="640" viewBox="0 0 720 640" fill="none" stroke="#16181d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="360" cy="300" r="150"/>
+    <path d="M300 250 q20 -14 40 0 M380 250 q20 -14 40 0" /><circle cx="318" cy="290" r="6" fill="#16181d"/><circle cx="402" cy="290" r="6" fill="#16181d"/>
+    <path d="M315 372 q45 -28 90 0"/>
+    <path d="M495 205 q14 24 0 38 q-14 -14 0 -38z" stroke="#e8590c"/>
+    <path d="M150 470 h110 l20 -40 l26 80 l22 -60 l14 20 h128" stroke="#e8590c"/>
+    <g stroke="#9aa0ab" stroke-width="5"><path d="M190 170 l28 22"/><path d="M160 250 l36 6"/><path d="M540 130 l-22 28"/></g>
+    <text x="360" y="570" text-anchor="middle" fill="#9aa0ab" stroke="none" font-weight="700" font-size="24">ضربان بالا · ذهن عجول</text>
+  </svg>
+  <div class="col">
+    <div class="lbl">مفهوم ۱</div>
+    <div class="ttl">FOMO</div>
+    <div class="st">ترسِ جا ماندن از فرصت</div>
+    <div class="def">وقتی حرکت بازار رو می‌بینی و مغزت می‌گه <b class="hl">«الان، وگرنه دیره»</b> — تصمیم رو هیجان می‌گیره، نه برنامه.</div>
+    <div class="note"><span class="k">نقل‌قول</span><span class="q">«ترسیدم جا بمونم...<br>آخه تمام دارایی‌ام بود.»</span></div>
+  </div>
+</div>
+
+<!-- F1 -->
+<div class="f"><div class="panel"></div>
+  <svg class="abs" style="left:120px;top:150px" width="720" height="640" viewBox="0 0 720 640" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <text x="660" y="80" fill="#9aa0ab" font-weight="700" font-size="24">دلار · قیمت</text>
+    <g stroke="#e3e2de" stroke-width="2"><line x1="60" y1="170" x2="660" y2="170"/><line x1="60" y1="300" x2="660" y2="300"/><line x1="60" y1="430" x2="660" y2="430"/><line x1="60" y1="560" x2="660" y2="560"/></g>
+    <path d="M70 520 L160 480 L240 420 L300 370" stroke="#16181d" stroke-width="6"/>
+    <path d="M300 370 L350 430 L390 448" stroke="#16181d" stroke-width="6"/>
+    <path d="M390 448 L450 360 L520 290 L590 210 L650 130" stroke="#c92a2a" stroke-width="7"/>
+    <path d="M300 370 Q390 520 520 560" stroke="#e8590c" stroke-width="4" stroke-dasharray="10 12"/>
+    <text x="530" y="600" fill="#e8590c" stroke="none" font-weight="700" font-size="22">انتظار: پایین‌تر بخرم</text>
+    <circle cx="300" cy="370" r="12" fill="#fff" stroke="#16181d" stroke-width="5"/>
+    <ellipse cx="300" cy="370" rx="46" ry="40" stroke="#e8590c" stroke-width="4" transform="rotate(-12 300 370)"/>
+    <text x="300" y="300" text-anchor="middle" fill="#16181d" stroke="none" font-weight="800" font-size="26">فروش</text>
+    <g fill="#c92a2a" stroke="none" font-weight="800" font-size="24" text-anchor="middle"><text x="470" y="330">↑</text><text x="555" y="235">↑</text><text x="630" y="155">↑</text></g>
+  </svg>
+  <div class="col">
+    <div class="lbl">اتفاقی که افتاد</div>
+    <div class="ttl" style="font-size:66px">فروش خارج از پلن</div>
+    <div style="margin:18px 0 34px">
+      <div class="row on"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#16181d" stroke-width="3" stroke-linecap="round"><path d="M6 30 L16 20 L22 25 L34 12"/><path d="M26 12 h8 v8"/></svg>دلار رفت بالا</div>
+      <div class="row on"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#e8590c" stroke-width="3" stroke-linecap="round"><circle cx="20" cy="20" r="14"/><path d="M20 12 v9 l6 4"/></svg>فروخت که «پایین‌تر بخره»</div>
+      <div class="row on" style="color:#c92a2a"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#c92a2a" stroke-width="3" stroke-linecap="round"><path d="M8 32 L20 8 L32 32 Z"/><path d="M20 17 v7 M20 28 v1"/></svg>رفت بالا، رفت بالا، رفت بالا</div>
+    </div>
+    <div class="note"><span class="k">نکته</span><span>هر تصمیمی که <b class="hl" style="color:#16181d">توی پلن نیست</b>، معمولاً هیجان داره اون رو می‌گیره.</span></div>
+  </div>
+</div>
+
+<!-- F2 -->
+<div class="f"><div class="panel"></div>
+  <svg class="abs" style="left:120px;top:150px" width="720" height="640" viewBox="0 0 720 640" fill="none" stroke="#16181d" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="150" y="130" width="420" height="280" rx="18"/><path d="M300 410 v60 M420 410 v60 M250 480 h220"/>
+    <text x="360" y="220" text-anchor="middle" fill="#9aa0ab" stroke="none" font-weight="700" font-size="24">معامله‌ی باز</text>
+    <text x="360" y="280" text-anchor="middle" fill="#c92a2a" stroke="none" font-weight="900" font-size="44">ضرر</text>
+    <rect x="265" y="315" width="190" height="54" rx="27" stroke="#c92a2a" stroke-width="4"/><text x="360" y="350" text-anchor="middle" fill="#c92a2a" stroke="none" font-weight="800" font-size="24">بستن معامله</text>
+    <path d="M470 350 l0 42 l10 -10 l9 18 l7 -3 l-9 -18 l14 0 z" stroke-width="3" fill="#fff"/>
+    <g stroke="#1c7ed6" stroke-width="4" transform="translate(600 120)"><path d="M0 -40 v80 M-35 -20 l70 40 M-35 20 l70 -40"/><path d="M-8 -32 l8 8 l8 -8 M-8 32 l8 -8 l8 8"/></g>
+    <text x="360" y="570" text-anchor="middle" fill="#9aa0ab" stroke="none" font-weight="700" font-size="24">می‌بینه · می‌دونه · ولی دستش نمی‌ره</text>
+  </svg>
+  <div class="col">
+    <div class="lbl" style="color:var(--ice)">مفهوم ۲</div>
+    <div class="ttl" style="color:var(--ice)">فریز</div>
+    <div class="st">واکنش غریزی بدن به تهدید</div>
+    <div>
+      <div class="row"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#9aa0ab" stroke-width="3" stroke-linecap="round"><path d="M6 20 h26 M24 12 l8 8 l-8 8"/></svg>فرار<small>Flight</small></div>
+      <div class="row"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#9aa0ab" stroke-width="3" stroke-linecap="round"><path d="M22 4 L10 22 h10 l-2 14 L30 18 H20 z"/></svg>جنگ<small>Fight</small></div>
+      <div class="row on"><svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#1c7ed6" stroke-width="3" stroke-linecap="round"><path d="M20 4 v32 M6 12 l28 16 M6 28 l28 -16"/></svg><span class="hl">خشک شدن</span><small style="color:#1c7ed6">Freeze</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- F3 -->
+<div class="f"><div class="panel"></div>
+  <svg class="abs" style="left:120px;top:150px" width="720" height="640" viewBox="0 0 720 640" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+    <g stroke="#16181d" font-weight="800" font-size="30">
+      <path d="M110 80 h230 v80 a28 28 0 1 0 0 56 v80 h-88 a28 28 0 1 1 -56 0 h-86 z"/><text x="225" y="200" text-anchor="middle" fill="#16181d" stroke="none">دانش</text>
+      <path d="M360 80 h230 v216 h-86 a28 28 0 1 0 -56 0 h-88 v-80 a28 28 0 1 1 0 -56 z"/><text x="475" y="200" text-anchor="middle" fill="#16181d" stroke="none">استراتژی</text>
+      <path d="M110 316 h86 a28 28 0 1 0 56 0 h88 v80 a28 28 0 1 1 0 56 v80 h-230 z"/><text x="225" y="430" text-anchor="middle" fill="#16181d" stroke="none">مدیریت ریسک</text>
+    </g>
+    <path d="M360 316 h88 a28 28 0 1 1 56 0 h86 v216 h-230 v-80 a28 28 0 1 0 0 -56 z" stroke="#e8590c" stroke-dasharray="12 12"/>
+    <g transform="translate(70 40) rotate(7 475 424)"><path d="M360 316 h88 a28 28 0 1 1 56 0 h86 v216 h-230 v-80 a28 28 0 1 0 0 -56 z" fill="#e8590c" stroke="#e8590c"/><text x="475" y="436" text-anchor="middle" fill="#fff" font-weight="900" font-size="32">روانشناسی</text></g>
+  </svg>
+  <div class="col">
+    <div class="lbl">جمع‌بندی</div>
+    <div class="ttl" style="font-size:66px">فرمول موفقیت</div>
+    <div class="def" style="margin-top:26px;font-size:40px;color:var(--ink);font-weight:800">زمانِ درست <span style="color:var(--mute);font-weight:500">×</span> اقدامِ درست</div>
+    <div class="def">ولی توانایی انجامش <b class="hl">در همون لحظه</b>، یه قطعه‌ی دیگه لازم داره.</div>
+    <div class="note"><span class="k">قطعه‌ی گمشده</span><span style="font-weight:800;font-size:36px;color:#16181d">روانشناسی معامله‌گری</span></div>
+  </div>
+</div>
+
+<div class="bar"><b id="prog"></b></div><div id="cap"></div>
+</div><script>
+const caps=[`با یه صدای لرزون گفت: <span class="a">ترسیدم</span> <span class="d">جا بمونم</span>`,`ولی بعدش <span class="a">رفت بالا، رفت بالا،</span> <span class="d">رفت بالا</span>`,`من تو ضرر سنگین ولی <span class="a">فریز</span> <span class="d">شده بودم</span>`,`نیاز به یه پازلی داره به نام <span class="a">روانشناسی</span>`];
+const pg=["01 / 08","03 / 08","05 / 08","08 / 08"],pr=[12,40,60,100];
+window.DUR=4;window.seek=t=>{const k=Math.floor(t);document.querySelectorAll('.f').forEach((e,i)=>e.style.display=i===k?'block':'none');cap.innerHTML=caps[k];document.getElementById('pg').textContent=pg[k];prog.style.width=pr[k]+'%'};
+document.fonts.ready.then(()=>{window.seek(0);window.ready=true});
+</script></body></html>
