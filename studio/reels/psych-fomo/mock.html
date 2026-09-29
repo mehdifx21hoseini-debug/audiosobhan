@@ -1,0 +1,93 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;font-family:"Vaz";color:#f5f7fc;background:radial-gradient(ellipse at 50% 35%,#1a3572 0%,#0b1a40 48%,#040a1c 100%)}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(140,196,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(140,196,255,.05) 1px,transparent 1px);background-size:90px 90px}
+.f{position:absolute;inset:0;display:none}
+.abs{position:absolute}.c{left:0;right:0;text-align:center}
+.kick{font-weight:700;font-size:40px;color:#d6b270;letter-spacing:.5px}
+.h{font-weight:900;font-size:96px;line-height:1.2}
+.card{position:absolute;border-radius:36px;background:rgba(6,14,36,.8);border:2px solid rgba(214,178,112,.45);box-shadow:0 30px 80px rgba(0,0,0,.45)}
+#sub{position:absolute;bottom:230px;left:50%;transform:translateX(-50%);padding:20px 42px;border-radius:40px;width:max-content;max-width:920px;text-align:center;line-height:1.55;background:rgba(2,6,18,.82);border:1px solid rgba(214,178,112,.35);font-weight:700;font-size:48px}
+.dim{color:rgba(245,247,252,.42)}.g{color:#46d696}.r{color:#ff6b76}.y{color:#f0d9a0}
+#brand{position:absolute;top:70px;right:56px;height:88px;padding:0 26px 0 20px;border-radius:48px;background:rgba(255,255,255,.95);display:flex;align-items:center;gap:12px}
+#brand img{height:64px}#brand .t1{font-weight:900;font-size:26px;color:#29386c;line-height:1.1}#brand .t2{font-weight:500;font-size:16px;color:#b8914a;direction:ltr;text-align:right}
+.num{position:absolute;top:70px;left:60px;font-weight:700;font-size:30px;color:rgba(214,178,112,.8);direction:ltr}
+</style></head><body><div id="stage"><div class="grid"></div>
+
+<!-- F0: FOMO quote -->
+<div class="f" id="f0">
+  <div class="abs c kick" style="top:330px">روانشناسی معامله‌گری</div>
+  <div class="abs c h" style="top:390px">FOMO</div>
+  <div class="abs c" style="top:510px;font-weight:700;font-size:48px;color:#cfd6e6">ترسِ جا ماندن</div>
+  <div class="card" style="left:90px;right:90px;top:700px;height:430px">
+    <div class="abs" style="right:50px;top:10px;font-weight:900;font-size:220px;color:rgba(214,178,112,.35);line-height:1">”</div>
+    <div class="abs c" style="top:120px;font-weight:900;font-size:78px;line-height:1.35">«ترسیدم<br><span class="r">جا بمونم</span>»</div>
+    <div class="abs c" style="top:330px;font-weight:500;font-size:36px;color:#9fb0cf">— با صدای لرزون</div>
+  </div>
+  <div id="sub"><span>با</span> <span>یه</span> <span>صدای</span> <span>لرزون</span> <span>گفت:</span> <span class="r">ترسیدم</span> <span class="dim">جا بمونم</span></div>
+</div>
+
+<!-- F1: chart goes up x3 -->
+<div class="f" id="f1">
+  <div class="abs c kick" style="top:330px">چی شد؟</div>
+  <div class="abs c h" style="top:385px;font-size:84px">رفت <span class="r">بالا</span>... رفت <span class="r">بالا</span>!</div>
+  <div class="card" style="left:70px;right:70px;top:620px;height:720px">
+    <div class="abs" style="right:44px;top:30px;font-weight:700;font-size:34px;color:#cfd6e6">دلار / ریال</div>
+    <div class="abs" style="left:44px;top:24px;font-weight:900;font-size:48px;color:#ff6b76;direction:ltr">−38%</div>
+    <svg class="abs" style="left:30px;top:110px" width="880" height="580" viewBox="0 0 880 580">
+      <g stroke="rgba(255,255,255,.07)"><line x1="0" y1="145" x2="880" y2="145"/><line x1="0" y1="290" x2="880" y2="290"/><line x1="0" y1="435" x2="880" y2="435"/></g>
+      <path d="M0 470 L120 420 L220 360 L300 300" fill="none" stroke="#46d696" stroke-width="9" stroke-linejoin="round"/>
+      <path d="M300 300 L380 380 L440 400" fill="none" stroke="#8cc4ff" stroke-width="9" stroke-linejoin="round"/>
+      <path d="M440 400 L520 300 L600 230 L680 170 L760 90 L860 30" fill="none" stroke="#ff6b76" stroke-width="10" stroke-linejoin="round"/>
+      <line x1="300" y1="300" x2="300" y2="560" stroke="#f0d9a0" stroke-width="3" stroke-dasharray="10 8"/>
+      <circle cx="300" cy="300" r="14" fill="#f0d9a0"/>
+      <rect x="226" y="236" width="150" height="46" rx="12" fill="#f0d9a0"/><text x="301" y="269" text-anchor="middle" font-family="Vaz" font-weight="900" font-size="28" fill="#1a1406">فروش</text>
+      <path d="M300 300 Q420 470 560 520" fill="none" stroke="rgba(240,217,160,.55)" stroke-width="5" stroke-dasharray="12 10"/>
+      <text x="600" y="545" font-family="Vaz" font-weight="700" font-size="26" fill="rgba(240,217,160,.7)">انتظار: پایین‌تر بخرم</text>
+      <g font-family="Vaz" font-weight="900" font-size="30" fill="#ff6b76"><text x="515" y="275">۱</text><text x="672" y="145">۲</text><text x="830" y="80">۳</text></g>
+    </svg>
+  </div>
+  <div id="sub"><span>ولی</span> <span>بعدش</span> <span class="r">رفت</span> <span class="r">بالا،</span> <span class="r">رفت</span> <span class="r">بالا،</span> <span class="dim">رفت بالا</span></div>
+</div>
+
+<!-- F2: freeze -->
+<div class="f" id="f2">
+  <div class="abs c kick" style="top:330px;color:#8cc4ff">واکنش بدن در ترس</div>
+  <div class="abs c h" style="top:385px;font-size:104px;color:#bfe3ff;text-shadow:0 0 40px rgba(140,196,255,.7)">فریز</div>
+  <div class="card" style="left:130px;right:130px;top:640px;height:560px;border-color:#8cc4ff;background:rgba(10,30,60,.8)">
+    <div class="abs c" style="top:50px;font-weight:700;font-size:38px;color:#cfd6e6">معامله‌ی باز</div>
+    <div class="abs c" style="top:110px;font-weight:900;font-size:96px;color:#ff6b76;direction:ltr">−$4,820</div>
+    <div class="abs" style="left:170px;right:170px;top:300px;height:110px;border-radius:24px;background:#c7303f;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:48px">بستن معامله</div>
+    <svg class="abs" style="left:520px;top:360px" width="80" height="100" viewBox="0 0 24 30"><path d="M2 2 L2 24 L8 18 L12 28 L16 26 L12 17 L20 17 Z" fill="#fff" stroke="#000" stroke-width="1.2"/></svg>
+    <div class="abs c" style="top:450px;font-weight:700;font-size:34px;color:#8cc4ff">نمی‌تونستم ببندمش...</div>
+    <div class="abs" style="inset:0;border-radius:36px;background:linear-gradient(135deg,rgba(200,235,255,.28),rgba(200,235,255,0) 40%,rgba(200,235,255,.22) 70%,rgba(200,235,255,0));"></div>
+  </div>
+  <div id="sub"><span>من</span> <span>تو</span> <span class="r">ضرر</span> <span class="r">سنگین</span> <span>ولی</span> <span style="color:#8cc4ff">فریز</span> <span class="dim">شده بودم</span></div>
+</div>
+
+<!-- F3: puzzle -->
+<div class="f" id="f3">
+  <div class="abs c kick" style="top:330px">موفقیت در بازار مالی</div>
+  <div class="abs c h" style="top:385px;font-size:78px">قطعه‌ی <span class="y">گمشده</span></div>
+  <svg class="abs" style="left:140px;top:600px" width="800" height="760" viewBox="0 0 800 760">
+    <defs><filter id="gl"><feGaussianBlur stdDeviation="14"/></filter></defs>
+    <g font-family="Vaz" font-weight="900" font-size="46" text-anchor="middle">
+      <rect x="20" y="20" width="370" height="340" rx="28" fill="#12245a" stroke="#8cc4ff" stroke-width="4"/><text x="205" y="205" fill="#cfe0ff">دانش</text>
+      <rect x="410" y="20" width="370" height="340" rx="28" fill="#12245a" stroke="#8cc4ff" stroke-width="4"/><text x="595" y="205" fill="#cfe0ff">استراتژی</text>
+      <rect x="20" y="380" width="370" height="340" rx="28" fill="#12245a" stroke="#8cc4ff" stroke-width="4"/><text x="205" y="545" fill="#cfe0ff">مدیریت</text><text x="205" y="600" fill="#cfe0ff">ریسک</text>
+      <rect x="410" y="380" width="370" height="340" rx="28" fill="#d6b270" filter="url(#gl)" opacity=".7"/>
+      <rect x="410" y="380" width="370" height="340" rx="28" fill="#d6b270" stroke="#fff5da" stroke-width="5"/><text x="595" y="565" fill="#1a1406" font-size="52">روانشناسی</text>
+    </g>
+  </svg>
+  <div id="sub"><span>نیاز</span> <span>به</span> <span>یه</span> <span>پازلی</span> <span>داره</span> <span>به</span> <span>نام</span> <span class="y">روانشناسی</span></div>
+</div>
+
+<div class="num">psych-fomo · mockup</div>
+<div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+</div><script>
+window.DUR=4; window.seek=t=>{document.querySelectorAll('.f').forEach((e,i)=>e.style.display=i===Math.floor(t)?'block':'none')};
+document.fonts.ready.then(()=>{window.seek(0);window.ready=true});
+</script></body></html>
