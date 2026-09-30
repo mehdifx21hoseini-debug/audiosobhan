@@ -30,3 +30,4 @@ reels/**/kit/v4.txt
 reels/**/kit/v4log_*.txt
 reels/**/kit/assets4/*_preview*.jpg
 output/*_fixed.png
+output/lipsync_test_*.mp4
