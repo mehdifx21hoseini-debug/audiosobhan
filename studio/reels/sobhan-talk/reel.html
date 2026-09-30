@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #f5f7fc; background: #040a1c; }
+.ph { position: absolute; left: -110px; top: -195px; width: 1300px; height: 2310px; background: url(../domino/ph/desk.jpg) center/cover; filter: brightness(.45) saturate(.75) blur(8px); }
+.tint { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,10,28,.55), rgba(11,26,64,.35) 45%, rgba(4,10,28,.85)); }
+#glow { position: absolute; left: 140px; top: 330px; width: 800px; height: 800px; border-radius: 50%; background: radial-gradient(circle, rgba(240,217,160,.28), rgba(240,217,160,0) 70%); }
+#cv { position: absolute; left: 0; top: 401px; width: 1080px; height: 1519px; }
+#sub { position: absolute; bottom: 170px; left: 50%; transform: translateX(-50%); padding: 22px 46px; border-radius: 44px; width: max-content; max-width: 900px; text-align: center; line-height: 1.55;
+  background: rgba(2,6,18,.8); border: 1px solid rgba(140,196,255,.25); font-weight: 700; font-size: 52px; opacity: 0; }
+#sub .w { display: inline-block; margin: 0 5px; color: rgba(245,247,252,.45); }
+#sub .w.on { color: #f5f7fc; } #sub .w.on.y { color: #f0d9a0; } #sub .w.on.g { color: #46d696; }
+#brand { position: absolute; top: 62px; right: 56px; height: 104px; padding: 0 30px 0 24px; border-radius: 56px; background: rgba(255,255,255,.96); display: flex; align-items: center; gap: 16px; box-shadow: 0 14px 40px rgba(0,0,0,.35); }
+#brand img { height: 78px; }
+#brand .t1 { font-weight: 900; font-size: 30px; color: #29386c; line-height: 1.1; }
+#brand .t2 { font-weight: 500; font-size: 19px; color: #b8914a; direction: ltr; text-align: right; }
+#name { position: absolute; right: 70px; top: 1250px; padding: 12px 34px; border-radius: 18px; background: #fff; color: #12245a; font-weight: 900; font-size: 50px; box-shadow: 0 16px 40px rgba(0,0,0,.4); }
+#role { position: absolute; right: 70px; top: 1345px; padding: 8px 26px; border-radius: 14px; background: #d6b270; color: #1a1406; font-weight: 700; font-size: 32px; }
+#vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,.55) 100%); }
+#grain { position: absolute; inset: -200px; background: url("../../brand/grain.png"); opacity: .06; mix-blend-mode: overlay; }
+#black { position: absolute; inset: 0; background: #000; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="ph" id="bg"></div><div class="tint"></div><div id="glow"></div>
+  <canvas id="cv" width="1080" height="1519"></canvas>
+  <div id="name">سبحان صمدی</div><div id="role">بنیان‌گذار آکادمی</div>
+  <div id="sub"></div>
+  <div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+  <div id="vig"></div><div id="grain"></div><div id="black"></div>
+</div>
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const $ = s => document.querySelector(s), TL = window.TL, T = window.DUR = TL.T, FPS = TL.fps_face;
+const tl = gsap.timeline({ paused: true }), cv = $("#cv"), cx = cv.getContext("2d");
+const sub = $("#sub");
+function setSub(t) { if (!t) { sub.style.opacity = 0; return; }
+  sub.innerHTML = t.split(" ").map(w => { let c = ""; if (w[0] === "^") { c = w[1]; w = w.slice(2); } return `<span class="w ${c}">${w}</span>`; }).join(" "); sub.style.opacity = 1; }
+function karaoke(p) { const ws = sub.querySelectorAll(".w"), n = ws.length; ws.forEach((w, i) => w.classList.toggle("on", i < p * n + .3)); }
+TL.subs.forEach(({ dst: [a, b], text }, i) => { tl.call(setSub, [text], a - .04);
+  const o = { p: 0 }; tl.to(o, { p: 1, duration: b - a - .05, ease: "none", onUpdate: () => karaoke(o.p) }, a);
+  const nx = TL.subs[i + 1]; if (!nx || nx.dst[0] - b > .6) tl.call(setSub, [""], b + .3); });
+tl.to("#black", { opacity: 0, duration: .4 }, 0).to("#black", { opacity: 1, duration: .3 }, T - .3);
+tl.fromTo("#bg", { scale: 1.12 }, { scale: 1.0, duration: T, ease: "none" }, 0)
+  .fromTo("#cv", { scale: 1.0, transformOrigin: "50% 12%" }, { scale: 1.07, duration: T, ease: "sine.inOut" }, 0)
+  .fromTo("#glow", { opacity: .4 }, { opacity: 1, duration: 1.2, yoyo: true, repeat: 5, ease: "sine.inOut" }, 0)
+  .fromTo("#name", { x: 300, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "back.out(1.8)" }, .5)
+  .fromTo("#role", { x: 300, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "back.out(1.8)" }, .7)
+  .to(["#name", "#role"], { opacity: 0, x: 200, duration: .35 }, 2.3);
+gsap.set("#brand", { opacity: 0, y: -24 }); tl.to("#brand", { opacity: 1, y: 0, duration: .6, ease: "back.out(2)" }, .3);
+tl.set({}, {}, T);
+const frames = []; let frame = 0;
+window.seek = t => { tl.seek(t, false); const f = frames[Math.min(frames.length - 1, Math.floor(t * FPS))];
+  cx.clearRect(0, 0, 1080, 1519); cx.drawImage(f, 0, 0, 1080, 1519); frame++;
+  $("#grain").style.transform = `translate(${(frame * 37) % 200 - 100}px, ${(frame * 53) % 200 - 100}px)`; };
+fetch("frames/count.txt").then(r => r.text()).then(n => Promise.all([...Array(+n)].map((_, i) => new Promise(r => { const im = new Image(); im.onload = () => r(im); im.src = `frames/f_${String(i).padStart(4, "0")}.png`; frames[i] = im; }))))
+  .then(() => { window.seek(0); window.ready = true; });
+</script>
+</body>
+</html>

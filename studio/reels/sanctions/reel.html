@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #f5f7fc; background: #040a1c; }
+.scene { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
+.ph { position: absolute; left: -110px; top: -195px; width: 1300px; height: 2310px; background-size: cover; background-position: center; }
+.tint { position: absolute; inset: 0; }
+.navybg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 38%, #1a3572 0%, #0b1a40 45%, #040a1c 100%); }
+.redbg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, #4a1020 0%, #1c0712 50%, #06030a 100%); opacity: 0; }
+.grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(140,196,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(140,196,255,.06) 1px, transparent 1px); background-size: 90px 90px; }
+svg.full { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; overflow: visible; }
+.abs { position: absolute; }
+.center { left: 0; right: 0; text-align: center; }
+.kicker { font-weight: 700; font-size: 46px; color: #cfe0ff; }
+.h1 { font-weight: 900; font-size: 104px; text-shadow: 0 12px 40px rgba(0,0,0,.6); }
+.badge { position: absolute; padding: 14px 36px; border-radius: 44px; font-weight: 900; font-size: 56px; white-space: nowrap; }
+.tag { position: absolute; font-weight: 700; font-size: 36px; padding: 10px 26px; border-radius: 28px; white-space: nowrap; }
+.glass { position: absolute; border-radius: 36px; background: rgba(8,18,44,.78); border: 2px solid rgba(140,196,255,.35); box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+.row { position: absolute; left: 90px; right: 90px; height: 190px; display: flex; align-items: center; gap: 40px; padding: 0 50px; box-sizing: border-box; font-weight: 900; font-size: 64px; }
+.row .ic { width: 120px; height: 120px; flex: none; }
+.node { position: absolute; width: 560px; height: 170px; left: 260px; display: flex; align-items: center; gap: 34px; padding: 0 40px; box-sizing: border-box; font-weight: 900; font-size: 54px; }
+.node .ic { width: 100px; height: 100px; flex: none; }
+.stamp { position: absolute; padding: 10px 44px; border-radius: 22px; border: 10px solid #ff4b5c; color: #ff6b76; background: rgba(20,2,8,.9); font-weight: 900; box-shadow: 0 0 60px rgba(255,75,92,.6); white-space: nowrap; }
+#sub { position: absolute; bottom: 150px; left: 50%; transform: translateX(-50%); padding: 22px 46px; border-radius: 44px; width: max-content; max-width: 900px; text-align: center; line-height: 1.55;
+  background: rgba(2,6,18,.78); border: 1px solid rgba(140,196,255,.25); font-weight: 700; font-size: 50px; opacity: 0; }
+#sub .w { display: inline-block; margin: 0 5px; color: rgba(245,247,252,.45); }
+#sub .w.on { color: #f5f7fc; } #sub .w.on.g { color: #46d696; } #sub .w.on.r { color: #ff6b76; } #sub .w.on.y { color: #f0d9a0; } #sub .w.on.b { color: #8cc4ff; }
+#brand { position: absolute; top: 62px; right: 56px; height: 104px; padding: 0 30px 0 24px; border-radius: 56px; background: rgba(255,255,255,.96); display: flex; align-items: center; gap: 16px;
+  box-shadow: 0 14px 40px rgba(0,0,0,.35); direction: rtl; }
+#brand img { height: 78px; }
+#brand .t1 { font-weight: 900; font-size: 30px; color: #29386c; line-height: 1.1; }
+#brand .t2 { font-weight: 500; font-size: 19px; color: #b8914a; direction: ltr; text-align: right; letter-spacing: .3px; }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+#redflash { position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(255,40,60,0) 30%, rgba(255,40,60,.55) 100%); opacity: 0; }
+#vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0) 55%, rgba(0,0,0,.6) 100%); pointer-events: none; }
+#grain { position: absolute; inset: -200px; background: url("../../brand/grain.png"); opacity: .06; mix-blend-mode: overlay; }
+#black { position: absolute; inset: 0; background: #000; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+<!-- ============ HOOK: the three questions, then "sanctions" ============ -->
+<div class="scene" id="s_hook">
+  <div class="navybg"></div><div class="redbg" id="h_red"></div><div class="grid"></div>
+  <div class="abs center kicker" id="h_k" style="top:290px">پرتکرارترین سؤال این روزها</div>
+  <div class="glass row" id="h_r0" style="top:430px"><svg class="ic" viewBox="0 0 100 100"><path d="M32 82 V20 M14 38 L32 18 L50 38" stroke="#46d696" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M68 18 V80 M50 62 L68 82 L86 62" stroke="#ff6b76" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>واریز و برداشت</span></div>
+  <div class="glass row" id="h_r1" style="top:660px"><svg class="ic" viewBox="0 0 100 100"><circle cx="50" cy="50" r="44" fill="#26a17b"/><path d="M26 30 H74 M50 30 V78 M30 48 C40 54 60 54 70 48" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round"/></svg><span>خرید <span style="color:#46d696">تتر</span></span></div>
+  <div class="glass row" id="h_r2" style="top:890px"><svg class="ic" viewBox="0 0 100 100"><path d="M22 14 V86 M50 26 V74 M78 10 V60" stroke="#cfe0ff" stroke-width="4"/><rect x="12" y="30" width="20" height="40" rx="3" fill="#ff6b76"/><rect x="40" y="36" width="20" height="26" rx="3" fill="#46d696"/><rect x="68" y="16" width="20" height="34" rx="3" fill="#46d696"/></svg><span>کار با <span style="color:#8cc4ff">بروکر</span></span></div>
+  <div class="stamp" id="h_stamp" style="left:250px; top:600px; font-size:150px; opacity:0">تحریم</div>
+  <div class="abs center h1" id="h_q" style="top:1180px; font-size:90px">چی کار کنیم؟</div>
+</div>
+
+<!-- ============ NET: sanctioned exchange -> every linked wallet is identified ============ -->
+<div class="scene" id="s_net">
+  <div class="navybg"></div><div class="redbg" id="n_red"></div><div class="grid"></div>
+  <div class="abs center h1" id="n_t" style="top:250px; font-size:80px">چطور <span style="color:#ff6b76">شناسایی</span> میشی؟</div>
+  <svg class="full" id="n_svg">
+    <g id="n_edges"></g><g id="n_radar" opacity="0"></g><g id="n_nodes"></g>
+  </svg>
+  <div class="stamp" id="n_stamp" style="left:330px; top:420px; font-size:54px; opacity:0">صرافی تحریم‌شده</div>
+  <!-- close-up: your wallet gets a label -->
+  <div class="abs" id="n_zoom" style="inset:0; opacity:0">
+    <div class="abs" style="inset:0; background:rgba(3,8,20,.86)"></div>
+    <svg class="full" id="n_zsvg"></svg>
+    <div class="tag" id="n_label" style="left:300px; top:1090px; font-size:48px; padding:16px 36px; background:#c7303f; color:#fff; border:4px solid #ff8a93; box-shadow:0 0 50px rgba(255,75,92,.6)">
+      <span style="font-family:'DejaVu Sans'">⚠</span> مرتبط با صرافی تحریمی</div>
+  </div>
+</div>
+
+<!-- ============ STORY: Sobhan's own frozen $8,000 ============ -->
+<div class="scene" id="s_story">
+  <div class="navybg"></div><div class="grid"></div>
+  <div class="abs" id="t_head" style="right:70px; top:250px; display:flex; align-items:center; gap:26px">
+    <div style="width:150px; height:150px; border-radius:50%; overflow:hidden; background:#1a3572; box-shadow:0 0 0 6px #f0d9a0">
+      <img src="../../brand/sobhan.png" style="height:330px; margin-right:-95px; margin-top:-10px"></div>
+    <div><div style="font-weight:700; font-size:40px; color:#cfe0ff">تجربه‌ی خودم</div><div style="font-weight:900; font-size:62px">سبحان صمدی</div></div>
+  </div>
+  <svg class="full" id="t_svg"></svg>
+  <div class="glass node" id="t_wallex" style="top:520px"><svg class="ic" viewBox="0 0 100 100" id="t_icx"></svg><span>صرافی ایرانی</span></div>
+  <div class="glass node" id="t_mine" style="top:840px; border-color:#8cc4ff"><svg class="ic" viewBox="0 0 100 100" id="t_icm"></svg><span>والت من</span></div>
+  <div class="glass node" id="t_cex" style="top:1200px"><svg class="ic" viewBox="0 0 100 100" id="t_icc"></svg><span>صرافی خارجی</span></div>
+  <div class="tag" id="t_hist" style="left:70px; top:720px; background:rgba(240,217,160,.15); border:3px solid #f0d9a0; color:#f0d9a0">یه بار تراکنش</div>
+  <div class="badge" id="t_coin" style="left:420px; top:1000px; background:#46d696; color:#062016; direction:ltr; font-size:52px; box-shadow:0 0 50px rgba(70,214,150,.7)">$8,000</div>
+  <div class="stamp" id="t_frozen" style="left:210px; top:1390px; font-size:84px; opacity:0">مسدود شد!</div>
+  <svg id="t_lock" viewBox="0 0 100 100" style="position:absolute; left:690px; top:1040px; width:150px; height:150px; opacity:0; overflow:visible">
+    <path d="M28 46 V32 a22 22 0 0 1 44 0 V46" stroke="#ff6b76" stroke-width="10" fill="none"/><rect x="16" y="44" width="68" height="50" rx="10" fill="#ff4b5c" stroke="#fff" stroke-width="4"/><circle cx="50" cy="66" r="7" fill="#fff"/><path d="M50 70 V80" stroke="#fff" stroke-width="6"/></svg>
+</div>
+
+<!-- ============ WALLET: stop using the labelled wallet, open a new one ============ -->
+<div class="scene" id="s_wallet">
+  <div class="navybg"></div><div class="grid"></div>
+  <div class="abs center h1" id="w_t" style="top:260px; font-size:84px">والتِ لیبل‌خورده؟</div>
+  <svg class="full" id="w_svg"><g id="w_old"></g><g id="w_x" opacity="0"><path d="M340 560 L740 960 M740 560 L340 960" stroke="#ff4b5c" stroke-width="44" stroke-linecap="round"/></g><g id="w_new"></g></svg>
+  <div class="badge" id="w_no" style="left:300px; top:1060px; background:#c7303f; color:#fff; font-size:64px; box-shadow:0 0 60px rgba(255,75,92,.6)">دیگه کار نکن</div>
+  <div class="badge" id="w_free" style="left:170px; top:1290px; background:#46d696; color:#062016; font-size:56px; box-shadow:0 0 60px rgba(70,214,150,.6)">والت جدید · رایگان · بی‌نهایت</div>
+</div>
+
+<!-- ============ PATH: exchange -> wallet -> another wallet, risk goes down ============ -->
+<div class="scene" id="s_path">
+  <div class="navybg"></div><div class="grid"></div>
+  <div class="abs center h1" id="p_t" style="top:240px; font-size:84px">مسیر <span style="color:#46d696">امن‌تر</span></div>
+  <svg class="full" id="p_svg"></svg>
+  <div class="glass node" id="p_n0" style="top:430px; left:360px; width:600px"><svg class="ic" viewBox="0 0 100 100" id="p_ic0"></svg><span>صرافی</span></div>
+  <div class="glass node" id="p_n1" style="top:780px; left:360px; width:600px; border-color:#8cc4ff"><svg class="ic" viewBox="0 0 100 100" id="p_ic1"></svg><span>ولت ۱</span></div>
+  <div class="glass node" id="p_n2" style="top:1130px; left:360px; width:600px; border-color:#46d696"><svg class="ic" viewBox="0 0 100 100" id="p_ic2"></svg><span>ولت ۲</span></div>
+  <div class="abs" id="p_meter" style="left:90px; top:450px; width:170px; height:860px">
+    <div class="abs center" style="top:-6px; font-weight:900; font-size:40px; color:#cfe0ff">ریسک</div>
+    <div class="abs" style="left:45px; top:70px; width:80px; height:740px; border-radius:40px; background:rgba(255,255,255,.07); border:3px solid rgba(255,255,255,.25); overflow:hidden">
+      <div id="p_fill" style="position:absolute; left:0; right:0; bottom:0; height:100%; background:linear-gradient(0deg,#46d696,#f0d9a0 50%,#ff4b5c)"></div></div>
+    <div class="abs center" id="p_pct" style="top:830px; font-weight:900; font-size:46px; color:#ff6b76">زیاد</div>
+  </div>
+</div>
+
+<!-- ============ SOBHAN ============ -->
+<div class="scene" id="s_sobhan">
+  <div class="ph" id="o_ph" style="background-image:url(../domino/ph/desk.jpg); filter: brightness(.42) saturate(.7) blur(5px)"></div>
+  <div class="tint" style="background: linear-gradient(180deg, rgba(4,10,28,.85), rgba(11,26,64,.55) 45%, rgba(4,10,28,.92))"></div>
+  <div class="abs center h1" id="o_t" style="top:220px; font-size:92px; line-height:1.3">اصولی پیش بری،<br><span style="color:#f0d9a0">جای نگرانی نیست</span></div>
+  <svg id="o_shield" viewBox="0 0 100 110" style="position:absolute; left:110px; top:760px; width:330px; height:363px; overflow:visible">
+    <path d="M50 4 L92 20 V52 C92 80 72 98 50 106 C28 98 8 80 8 52 V20 Z" fill="#0e3b2c" stroke="#46d696" stroke-width="5"/>
+    <path id="o_check" d="M28 56 L44 72 L74 38" stroke="#46d696" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <img id="o_sob" src="../../brand/sobhan.png" style="position:absolute; right:-330px; bottom:560px; height:880px; filter: drop-shadow(0 0 30px rgba(240,217,160,.55))">
+  <div class="abs" id="o_name" style="right:70px; top:1370px; padding:14px 36px; border-radius:18px; background:#fff; color:#12245a; font-weight:900; font-size:54px">سبحان صمدی</div>
+</div>
+
+<!-- ============ OUTRO ============ -->
+<div class="scene" id="s_outro">
+  <div class="navybg"></div><div class="grid"></div>
+  <div class="abs" id="u_badge" style="left:50%; top:700px; transform:translateX(-50%); width:max-content; white-space:nowrap; padding:36px 60px; border-radius:60px; background:#fff; display:flex; align-items:center; gap:30px; box-shadow:0 30px 90px rgba(0,0,0,.5), 0 0 0 6px rgba(240,217,160,.8)">
+    <div><div style="font-weight:900; font-size:62px; color:#29386c">آکادمی سبحان صمدی</div><div style="font-weight:500; font-size:34px; color:#b8914a; direction:ltr; text-align:right">Sobhan Samadi Academy</div></div>
+    <img src="../../brand/logo_navy_gold.png" style="height:170px"></div>
+  <div class="abs center" id="u_cta" style="top:1130px; font-weight:900; font-size:58px">سیوش کن و برای رفیق معامله‌گرت بفرست</div>
+  <div class="abs center" id="u_cta2" style="top:1230px; font-weight:700; font-size:44px; color:#f0d9a0">اصولی پیش برو، بی‌دغدغه معامله کن</div>
+</div>
+
+<div id="sub"></div>
+<div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+<div id="flash"></div><div id="redflash"></div><div id="vig"></div><div id="grain"></div><div id="black"></div>
+</div>
+
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const NS = "http://www.w3.org/2000/svg", $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+function el(tag, a, p) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
+const TL = window.TL, T = window.DUR = TL.T, SC = TL.scenes, SUB = TL.subs;
+const clip = id => TL.clips.find(c => c.id === id).dst;
+const src2dst = (id, s) => { const c = TL.clips.find(c => c.id === id); return c.dst[0] + (s - c.src[0]); };
+const tl = gsap.timeline({ paused: true });
+// icons (100x100 viewBox)
+const WALLET = (c = "#8cc4ff", fill = "#12245a") => `<rect x="8" y="24" width="84" height="62" rx="12" fill="${fill}" stroke="${c}" stroke-width="6"/><path d="M18 24 L64 8 L72 24" fill="none" stroke="${c}" stroke-width="6" stroke-linejoin="round"/><rect x="58" y="44" width="34" height="22" rx="8" fill="${c}"/><circle cx="70" cy="55" r="4" fill="${fill}"/>`;
+const BANK = (c = "#f0d9a0") => `<path d="M10 36 L50 12 L90 36 Z" fill="${c}"/><rect x="10" y="80" width="80" height="10" rx="3" fill="${c}"/><path d="M22 42 V76 M40 42 V76 M60 42 V76 M78 42 V76" stroke="${c}" stroke-width="9"/>`;
+$("#t_icx").innerHTML = BANK("#ff6b76"); $("#t_icm").innerHTML = WALLET(); $("#t_icc").innerHTML = BANK("#8cc4ff");
+$("#p_ic0").innerHTML = BANK(); $("#p_ic1").innerHTML = WALLET(); $("#p_ic2").innerHTML = WALLET("#46d696", "#0e3b2c");
+
+// ---------- subtitles ----------
+const sub = $("#sub");
+function setSub(t) {
+  if (!t) { sub.style.opacity = 0; return; }
+  sub.innerHTML = t.split(" ").map(w => { let c = ""; if (w[0] === "^") { c = { g: "g", r: "r", y: "y", b: "b" }[w[1]]; w = w.slice(2); } return `<span class="w ${c}">${w}</span>`; }).join(" ");
+  sub.style.opacity = 1;
+}
+function karaoke(p) { const ws = sub.querySelectorAll(".w"), n = ws.length; ws.forEach((w, i) => w.classList.toggle("on", i < p * n + .3)); }
+SUB.forEach(({ dst: [a, b], text }, i) => {
+  tl.call(setSub, [text], a - .04);
+  const o = { p: 0 }; tl.to(o, { p: 1, duration: Math.max(.25, b - a - .05), ease: "none", onUpdate: () => karaoke(o.p) }, a);
+  const next = SUB[i + 1]; if (!next || next.dst[0] - b > .6) tl.call(setSub, [""], b + .3);
+});
+
+// ---------- scene visibility + transitions ----------
+function showScene(id, s, e, inFx) {
+  const el_ = "#s_" + id;
+  tl.set(el_, { opacity: 1 }, s);
+  if (inFx === "fade") tl.fromTo(el_, { opacity: 0 }, { opacity: 1, duration: .35 }, s);
+  if (inFx === "zoom") tl.fromTo(el_, { scale: 1.25, filter: "blur(14px)" }, { scale: 1, filter: "blur(0px)", duration: .45, ease: "power3.out" }, s);
+  if (inFx === "whip") tl.fromTo(el_, { x: 1080, filter: "blur(18px)" }, { x: 0, filter: "blur(0px)", duration: .4, ease: "power3.out" }, s);
+  tl.set(el_, { opacity: 0 }, e + .45);
+}
+showScene("hook", SC.hook[0], SC.hook[1]);
+showScene("net", SC.net[0], SC.net[1], "zoom");
+showScene("story", SC.story[0], SC.story[1], "whip");
+showScene("wallet", SC.wallet[0], SC.wallet[1], "zoom");
+showScene("path", SC.path[0], SC.path[1], "whip");
+showScene("sobhan", SC.sobhan[0], SC.sobhan[1], "fade");
+showScene("outro", SC.outro[0], SC.outro[1], "fade");
+tl.to("#s_hook", { scale: 1.4, opacity: 0, filter: "blur(10px)", duration: .45, ease: "power2.in" }, SC.hook[1]);
+tl.to("#s_net", { x: -1080, filter: "blur(18px)", duration: .4, ease: "power3.in" }, SC.net[1] - .05);
+tl.to("#s_story", { scale: .7, opacity: 0, duration: .45, ease: "power2.in" }, SC.story[1]);
+tl.to("#s_wallet", { x: -1080, filter: "blur(18px)", duration: .4, ease: "power3.in" }, SC.wallet[1] - .05);
+tl.to("#s_path", { opacity: 0, duration: .45 }, SC.path[1] + .05);
+tl.to("#s_sobhan", { opacity: 0, duration: .45 }, SC.sobhan[1] + .05);
+[SC.net[0], SC.story[0], SC.wallet[0], SC.path[0]].forEach(t => tl.to("#flash", { opacity: .35, duration: .05 }, t).to("#flash", { opacity: 0, duration: .3 }, t + .05));
+tl.to("#black", { opacity: 0, duration: .6 }, 0).to("#black", { opacity: 1, duration: .4 }, T - .4);
+tl.to("#brand", { opacity: 0, y: -20, duration: .3 }, SC.outro[0] - .2);
+gsap.set("#brand", { opacity: 0, y: -24 }); tl.to("#brand", { opacity: 1, y: 0, duration: .6, ease: "back.out(2)" }, .5);
+function shake(t, amp = 14, n = 6) { for (let i = 0; i < n; i++) tl.to("#stage", { x: (i % 2 ? -1 : 1) * amp * (1 - i / n), y: (i % 3 - 1) * amp * .6 * (1 - i / n), duration: .035 }, t + i * .035); tl.to("#stage", { x: 0, y: 0, duration: .05 }, t + n * .035); }
+function red(t) { tl.to("#redflash", { opacity: 1, duration: .08 }, t).to("#redflash", { opacity: 0, duration: .6 }, t + .1); }
+function draw(p, t, d = .6) { const L = p.getTotalLength(); gsap.set(p, { attr: { "stroke-dasharray": `${L} ${L}`, "stroke-dashoffset": L } }); tl.to(p, { attr: { "stroke-dashoffset": 0 }, duration: d, ease: "power2.out" }, t); }
+
+// =============== HOOK ===============
+(() => {
+  const hit = src2dst("c3", 10.58);
+  tl.from("#h_k", { opacity: 0, y: 30, filter: "blur(12px)", duration: .6, ease: "power3.out" }, .2);
+  ["c0", "c1", "c2"].forEach((c, i) => tl.fromTo("#h_r" + i, { x: 700, opacity: 0, rotation: 4 }, { x: 0, opacity: 1, rotation: 0, duration: .5, ease: "back.out(1.6)" }, clip(c)[0] - .1)
+    .to("#h_r" + i, { scale: 1.04, borderColor: "#f0d9a0", duration: .2 }, clip(c)[0] + .35).to("#h_r" + i, { scale: 1, borderColor: "rgba(140,196,255,.35)", duration: .3 }, clip(c)[0] + .6));
+  tl.fromTo("#h_stamp", { opacity: 0, scale: 3, rotation: 14 }, { opacity: 1, scale: 1, rotation: -9, duration: .3, ease: "back.out(2.2)" }, hit)
+    .to(["#h_r0", "#h_r1", "#h_r2"], { filter: "grayscale(1) brightness(.6)", duration: .4 }, hit)
+    .to("#h_red", { opacity: 1, duration: .5 }, hit)
+    .fromTo("#h_q", { opacity: 0, y: 50, filter: "blur(14px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .5, ease: "power3.out" }, hit + .6);
+  red(hit); shake(hit, 18, 8);
+})();
+
+// =============== NET ===============
+(() => {
+  const [a4, b4] = clip("c4"), [a5, b5] = clip("c5");
+  const tS = src2dst("c4", 163.06), tAll = src2dst("c4", 165.64), tId = src2dst("c4", 170.74), tLbl = src2dst("c5", 187.80);
+  const cx = 540, cy = 880, E = $("#n_edges"), N = $("#n_nodes"), R = $("#n_radar");
+  // exchange hub
+  const hub = el("g", {}, N); el("circle", { cx, cy, r: 115, fill: "#1a2a5a", stroke: "#f0d9a0", "stroke-width": 8, id: "n_hubC" }, hub);
+  const hi = el("g", { transform: `translate(${cx - 55} ${cy - 55}) scale(1.1)` }, hub); hi.innerHTML = BANK("#f0d9a0");
+  gsap.set(hub, { svgOrigin: `${cx} ${cy}` });
+  // wallets: linked (on the ring) and unrelated (outer, faint)
+  const linked = [], edges = [], others = [];
+  for (let i = 0; i < 7; i++) { const an = -Math.PI / 2 + (i + .5) / 7 * Math.PI * 2, x = cx + Math.cos(an) * 330, y = cy + Math.sin(an) * 330;
+    const e = el("line", { x1: cx, y1: cy, x2: x, y2: y, stroke: "#8cc4ff", "stroke-width": 5, opacity: .55, "stroke-dasharray": "14 10" }, E); edges.push(e);
+    const g = el("g", {}, N), w = el("g", { transform: `translate(${x - 45} ${y - 45}) scale(.9)` }, g); w.innerHTML = WALLET();
+    const ring = el("circle", { cx: x, cy: y, r: 64, fill: "none", stroke: "#ff4b5c", "stroke-width": 7, opacity: 0 }, g);
+    const bang = el("g", { opacity: 0 }, g); el("circle", { cx: x + 42, cy: y - 42, r: 22, fill: "#ff4b5c", stroke: "#fff", "stroke-width": 4 }, bang);
+    const tx = el("text", { x: x + 42, y: y - 31, fill: "#fff", "font-size": 32, "font-weight": 900, "text-anchor": "middle", "font-family": "Vaz" }, bang); tx.textContent = "!";
+    gsap.set(g, { svgOrigin: `${x} ${y}` }); linked.push({ g, ring, bang, w }); }
+  [[120, 470], [960, 500], [110, 1290], [970, 1270], [540, 1400]].forEach(([x, y]) => { const g = el("g", { opacity: .35 }, N), w = el("g", { transform: `translate(${x - 40} ${y - 40}) scale(.8)` }, g); w.innerHTML = WALLET("#5b6f99", "#0b1a40"); others.push(g); });
+  // build
+  tl.from("#n_t", { opacity: 0, y: -40, filter: "blur(12px)", duration: .5 }, SC.net[0] + .2)
+    .fromTo(hub, { scale: 0 }, { scale: 1, duration: .5, ease: "back.out(2)" }, a4)
+    .from(others, { opacity: 0, duration: .5, stagger: .05 }, a4 + .3);
+  linked.forEach(({ g }, i) => tl.fromTo(g, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .4, ease: "back.out(2)" }, a4 + .4 + i * .09));
+  edges.forEach((e, i) => tl.from(e, { opacity: 0, duration: .3 }, a4 + .5 + i * .09));
+  tl.to(edges, { attr: { "stroke-dashoffset": -48 }, duration: 2, ease: "none", repeat: 5 }, a4 + .5);
+  // sanctioned
+  tl.to("#n_hubC", { attr: { fill: "#5a0f1e", stroke: "#ff4b5c" }, duration: .25 }, tS)
+    .fromTo("#n_stamp", { opacity: 0, scale: 2.4, rotation: 10 }, { opacity: 1, scale: 1, rotation: -6, duration: .3, ease: "back.out(2)" }, tS)
+    .to("#n_red", { opacity: .8, duration: .6 }, tS);
+  red(tS); shake(tS, 14, 6);
+  tl.fromTo(hub, { scale: 1 }, { scale: 1.12, duration: .5, repeat: 5, yoyo: true, ease: "sine.inOut" }, tS + .3);
+  // "every wallet that was connected" -> the links light up red, one after another
+  edges.forEach((e, i) => tl.to(e, { attr: { stroke: "#ff6b76", "stroke-width": 9 }, opacity: 1, duration: .2 }, tAll + i * .22));
+  // radar sweep -> identified
+  const sweep = el("path", { d: `M ${cx} ${cy} L ${cx} ${cy - 520} A 520 520 0 0 1 ${cx + 520 * Math.sin(.6)} ${cy - 520 * Math.cos(.6)} Z`, fill: "#ff4b5c", opacity: .28 }, R);
+  el("circle", { cx, cy, r: 520, fill: "none", stroke: "#ff6b76", "stroke-width": 3, opacity: .5 }, R);
+  gsap.set(R, { svgOrigin: `${cx} ${cy}` });
+  tl.to(R, { opacity: 1, duration: .3 }, tId - .5).fromTo(R, { rotation: 0 }, { rotation: 720, duration: b4 - tId + 1.2, ease: "none" }, tId - .5).to(R, { opacity: 0, duration: .3 }, b4 + .5);
+  linked.forEach(({ ring, bang }, i) => { const t = tId - .2 + i * .14;
+    tl.fromTo(ring, { opacity: 0, attr: { r: 110 } }, { opacity: 1, attr: { r: 64 }, duration: .3, ease: "power2.out" }, t).fromTo(bang, { opacity: 0 }, { opacity: 1, duration: .15 }, t + .2); });
+  tl.to("#n_stamp", { opacity: 0, duration: .3 }, tId);
+  // close-up on "your wallet" + label
+  const Z = $("#n_zsvg"), zw = el("g", { transform: "translate(340 520) scale(4)" }, Z); zw.innerHTML = WALLET("#ff6b76");
+  el("path", { d: "M 540 1010 L 540 1090", stroke: "#ff8a93", "stroke-width": 6 }, Z);
+  el("text", { x: 540, y: 480, fill: "#cfe0ff", "font-size": 52, "font-weight": 900, "text-anchor": "middle", "font-family": "Vaz" }, Z).textContent = "کیف پول تو";
+  tl.to("#n_zoom", { opacity: 1, duration: .35 }, a5 - .1)
+    .fromTo(zw, { attr: { transform: "translate(470 800) scale(.9)" } }, { attr: { transform: "translate(340 520) scale(4)" }, duration: .5, ease: "power3.out" }, a5 - .1)
+    .fromTo("#n_label", { opacity: 0, y: -160, rotation: -20 }, { opacity: 1, y: 0, rotation: 5, duration: .45, ease: "back.out(2.4)" }, tLbl - .05)
+    .to("#n_label", { rotation: -3, duration: .5, repeat: 3, yoyo: true, ease: "sine.inOut" }, tLbl + .4);
+  shake(tLbl + .1, 10, 5);
+})();
+
+// =============== STORY ===============
+(() => {
+  const [a6] = clip("c6"), [a7, b7] = clip("c7"), [a8, b8] = clip("c8");
+  const tX = src2dst("c7", 711.20), tSend = src2dst("c8", 744.54), tFreeze = src2dst("c8", 746.70);
+  const S = $("#t_svg");
+  const hist = el("path", { d: "M 540 690 L 540 840", stroke: "#f0d9a0", "stroke-width": 8, "stroke-dasharray": "16 12", fill: "none" }, S);
+  const send = el("path", { d: "M 540 1010 L 540 1200", stroke: "#46d696", "stroke-width": 10, fill: "none", "stroke-linecap": "round" }, S);
+  gsap.set([hist, send], { opacity: 0 });
+  tl.fromTo("#t_head", { x: 400, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "back.out(1.6)" }, a6 - .15)
+    .fromTo("#t_mine", { scale: .5, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, ease: "back.out(2)" }, a6 + .4)
+    .fromTo("#t_wallex", { y: -80, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: "back.out(2)" }, a7)
+    .set(hist, { opacity: 1 }, tX - .1);
+  draw(hist, tX - .1, .5);
+  tl.fromTo("#t_hist", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .35, ease: "back.out(2.4)" }, tX + .3)
+    .to("#t_mine", { borderColor: "#ff6b76", boxShadow: "0 0 50px rgba(255,75,92,.5)", duration: .4 }, b7 - .3)
+    // send to the foreign exchange
+    .fromTo("#t_cex", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: "back.out(2)" }, a8 + .1)
+    .set(send, { opacity: 1 }, tSend - .6);
+  draw(send, tSend - .6, .6);
+  tl.fromTo("#t_coin", { opacity: 0, y: -140, scale: .6 }, { opacity: 1, y: 0, scale: 1, duration: .5, ease: "power2.out" }, tSend - .9)
+    .to("#t_coin", { y: 110, scale: .85, duration: .5, ease: "power2.in" }, tSend)
+    // frozen
+    .to("#t_coin", { background: "#9fb6d9", color: "#0b1a40", boxShadow: "0 0 60px rgba(160,200,255,.8)", duration: .3 }, tFreeze)
+    .to("#t_cex", { borderColor: "#ff4b5c", boxShadow: "0 0 60px rgba(255,75,92,.55)", duration: .3 }, tFreeze)
+    .to(send, { attr: { stroke: "#ff4b5c" }, duration: .3 }, tFreeze)
+    .fromTo("#t_lock", { opacity: 0, scale: 3, rotation: -30 }, { opacity: 1, scale: 1, rotation: -8, duration: .35, ease: "back.out(2.2)" }, tFreeze)
+    .fromTo("#t_frozen", { opacity: 0, scale: 2.4, rotation: 8 }, { opacity: 1, scale: 1, rotation: -5, duration: .3, ease: "back.out(2)" }, tFreeze + .15);
+  red(tFreeze); shake(tFreeze + .05, 16, 7);
+})();
+
+// =============== WALLET ===============
+(() => {
+  const [a9, b9] = clip("c9"), [a10, b10] = clip("c10"), tNo = src2dst("c9", 778.88), tMil = src2dst("c10", 806.36);
+  const old = $("#w_old"), ow = el("g", { transform: "translate(340 560) scale(4)" }, old); ow.innerHTML = WALLET("#ff6b76");
+  const lab = el("g", {}, old); el("rect", { x: 610, y: 470, width: 250, height: 80, rx: 24, fill: "#c7303f", stroke: "#fff", "stroke-width": 4 }, lab);
+  el("text", { x: 735, y: 525, fill: "#fff", "font-size": 42, "font-weight": 900, "text-anchor": "middle", "font-family": "Vaz" }, lab).textContent = "لیبل‌خورده";
+  gsap.set(old, { svgOrigin: "540 760" }); gsap.set("#w_x", { svgOrigin: "540 760" });
+  tl.from("#w_t", { opacity: 0, y: -40, filter: "blur(12px)", duration: .5 }, SC.wallet[0] + .2)
+    .fromTo(old, { scale: .4, opacity: 0 }, { scale: 1, opacity: 1, duration: .5, ease: "back.out(1.8)" }, a9 - .1)
+    .fromTo("#w_x", { opacity: 0, scale: 2 }, { opacity: 1, scale: 1, duration: .3, ease: "back.out(2.5)" }, tNo)
+    .fromTo("#w_no", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: .35, ease: "back.out(2)" }, tNo + .1);
+  red(tNo); shake(tNo, 14, 6);
+  // open a new one... a million of them
+  tl.to([old, "#w_x"], { scale: .2, opacity: 0, duration: .45, ease: "power3.in" }, a10 - .2).to("#w_no", { opacity: 0, duration: .3 }, a10 - .2)
+    .to("#w_t", { opacity: 0, duration: .3 }, a10 - .2);
+  const NW = $("#w_new"); let k = 0;
+  for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) { const x = 140 + c * 200, y = 330 + r * 185, first = r === 2 && c === 2;
+    const g = el("g", { transform: `translate(${x - 70} ${y - 70}) scale(1.4)` }, NW); g.innerHTML = WALLET("#46d696", "#0e3b2c");
+    gsap.set(g, { svgOrigin: `${x} ${y}` });
+    if (first) tl.fromTo(g, { scale: 0, opacity: 0 }, { scale: 1.25, opacity: 1, duration: .45, ease: "back.out(2.4)" }, a10 + .1);
+    else tl.fromTo(g, { scale: 0, opacity: 0 }, { scale: 1, opacity: .9, duration: .3, ease: "back.out(2.4)" }, tMil - .2 + (k++) * .04); }
+  tl.fromTo("#w_free", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .4, ease: "back.out(2.2)" }, tMil + .5);
+})();
+
+// =============== PATH ===============
+(() => {
+  const [a11, b11] = clip("c11"), [a12, b12] = clip("c12");
+  const tEx = src2dst("c11", 386.48), tW1 = src2dst("c11", 387.98), tStr = src2dst("c11", 389.82), tW2 = src2dst("c11", 394.40), tLow = src2dst("c12", 422.08);
+  const P = $("#p_svg");
+  const e1 = el("path", { d: "M 660 600 L 660 780", stroke: "#8cc4ff", "stroke-width": 10, fill: "none", "stroke-linecap": "round" }, P);
+  const e2 = el("path", { d: "M 660 950 L 660 1130", stroke: "#46d696", "stroke-width": 10, fill: "none", "stroke-linecap": "round" }, P);
+  const arrow = (y, c) => { const h = el("path", { d: `M 630 ${y - 30} L 660 ${y} L 690 ${y - 30}`, stroke: c, "stroke-width": 10, fill: "none", "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }, P); return h; };
+  const h1 = arrow(775, "#8cc4ff"), h2 = arrow(1125, "#46d696");
+  gsap.set([e1, e2], { opacity: 0 });
+  tl.from("#p_t", { opacity: 0, y: -40, filter: "blur(12px)", duration: .5 }, SC.path[0] + .2)
+    .fromTo("#p_meter", { x: -300, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "power3.out" }, a11)
+    .fromTo("#p_n0", { x: 500, opacity: 0 }, { x: 0, opacity: 1, duration: .45, ease: "back.out(1.8)" }, tEx - .2)
+    .set(e1, { opacity: 1 }, tW1 - .2);
+  draw(e1, tW1 - .2, .45);
+  tl.to(h1, { opacity: 1, duration: .1 }, tW1 + .2)
+    .fromTo("#p_n1", { x: 500, opacity: 0 }, { x: 0, opacity: 1, duration: .45, ease: "back.out(1.8)" }, tW1 + .1)
+    .to("#p_fill", { height: "62%", duration: .6, ease: "power2.out" }, tW1 + .3)
+    .call(() => { $("#p_pct").textContent = "متوسط"; $("#p_pct").style.color = "#f0d9a0"; }, [], tW1 + .5)
+    .call(() => { $("#p_pct").textContent = "زیاد"; $("#p_pct").style.color = "#ff6b76"; }, [], tW1 + .49)
+    .to("#p_t", { scale: 1.08, duration: .25, yoyo: true, repeat: 1 }, tStr)
+    .set(e2, { opacity: 1 }, tW2 - .2);
+  draw(e2, tW2 - .2, .45);
+  tl.to(h2, { opacity: 1, duration: .1 }, tW2 + .2)
+    .fromTo("#p_n2", { x: 500, opacity: 0 }, { x: 0, opacity: 1, duration: .45, ease: "back.out(1.8)" }, tW2 + .1)
+    .to("#p_fill", { height: "34%", duration: .6, ease: "power2.out" }, tW2 + .3)
+    .call(() => { $("#p_pct").textContent = "کم"; $("#p_pct").style.color = "#46d696"; }, [], tW2 + .5)
+    .call(() => { $("#p_pct").textContent = "متوسط"; $("#p_pct").style.color = "#f0d9a0"; }, [], tW2 + .49)
+    // a coin travels the whole route
+    .to("#p_fill", { height: "12%", duration: .8, ease: "power3.out" }, tLow)
+    .to("#p_n2", { boxShadow: "0 0 70px rgba(70,214,150,.65)", scale: 1.05, duration: .4 }, tLow)
+    .to("#p_meter", { scale: 1.06, duration: .3, yoyo: true, repeat: 1 }, tLow);
+  const coin = el("g", { opacity: 0 }, P); el("circle", { cx: 0, cy: 0, r: 34, fill: "#26a17b", stroke: "#fff", "stroke-width": 5 }, coin);
+  el("text", { x: 0, y: 14, fill: "#fff", "font-size": 40, "font-weight": 900, "text-anchor": "middle", "font-family": "DejaVu Sans" }, coin).textContent = "₮";
+  tl.set(coin, { opacity: 1, attr: { transform: "translate(660 515)" } }, a12)
+    .to(coin, { attr: { transform: "translate(660 865)" }, duration: .7, ease: "power2.inOut" }, a12 + .1)
+    .to(coin, { attr: { transform: "translate(660 1215)" }, duration: .7, ease: "power2.inOut" }, a12 + .9)
+    .to(coin, { opacity: 0, duration: .2 }, a12 + 1.6);
+})();
+
+// =============== SOBHAN ===============
+(() => {
+  const s = SC.sobhan[0], [a13, b13] = clip("c13"), tOk = src2dst("c13", 673.52);
+  tl.fromTo("#o_ph", { scale: 1.15 }, { scale: 1.02, duration: SC.sobhan[1] - s + .5, ease: "none" }, s)
+    .fromTo("#o_sob", { x: 500, opacity: 0 }, { x: 0, opacity: 1, duration: .7, ease: "power3.out" }, s)
+    .fromTo("#o_name", { x: 300, opacity: 0 }, { x: 0, opacity: 1, duration: .5, ease: "back.out(1.8)" }, s + .5)
+    .from("#o_t", { opacity: 0, y: -40, filter: "blur(14px)", duration: .6, ease: "power3.out" }, s + .2)
+    .fromTo("#o_shield", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: .5, ease: "back.out(2)" }, tOk - .3);
+  draw($("#o_check"), tOk + .1, .45);
+  tl.to("#o_shield", { filter: "drop-shadow(0 0 40px rgba(70,214,150,.8))", duration: .4 }, tOk + .5);
+})();
+
+// =============== OUTRO ===============
+(() => {
+  const s = SC.outro[0];
+  tl.fromTo("#u_badge", { scale: .4, opacity: 0 }, { scale: 1, opacity: 1, duration: .7, ease: "back.out(1.8)" }, s + .1)
+    .from("#u_cta", { opacity: 0, y: 30, duration: .5 }, s + .6)
+    .from("#u_cta2", { opacity: 0, y: 30, duration: .5 }, s + .9);
+})();
+
+tl.set({}, {}, T);
+let frame = 0;
+window.seek = t => { tl.seek(t, false); frame++; $("#grain").style.transform = `translate(${(frame * 37) % 200 - 100}px, ${(frame * 53) % 200 - 100}px)`; };
+window.ready = true;
+</script>
+</body>
+</html>

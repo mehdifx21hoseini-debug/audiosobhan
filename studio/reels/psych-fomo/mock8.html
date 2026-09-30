@@ -1,0 +1,262 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-ExtraBold.ttf"); font-weight: 800; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+:root{--navy:#1f2d5c;--navy2:#29386c;--gold:#c9a45c;--gold2:#e8d3a2;--ink:#172040;--sub:#5f6784;--mute:#a4abc0;--hair:#eceef4;--loss:#d64545;--ice:#3b8fd9}
+html,body{margin:0;background:#000}
+#stage{position:relative;width:1920px;height:1080px;overflow:hidden;font-family:"Vaz";color:var(--ink);background:#fff}
+.f{position:absolute;inset:0;display:none}.abs{position:absolute}
+/* brand frame */
+#topbar{position:absolute;left:0;right:0;top:0;height:96px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 64px}
+#topbar .l{display:flex;align-items:center;gap:18px}
+#topbar img{height:62px}
+#topbar .n1{font-weight:900;font-size:26px;color:#fff;line-height:1.1}#topbar .n2{font-weight:500;font-size:15px;color:var(--gold);direction:ltr;text-align:right;letter-spacing:.6px}
+#topbar .ttl{font-weight:700;font-size:22px;color:rgba(255,255,255,.75)} #topbar .ttl b{color:var(--gold)}
+#goldline{position:absolute;left:0;right:0;top:96px;height:4px;background:linear-gradient(90deg,transparent,var(--gold) 20%,var(--gold2) 50%,var(--gold) 80%,transparent)}
+#botbar{position:absolute;left:0;right:0;bottom:0;height:70px;background:var(--navy);display:flex;align-items:center;justify-content:space-between;padding:0 64px;color:rgba(255,255,255,.7);font-weight:500;font-size:20px}
+#dots{display:flex;gap:12px;align-items:center;direction:ltr} #dots i{width:34px;height:6px;border-radius:3px;background:rgba(255,255,255,.2)} #dots i.on{background:var(--gold)}
+#cap{position:absolute;bottom:96px;left:50%;transform:translateX(-50%);padding:12px 34px;border-radius:30px;background:#f4f5f9;border:1px solid var(--hair);font-weight:700;font-size:30px;color:var(--ink);white-space:nowrap}
+#cap .d{color:var(--mute)} #cap .a{color:var(--navy2);box-shadow:inset 0 -10px 0 rgba(201,164,92,.35)}
+.kick{font-weight:800;font-size:22px;color:var(--gold);letter-spacing:1px}
+.h1{font-weight:900;font-size:78px;line-height:1.2;color:var(--navy)}
+.p{font-weight:500;font-size:30px;line-height:1.75;color:var(--sub)}
+.gold{color:var(--gold)}
+.sticker{filter:drop-shadow(0 14px 24px rgba(23,32,64,.18))}
+.card{position:absolute;border-radius:26px;background:#fff;border:1px solid var(--hair);box-shadow:0 20px 50px rgba(23,32,64,.08)}
+.num{font-weight:900;font-size:26px;color:#fff;background:var(--navy);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+svg text{font-family:"Vaz"}
+</style></head><body><div id="stage">
+<svg width="0" height="0" style="position:absolute"><defs>
+  <linearGradient id="gGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2dfb0"/><stop offset="1" stop-color="#c9a45c"/></linearGradient>
+  <linearGradient id="gNavy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a4d8f"/><stop offset="1" stop-color="#1f2d5c"/></linearGradient>
+  <linearGradient id="gIce" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e6f3ff"/><stop offset="1" stop-color="#9ccaf2"/></linearGradient>
+  <radialGradient id="soft" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#f3eee2"/><stop offset="1" stop-color="#f3eee2" stop-opacity="0"/></radialGradient>
+
+  <radialGradient id="face" cx=".38" cy=".32" r=".75"><stop offset="0" stop-color="#fbeac2"/><stop offset=".55" stop-color="#e9c887"/><stop offset="1" stop-color="#c79c52"/></radialGradient>
+  <radialGradient id="blush" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#e8826d" stop-opacity=".55"/><stop offset="1" stop-color="#e8826d" stop-opacity="0"/></radialGradient>
+  <linearGradient id="drop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe2ff"/><stop offset="1" stop-color="#4c9be0"/></linearGradient>
+  <linearGradient id="ice1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4fbff"/><stop offset=".5" stop-color="#bfe0fb"/><stop offset="1" stop-color="#7fb8ec"/></linearGradient>
+  <linearGradient id="pw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eef0f6"/></linearGradient>
+  <linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7e6bb"/><stop offset=".55" stop-color="#d9b56d"/><stop offset="1" stop-color="#b98d42"/></linearGradient>
+  <filter id="bevel" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="16" stdDeviation="14" flood-color="#172040" flood-opacity=".16"/></filter>
+  <filter id="bevelG" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="26" stdDeviation="22" flood-color="#8a6a2c" flood-opacity=".38"/></filter>
+  <symbol id="stFomo" viewBox="0 0 480 480">
+    <circle cx="240" cy="240" r="206" fill="#fff"/>
+    <circle cx="240" cy="240" r="190" fill="url(#face)"/>
+    <ellipse cx="200" cy="130" rx="90" ry="40" fill="#fff" opacity=".35"/>
+    <circle cx="150" cy="290" r="40" fill="url(#blush)"/><circle cx="330" cy="290" r="40" fill="url(#blush)"/>
+    <path d="M150 178 q30 -26 62 -8 M268 170 q32 -18 62 8" stroke="#1f2d5c" stroke-width="11" fill="none" stroke-linecap="round"/>
+    <ellipse cx="190" cy="232" rx="24" ry="28" fill="#fff"/><ellipse cx="290" cy="232" rx="24" ry="28" fill="#fff"/>
+    <circle cx="176" cy="240" r="14" fill="#1f2d5c"/><circle cx="276" cy="240" r="14" fill="#1f2d5c"/>
+    <circle cx="171" cy="235" r="4" fill="#fff"/><circle cx="271" cy="235" r="4" fill="#fff"/>
+    <path d="M200 330 q18 -14 36 -2 q18 12 36 -2" stroke="#1f2d5c" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M356 118 q26 40 0 64 q-26 -24 0 -64z" fill="url(#drop)" stroke="#fff" stroke-width="5"/>
+    <ellipse cx="350" cy="160" rx="5" ry="9" fill="#fff" opacity=".8"/>
+    <g transform="translate(40 318) rotate(-16) scale(.82)">
+      <rect x="0" y="0" width="118" height="196" rx="22" fill="#1f2d5c" stroke="#fff" stroke-width="7"/>
+      <rect x="12" y="20" width="94" height="150" rx="10" fill="#fff"/>
+      <path d="M22 140 L44 118 L60 128 L80 92 L96 72" stroke="#2f9e63" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M82 70 h16 v16" stroke="#2f9e63" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="59" y="60" text-anchor="middle" font-family="Vaz" font-weight="900" font-size="22" fill="#2f9e63">۱۲٪</text>
+    </g>
+  </symbol>
+  <symbol id="stIce" viewBox="0 0 170 170">
+    <circle cx="85" cy="85" r="80" fill="#fff"/>
+    <rect x="30" y="30" width="110" height="110" rx="24" fill="url(#ice1)"/>
+    <path d="M40 48 q10 -12 30 -10" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" opacity=".9"/>
+    <path d="M85 50 v70 M55 67 l60 36 M55 103 l60 -36" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+    <path d="M77 58 l8 8 l8 -8 M77 112 l8 -8 l8 8" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <circle cx="85" cy="85" r="9" fill="#3b8fd9"/>
+    <path d="M118 128 q8 -4 12 -14" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>
+  </symbol>
+  <path id="pc" d="M0 0 H100 C100 -40 176 -40 176 0 H276 V100 C316 100 316 176 276 176 V276 H176 C176 236 100 236 100 276 H0 V176 C40 176 40 100 0 100 Z"/>
+  <symbol id="icBook" viewBox="0 0 60 60"><path d="M8 12 q12 -4 22 4 q10 -8 22 -4 v34 q-12 -4 -22 4 q-10 -8 -22 -4z M30 16 v34" stroke="#1f2d5c" stroke-width="4" fill="none" stroke-linejoin="round"/></symbol>
+  <symbol id="icTarget" viewBox="0 0 60 60"><circle cx="30" cy="30" r="22" stroke="#1f2d5c" stroke-width="4" fill="none"/><circle cx="30" cy="30" r="12" stroke="#1f2d5c" stroke-width="4" fill="none"/><circle cx="30" cy="30" r="3.5" fill="#1f2d5c"/><path d="M30 30 L52 8 M44 8 h8 v8" stroke="#1f2d5c" stroke-width="4" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="icShield" viewBox="0 0 60 60"><path d="M30 6 L50 14 V30 C50 43 41 51 30 55 C19 51 10 43 10 30 V14 Z" stroke="#1f2d5c" stroke-width="4" fill="none" stroke-linejoin="round"/><path d="M21 30 l7 7 l12 -13" stroke="#1f2d5c" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="icBrain" viewBox="0 0 60 60"><path d="M28 10 c-7 -3 -15 2 -15 9 c-6 2 -8 9 -4 14 c-3 5 0 12 6 13 c1 6 8 9 13 6 z M32 10 c7 -3 15 2 15 9 c6 2 8 9 4 14 c3 5 0 12 -6 13 c-1 6 -8 9 -13 6 z" stroke="#fff" stroke-width="4" fill="none" stroke-linejoin="round"/><path d="M18 24 q6 2 8 8 M42 24 q-6 2 -8 8 M20 40 q5 -3 8 0 M40 40 q-5 -3 -8 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></symbol>
+
+  <symbol id="stTrader" viewBox="0 0 480 480">
+    <circle cx="240" cy="240" r="210" fill="#fff"/>
+    <circle cx="240" cy="240" r="194" fill="#f5efe2"/>
+    <clipPath id="cc"><circle cx="240" cy="240" r="194"/></clipPath>
+    <g clip-path="url(#cc)"><g transform="translate(0 -34)">
+      <!-- body / hoodie -->
+      <path d="M92 480 C96 380 150 330 240 330 C330 330 384 380 388 480 Z" fill="url(#gNavy)"/>
+      <path d="M200 334 Q240 372 280 334" fill="none" stroke="#c9a45c" stroke-width="6" stroke-linecap="round"/>
+      <path d="M214 350 v40 M266 350 v40" stroke="#e8d3a2" stroke-width="5" stroke-linecap="round"/>
+      <!-- neck -->
+      <path d="M218 292 h44 v42 q-22 14 -44 0z" fill="#e3b58e"/>
+      <!-- head -->
+      <ellipse cx="240" cy="220" rx="78" ry="88" fill="#f2c9a4"/>
+      <ellipse cx="163" cy="228" rx="14" ry="20" fill="#e8b891"/><ellipse cx="317" cy="228" rx="14" ry="20" fill="#e8b891"/>
+      <!-- hair -->
+      <path d="M160 206 C150 140 200 112 246 118 C300 120 330 150 320 206 C312 176 290 160 262 164 C236 150 196 156 176 176 C168 184 164 196 160 206Z" fill="#2a2f45"/>
+      <path d="M232 124 C250 110 282 114 296 132" fill="none" stroke="#3b4260" stroke-width="6" stroke-linecap="round"/>
+      <!-- brows (worried) -->
+      <path d="M190 190 q16 -12 34 -4 M256 186 q18 -8 34 4" stroke="#2a2f45" stroke-width="7" fill="none" stroke-linecap="round"/>
+      <!-- eyes looking down-left to phone -->
+      <ellipse cx="208" cy="218" rx="15" ry="17" fill="#fff"/><ellipse cx="272" cy="218" rx="15" ry="17" fill="#fff"/>
+      <circle cx="201" cy="225" r="8.5" fill="#1f2d5c"/><circle cx="265" cy="225" r="8.5" fill="#1f2d5c"/>
+      <circle cx="198" cy="222" r="2.6" fill="#fff"/><circle cx="262" cy="222" r="2.6" fill="#fff"/>
+      <!-- nose, mouth (nervous) -->
+      <path d="M240 232 q-6 18 4 22" stroke="#d49b73" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M220 276 q10 -8 20 0 q10 8 20 0" stroke="#8a3e2e" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <circle cx="190" cy="254" r="14" fill="#ea9b86" opacity=".45"/><circle cx="290" cy="254" r="14" fill="#ea9b86" opacity=".45"/>
+      <!-- sweat -->
+      <path d="M318 168 q14 22 0 34 q-14 -12 0 -34z" fill="url(#drop)" stroke="#fff" stroke-width="3"/>
+      <!-- hands + phone -->
+      <g transform="translate(126 296) rotate(-12)">
+        <rect x="0" y="0" width="92" height="150" rx="16" fill="#172040" stroke="#fff" stroke-width="5"/>
+        <rect x="9" y="14" width="74" height="118" rx="8" fill="#fff"/>
+        <path d="M18 112 L34 94 L46 102 L62 74 L74 58" stroke="#2f9e63" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M62 56 h13 v13" stroke="#2f9e63" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <ellipse cx="-4" cy="96" rx="20" ry="26" fill="#f2c9a4"/><ellipse cx="96" cy="100" rx="18" ry="24" fill="#f2c9a4"/>
+      </g>
+    </g></g>
+    <!-- floating icons: clock + up arrow -->
+    <g transform="translate(388 116)"><circle r="40" fill="#fff" filter="url(#bevel)"/><circle r="28" fill="none" stroke="#1f2d5c" stroke-width="6"/><path d="M0 -14 v14 l10 8" stroke="#c9a45c" stroke-width="6" fill="none" stroke-linecap="round"/></g>
+    <g transform="translate(84 136)"><circle r="34" fill="#2f9e63"/><path d="M-12 10 L12 -12 M0 -12 h12 v12" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+    <g stroke="#c9a45c" stroke-width="6" stroke-linecap="round"><path d="M150 70 l14 20"/><path d="M118 96 l22 10"/></g>
+  </symbol>
+
+  <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3cfad"/><stop offset="1" stop-color="#dca97f"/></linearGradient>
+  <linearGradient id="blazer" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34467f"/><stop offset="1" stop-color="#1b2750"/></linearGradient>
+  <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3f55"/><stop offset="1" stop-color="#1c2030"/></linearGradient>
+  <linearGradient id="stub" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7b6a60" stop-opacity="0"/><stop offset="1" stop-color="#7b6a60" stop-opacity=".22"/></linearGradient>
+  <symbol id="stPro" viewBox="0 0 480 480">
+    <circle cx="240" cy="240" r="210" fill="#fff"/>
+    <circle cx="240" cy="240" r="194" fill="#f5efe2"/>
+    <clipPath id="cp2"><circle cx="240" cy="240" r="194"/></clipPath>
+    <g clip-path="url(#cp2)"><g transform="translate(0 -12)">
+      <!-- blazer -->
+      <path d="M70 480 C78 370 140 318 240 314 C340 318 402 370 410 480 Z" fill="url(#blazer)"/>
+      <!-- shirt V + collar -->
+      <path d="M205 318 L240 398 L275 318 Z" fill="#ffffff"/>
+      <path d="M205 318 L226 350 L240 330 L254 350 L275 318 L262 306 L240 322 L218 306 Z" fill="#f1f3f8" stroke="#dfe3ee" stroke-width="2"/>
+      <!-- lapels -->
+      <path d="M198 316 L236 404 L214 360 L180 350 Z" fill="#2a3a70"/><path d="M282 316 L244 404 L266 360 L300 350 Z" fill="#2a3a70"/>
+      <path d="M318 392 h30 l-6 12 h-18 z" fill="#c9a45c"/>
+      <!-- neck -->
+      <path d="M220 268 h40 v44 q-20 14 -40 0 z" fill="#d9a67c"/>
+      <!-- head -->
+      <path d="M186 180 C186 130 214 108 244 108 C276 108 302 132 302 180 C302 226 292 258 268 276 C258 284 248 288 244 288 C238 288 228 284 218 276 C196 258 186 226 186 180 Z" fill="url(#skin)"/>
+      <path d="M196 236 C204 262 222 282 244 288 C266 282 286 262 294 236 C284 262 266 276 244 280 C222 276 206 262 196 236Z" fill="url(#stub)"/>
+      <ellipse cx="186" cy="194" rx="10" ry="18" fill="#dcaa80"/><ellipse cx="302" cy="194" rx="10" ry="18" fill="#dcaa80"/>
+      <!-- hair: side part with volume, natural hairline -->
+      <path d="M180 200 C170 150 184 104 232 92 C278 82 318 104 312 160 C312 176 308 190 304 200 C300 180 294 166 284 158 C270 150 252 150 236 146 C218 142 204 150 196 160 C190 170 186 184 184 200 Z" fill="url(#hair)"/>
+      <path d="M236 146 C250 124 280 116 300 126" stroke="#565d7c" stroke-width="4" fill="none" stroke-linecap="round" opacity=".8"/>
+      <path d="M212 104 C232 96 262 94 286 104" stroke="#565d7c" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>
+      <!-- brows: concerned -->
+      <path d="M204 170 L230 166" stroke="#2a2f45" stroke-width="6" stroke-linecap="round" transform="rotate(8 217 168)"/>
+      <path d="M258 166 L284 170" stroke="#2a2f45" stroke-width="6" stroke-linecap="round" transform="rotate(-8 271 168)"/>
+      <!-- eyes: almond, looking down-left -->
+      <path d="M204 190 q13 -9 26 0 q-13 8 -26 0z" fill="#fff"/><path d="M258 190 q13 -9 26 0 q-13 8 -26 0z" fill="#fff"/>
+      <circle cx="213" cy="193" r="5" fill="#2a2f45"/><circle cx="267" cy="193" r="5" fill="#2a2f45"/>
+      <path d="M204 190 q13 -9 26 0 M258 190 q13 -9 26 0" stroke="#2a2f45" stroke-width="2.5" fill="none"/>
+      <!-- nose + mouth -->
+      <path d="M244 196 q-6 26 2 32 q6 2 10 -2" stroke="#c48a61" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <path d="M226 252 q18 -6 36 0" stroke="#8a4a3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <!-- hand + phone -->
+      <g transform="translate(130 296) rotate(-10)">
+        <rect x="0" y="0" width="84" height="146" rx="14" fill="#172040" stroke="#fff" stroke-width="4"/>
+        <rect x="8" y="12" width="68" height="118" rx="7" fill="#fff"/>
+        <path d="M16 110 L30 94 L42 100 L56 72 L68 56" stroke="#2f9e63" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M56 54 h12 v12" stroke="#2f9e63" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M78 70 q22 -2 26 18 q2 22 -18 30 q-10 2 -10 -8z" fill="#e2b089"/>
+      </g>
+    </g></g>
+    <g transform="translate(392 118)"><circle r="36" fill="#fff" filter="url(#bevel)"/><circle r="24" fill="none" stroke="#1f2d5c" stroke-width="5"/><path d="M0 -12 v12 l9 7" stroke="#c9a45c" stroke-width="5" fill="none" stroke-linecap="round"/></g>
+    <g transform="translate(88 140)"><circle r="30" fill="#fff" filter="url(#bevel)"/><path d="M-11 9 L11 -11 M0 -11 h11 v11" stroke="#2f9e63" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  </symbol>
+</defs></svg>
+
+<!-- 1 · COVER: big number + title + sticker -->
+<div class="f">
+  <div class="abs" style="left:170px;top:190px;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,#f5f0e4 0%,#fff 70%)"></div>
+  <svg class="abs sticker" style="left:230px;top:220px;overflow:visible" width="520" height="520"><use href="#stPro"/></svg>
+  <div class="abs" style="right:140px;top:220px;font-weight:900;font-size:180px;line-height:1;color:transparent;-webkit-text-stroke:3px #e8d3a2;direction:ltr">01</div>
+  <div class="abs kick" style="right:140px;top:440px">مفهوم روانشناسی</div>
+  <div class="abs h1" style="right:140px;top:480px;font-size:110px;direction:ltr;text-align:right">FOMO</div>
+  <div class="abs" style="right:140px;top:620px;font-weight:800;font-size:54px;color:var(--ink)">ترسِ <span style="box-shadow:inset 0 -18px 0 rgba(201,164,92,.35)">جا ماندن</span></div>
+  <div class="abs p" style="right:140px;top:710px;width:720px">وقتی بازار بدون تو حرکت می‌کنه و ذهن، بدون مشورت با پلن، تصمیم می‌گیره.</div>
+</div>
+
+<!-- 2 · STORY: chat bubble + sticker chart -->
+<div class="f">
+  <div class="abs kick" style="right:140px;top:170px">داستان واقعی</div>
+  <div class="abs h1" style="right:140px;top:205px;font-size:66px">«ترسیدم جا بمونم...»</div>
+  <div class="abs" style="right:140px;top:330px;width:760px;display:flex;flex-direction:column;gap:22px">
+    <div style="align-self:flex-start;max-width:640px;padding:22px 30px;border-radius:26px 26px 26px 8px;background:var(--navy);color:#fff;font-weight:700;font-size:32px;line-height:1.6;box-shadow:0 14px 30px rgba(31,45,92,.25)">دیدم دلار خیلی رفته بالا...</div>
+    <div style="align-self:flex-start;max-width:640px;padding:22px 30px;border-radius:26px 26px 26px 8px;background:var(--navy);color:#fff;font-weight:700;font-size:32px;line-height:1.6;box-shadow:0 14px 30px rgba(31,45,92,.25)">فروختم که <span class="gold">پایین‌تر بخرم</span>.</div>
+    <div style="align-self:flex-end;max-width:560px;padding:20px 28px;border-radius:26px 26px 8px 26px;background:#f6f1e6;border:1px solid var(--gold2);color:var(--ink);font-weight:700;font-size:30px;line-height:1.6">طبق پلنت بود؟ <span style="color:var(--loss)">✕ نه</span></div>
+  </div>
+  <div class="card" style="left:120px;top:190px;width:820px;height:640px">
+    <div class="abs" style="right:40px;top:34px;font-weight:800;font-size:28px;color:var(--navy)">دلار</div>
+    <div class="abs" style="left:40px;top:30px;padding:6px 18px;border-radius:20px;background:#fdeeee;color:var(--loss);font-weight:800;font-size:24px">ضرر سنگین</div>
+    <svg class="abs" style="left:30px;top:100px" width="760" height="500" viewBox="0 0 760 500">
+      <defs><linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2d5c" stop-opacity=".12"/><stop offset="1" stop-color="#1f2d5c" stop-opacity="0"/></linearGradient></defs>
+      <g stroke="#eef0f5" stroke-width="2"><line x1="20" y1="120" x2="740" y2="120"/><line x1="20" y1="240" x2="740" y2="240"/><line x1="20" y1="360" x2="740" y2="360"/></g>
+      <path d="M20 420 C120 400 200 340 300 260 C340 300 370 330 410 330 C500 290 580 200 740 60 V480 H20Z" fill="url(#ar)"/>
+      <path d="M20 420 C120 400 200 340 300 260 C340 300 370 330 410 330" fill="none" stroke="#1f2d5c" stroke-width="7" stroke-linecap="round"/>
+      <path d="M410 330 C500 290 580 200 740 60" fill="none" stroke="#d64545" stroke-width="8" stroke-linecap="round"/>
+      <path d="M300 260 C380 380 470 430 600 450" fill="none" stroke="#c9a45c" stroke-width="4" stroke-dasharray="10 12"/>
+      <text x="610" y="480" fill="#b08a43" font-weight="700" font-size="22">انتظار</text>
+      <g transform="translate(300 260)"><circle r="30" fill="#fff" filter="url(#none)"/><circle r="22" fill="url(#gGold)"/><text y="9" text-anchor="middle" fill="#1f2d5c" font-weight="900" font-size="24">$</text></g>
+      <g font-weight="900" font-size="22" fill="#fff"><g transform="translate(520 245)"><circle r="20" fill="#d64545"/><text y="8" text-anchor="middle">۱</text></g><g transform="translate(630 150)"><circle r="20" fill="#d64545"/><text y="8" text-anchor="middle">۲</text></g><g transform="translate(725 50)"><circle r="20" fill="#d64545"/><text y="8" text-anchor="middle">۳</text></g></g>
+    </svg>
+  </div>
+</div>
+
+<!-- 3 · CONCEPT: two sticker cards -->
+<div class="f">
+  <div class="abs kick" style="right:140px;top:170px">دو واکنش، یک ریشه</div>
+  <div class="abs h1" style="right:140px;top:205px;font-size:66px">وقتی هیجان تصمیم می‌گیره</div>
+  <div class="card" style="right:140px;top:340px;width:760px;height:470px">
+    <svg class="abs sticker" style="right:30px;top:-60px" width="190" height="190"><use href="#stFomo"/></svg>
+    <div class="abs" style="right:40px;top:150px"><div style="font-weight:900;font-size:72px;color:var(--navy);direction:ltr;text-align:right">FOMO</div><div style="font-weight:800;font-size:32px;margin-top:6px">ترس جا ماندن</div></div>
+    <div class="abs p" style="right:40px;top:330px;width:660px">عجله برای ورود یا خروج — بیرون از برنامه.</div>
+  </div>
+  <svg class="abs" style="left:880px;top:540px" width="160" height="70" viewBox="0 0 160 70"><path d="M150 35 H20 M44 12 L18 35 L44 58" stroke="#c9a45c" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="card" style="left:120px;top:340px;width:760px;height:470px">
+    <svg class="abs sticker" style="right:30px;top:-60px" width="190" height="190"><use href="#stIce"/></svg>
+    <div class="abs" style="right:40px;top:150px"><div style="font-weight:900;font-size:72px;color:var(--ice)">فریز</div><div style="font-weight:800;font-size:32px;margin-top:6px">قفل شدن در ضرر</div></div>
+    <div class="abs p" style="right:40px;top:330px;width:660px">می‌بینی، می‌دونی — ولی دستت به بستن نمی‌ره.</div>
+  </div>
+</div>
+
+<!-- 4 · TAKEAWAY: formula + puzzle sticker -->
+<div class="f">
+  <div class="abs kick" style="right:140px;top:190px">جمع‌بندی درس</div>
+  <div class="abs" style="right:140px;top:240px;display:flex;gap:18px;align-items:center;font-weight:900;font-size:60px;color:var(--navy)">
+    <span style="padding:14px 30px;border-radius:20px;background:#f4f5f9">زمانِ درست</span><span class="gold">×</span><span style="padding:14px 30px;border-radius:20px;background:#f4f5f9">اقدامِ درست</span></div>
+  <div class="abs p" style="right:140px;top:400px;width:820px;font-size:36px">ولی برای انجامش <b style="color:var(--ink)">در همون لحظه</b>، یه قطعه‌ی دیگه لازمه:</div>
+  <div class="abs" style="right:140px;top:540px;padding:28px 44px;border-radius:26px;background:var(--navy);box-shadow:0 24px 50px rgba(31,45,92,.3);display:flex;align-items:center;gap:26px">
+    <div style="width:10px;height:90px;border-radius:5px;background:var(--gold)"></div>
+    <div><div style="font-weight:700;font-size:24px;color:var(--gold)">قطعه‌ی گمشده</div><div style="font-weight:900;font-size:68px;color:#fff">روانشناسی معامله‌گری</div></div>
+  </div>
+  <svg class="abs" style="left:150px;top:200px;overflow:visible" width="660" height="660" viewBox="-40 -40 700 700">
+    <g filter="url(#bevel)">
+      <g transform="translate(20 20)"><use href="#pc" fill="url(#pw)" stroke="#dfe3ee" stroke-width="3"/><path d="M14 14 H90" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".9"/><use href="#icBook" x="108" y="78" width="60" height="60"/><text x="138" y="190" text-anchor="middle" font-family="Vaz" font-weight="800" font-size="30" fill="#1f2d5c">دانش</text></g>
+      <g transform="translate(316 20)"><use href="#pc" fill="url(#pw)" stroke="#dfe3ee" stroke-width="3"/><use href="#icTarget" x="108" y="78" width="60" height="60"/><text x="138" y="190" text-anchor="middle" font-family="Vaz" font-weight="800" font-size="30" fill="#1f2d5c">استراتژی</text></g>
+      <g transform="translate(20 316)"><use href="#pc" fill="url(#pw)" stroke="#dfe3ee" stroke-width="3"/><use href="#icShield" x="108" y="78" width="60" height="60"/><text x="138" y="190" text-anchor="middle" font-family="Vaz" font-weight="800" font-size="28" fill="#1f2d5c">مدیریت ریسک</text></g>
+    </g>
+    <g transform="translate(316 316)"><use href="#pc" fill="#faf6ec" stroke="#c9a45c" stroke-width="3" stroke-dasharray="10 10"/></g>
+    <g filter="url(#bevelG)" transform="translate(356 270) rotate(-9 138 138)">
+      <use href="#pc" fill="url(#pg)" stroke="#fff" stroke-width="6"/>
+      <path d="M18 18 H88" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".7"/>
+      <circle cx="138" cy="106" r="40" fill="#1f2d5c"/><use href="#icBrain" x="110" y="78" width="56" height="56"/>
+      <text x="138" y="196" text-anchor="middle" font-family="Vaz" font-weight="900" font-size="32" fill="#1f2d5c">روانشناسی</text>
+    </g>
+  </svg>
+</div>
+
+<div id="topbar"><div class="l"><img src="../../brand/logo_white_gold.png"><div><div class="n1">آکادمی سبحان صمدی</div><div class="n2">Sobhan Samadi Academy</div></div></div><div class="ttl">روانشناسی معامله‌گری · <b>هیجان و تصمیم</b></div></div>
+<div id="goldline"></div>
+<div id="cap"></div>
+<div id="botbar"><span>سبحان صمدی</span><div id="dots"><i></i><i></i><i></i><i></i></div><span style="direction:ltr">sobhansamadi.com</span></div>
+</div><script>
+const caps=[`با یه صدای لرزون گفت: <span class="a">ترسیدم جا بمونم</span>`,`ولی بعدش رفت بالا، <span class="a">رفت بالا</span>، <span class="d">رفت بالا</span>`,`من تو ضرر سنگین ولی <span class="a">فریز</span> <span class="d">شده بودم</span>`,`نیاز به یه پازلی داره به نام <span class="a">روانشناسی</span>`];
+window.DUR=4;window.seek=t=>{const k=Math.floor(t);document.querySelectorAll('.f').forEach((e,i)=>e.style.display=i===k?'block':'none');cap.innerHTML=caps[k];document.querySelectorAll('#dots i').forEach((d,i)=>d.classList.toggle('on',i<=k))};
+document.fonts.ready.then(()=>{window.seek(0);window.ready=true});
+</script></body></html>
