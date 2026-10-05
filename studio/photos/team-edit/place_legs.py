@@ -64,6 +64,14 @@ for ty in range(-12, L.shape[0], 12):
 tex /= np.maximum(wsum, 1e-3)
 tex *= hpB[flat].std() / max(tex.std(), 1e-3)
 print("weave patches", len(cands))
+# skin: same soft warm/yellow cast as the rest of the group (their faces ~ L127 a141 b151)
+skin = (A > 0.5) & (L[..., 1] > 131) & (L[..., 0] > 45) & ~suit & ~shirt
+sk = cv2.GaussianBlur(cv2.morphologyEx(skin.astype(np.uint8), cv2.MORPH_CLOSE, np.ones((7, 7), np.uint8)).astype(np.float32), (0, 0), 2.0) * (A > 0.3)
+sv = L[skin]
+L[..., 0] += sk * max(0.0, (127 - np.median(sv[:, 0])) * 0.7)
+L[..., 1] += sk * (141 - np.median(sv[:, 1]))
+L[..., 2] += sk * (151 - np.median(sv[:, 2]))
+print("skin before", np.median(sv, 0))
 P_ = cv2.cvtColor(np.clip(L, 0, 255).astype(np.uint8), cv2.COLOR_LAB2BGR).astype(np.float32)
 # undo the AI softness on the suit: gentle unsharp + weave
 sharp = cv2.addWeighted(P_, 1.7, cv2.GaussianBlur(P_, (0, 0), 1.6), -0.7, 0)
