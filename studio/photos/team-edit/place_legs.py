@@ -33,7 +33,7 @@ ref_shirt = B_lab[p3m & (B_lab[..., 0] > 170) & (yyB > 300) & (yyB < 480)]
 hh = L.shape[0]; ry = np.arange(hh)[:, None]
 torso = (ry > (250 - top) * k) & (A > 0.5)
 suit = torso & (L[..., 0] < 75)
-shirt = torso & (L[..., 0] > 160) & (np.abs(L[..., 1] - 128) < 12) & (np.abs(L[..., 2] - 128) < 18)
+shirt = torso & (L[..., 0] > 135) & (np.abs(L[..., 1] - 128) < 12) & (np.abs(L[..., 2] - 128) < 20)
 def match(mask, ref, wl=1.0):
     S_ = L[mask]
     for c in range(3):
@@ -42,7 +42,7 @@ def match(mask, ref, wl=1.0):
         L[..., c] = np.where(mask, L[..., c] * (1 - w_) + tgt * w_, L[..., c])
 soft_suit = cv2.GaussianBlur(suit.astype(np.float32), (0, 0), 1.5)
 soft_shirt = cv2.GaussianBlur(shirt.astype(np.float32), (0, 0), 1.5)
-L0 = L.copy(); match(suit, ref_suit); Ls = L.copy(); L[:] = L0; match(shirt, ref_shirt, 0.9); Lh = L.copy()
+L0 = L.copy(); match(suit, ref_suit); Ls = L.copy(); L[:] = L0; match(shirt, ref_shirt, 1.0); Lh = L.copy()
 L = L0 * (1 - soft_suit[..., None] - soft_shirt[..., None]) + Ls * soft_suit[..., None] + Lh * soft_shirt[..., None]
 # a touch deeper and less sheen, like the jackets on the right
 Ld_ = L[..., 0]; deep = np.where(Ld_ > 26, 26 + (Ld_ - 26) * 0.7, Ld_) * 0.86
