@@ -1,8 +1,9 @@
 """Place the new team member. usage: place.py base.jpg out.jpg [left]  (left = in place of the removed pair)"""
 import sys, cv2, numpy as np
 base = cv2.imread(sys.argv[1]).astype(np.float32)
-LEFT = len(sys.argv) > 3 and sys.argv[3] == "left"
-tag = "person2" if LEFT else "person"
+MODE = sys.argv[3] if len(sys.argv) > 3 else "right"
+LEFT = MODE in ("left", "user")
+tag = {"right": "person", "left": "person2", "user": "person3"}[MODE]
 P = cv2.imread(f"newguy/{tag}.png").astype(np.float32)
 A = cv2.imread(f"newguy/{tag}_alpha.png", 0).astype(np.float32) / 255
 ys, xs = np.nonzero(A > 0.5)
@@ -31,6 +32,20 @@ cv2.ellipse(sh, (x0 + w // 2, FEET_Y - 6), (int(w * 0.46), 22), 0, 0, 360, 1, -1
 sh = cv2.GaussianBlur(sh, (0, 0), 14) * 0.55
 foot = np.zeros((H, W), np.float32)
 cv2.ellipse(foot, (x0 + w // 2, FEET_Y - 4), (int(w * 0.36), 9), 0, 0, 360, 1, -1)
+if MODE == "user":                                       # wide stance: one contact shadow per shoe
+    foot[:] = 0; sh[:] = 0
+    lowA = A[int(h * 0.85):]
+    for xa_, xb_ in ((0, w // 2), (w // 2, w)):
+        cols = np.nonzero(lowA[:, xa_:xb_].max(0) > 0.5)[0]
+        rows = np.nonzero(lowA[:, xa_:xb_].max(1) > 0.5)[0]
+        if not len(cols): continue
+        fy = y0 + int(h * 0.85) + rows.max(); fx0, fx1 = x0 + xa_ + cols.min(), x0 + xa_ + cols.max()
+        e = np.zeros((H, W), np.float32)
+        cv2.ellipse(e, ((fx0 + fx1) // 2, fy - 3), ((fx1 - fx0) // 2 + 6, 7), 0, 0, 360, 1, -1)
+        foot = np.maximum(foot, e)
+        e2 = np.zeros((H, W), np.float32)
+        cv2.ellipse(e2, ((fx0 + fx1) // 2, fy - 2), ((fx1 - fx0) // 2 + 22, 16), 0, 0, 360, 1, -1)
+        sh = np.maximum(sh, cv2.GaussianBlur(e2, (0, 0), 10) * 0.5)
 sh = np.maximum(sh, cv2.GaussianBlur(foot, (0, 0), 4) * 0.75)
 out = base * (1 - sh[..., None])
 # person
