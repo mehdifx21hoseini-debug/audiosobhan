@@ -44,6 +44,9 @@ soft_suit = cv2.GaussianBlur(suit.astype(np.float32), (0, 0), 1.5)
 soft_shirt = cv2.GaussianBlur(shirt.astype(np.float32), (0, 0), 1.5)
 L0 = L.copy(); match(suit, ref_suit); Ls = L.copy(); L[:] = L0; match(shirt, ref_shirt, 0.9); Lh = L.copy()
 L = L0 * (1 - soft_suit[..., None] - soft_shirt[..., None]) + Ls * soft_suit[..., None] + Lh * soft_shirt[..., None]
+# a touch deeper and less sheen, like the jackets on the right
+Ld_ = L[..., 0]; deep = np.where(Ld_ > 26, 26 + (Ld_ - 26) * 0.7, Ld_) * 0.86
+L[..., 0] = Ld_ * (1 - soft_suit) + deep * soft_suit
 # real weave: high-pass detail from person 5's jacket, mirror-tiled over the suit
 # fine weave only: clipped high-pass of flat fabric on person 5's jacket, randomly quilted
 Lb = B_lab[..., 0]
