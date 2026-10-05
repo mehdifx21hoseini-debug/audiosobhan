@@ -8,7 +8,7 @@ P = cv2.imread(f"newguy/{tag}.png").astype(np.float32)
 A = cv2.imread(f"newguy/{tag}_alpha.png", 0).astype(np.float32) / 255
 ys, xs = np.nonzero(A > 0.5)
 top, bot, left, right = ys.min(), ys.max(), xs.min(), xs.max()
-H_TARGET, FEET_Y, LEFT_X = (1292, 1568, 806) if LEFT else (1318, 1597, 2018)                    # p5: ~1320 px tall, feet at ~1590
+H_TARGET, FEET_Y, LEFT_X = {"left": (1292, 1568, 806), "user": (1352, 1570, 790), "right": (1318, 1597, 2018)}[MODE]                    # p5: ~1320 px tall, feet at ~1590
 k = H_TARGET / (bot - top)
 P = cv2.resize(P[top:bot + 1, left:right + 1], None, fx=k, fy=k, interpolation=cv2.INTER_AREA)
 A = cv2.resize(A[top:bot + 1, left:right + 1], (P.shape[1], P.shape[0]), interpolation=cv2.INTER_AREA)
@@ -17,12 +17,13 @@ ref_m = cv2.imread("mask_p5.png", 0) > 0
 R = cv2.cvtColor(base.astype(np.uint8), cv2.COLOR_BGR2LAB).astype(np.float32)[ref_m]
 L = cv2.cvtColor(P.astype(np.uint8), cv2.COLOR_BGR2LAB).astype(np.float32)
 pm = A > 0.9; S = L[pm]
-for c, wgt in ((0, 0.8), (1, 0.7), (2, 0.7)):
+for c, wgt in (((0, 0.85), (1, 0.9), (2, 0.9)) if MODE == "user" else ((0, 0.8), (1, 0.7), (2, 0.7))):
     L[..., c] = (L[..., c] - S[:, c].mean()) * (1 - wgt + wgt * R[:, c].std() / S[:, c].std()) + \
                 (1 - wgt) * S[:, c].mean() + wgt * R[:, c].mean()
 P = cv2.cvtColor(np.clip(L, 0, 255).astype(np.uint8), cv2.COLOR_LAB2BGR).astype(np.float32)
 P = P * 0.93 + 0.07 * 200                                        # lifted blacks like the rest
-P = cv2.GaussianBlur(P, (0, 0), 0.55)                           # same softness as the photo
+P = cv2.GaussianBlur(P, (0, 0), 0.85 if MODE == "user" else 0.55)
+if MODE == "user": A = cv2.GaussianBlur(A, (0, 0), 0.9)                           # same softness as the photo
 P += np.random.default_rng(11).normal(0, 2.6, P.shape)
 h, w = P.shape[:2]; y0 = FEET_Y - h; x0 = LEFT_X
 H, W = base.shape[:2]

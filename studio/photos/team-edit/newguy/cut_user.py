@@ -6,23 +6,13 @@ white = (im.min(2) > 236).astype(np.uint8)
 n, lab = cv2.connectedComponents(white)
 border = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
 bgw = np.isin(lab, list(border))
-m[bgw] = 0
+trust = np.zeros_like(bgw); trust[188:265, 352:472] = True     # collar: shirt white touches the white bg, trust SAM here
+m[bgw & ~trust] = 0
 m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
 n, lab2, st, _ = cv2.connectedComponentsWithStats(m)
 m = np.isin(lab2, [i for i in range(1, n) if st[i, 4] > 2000]).astype(np.uint8)
 inv = (1 - m).astype(np.uint8); cv2.floodFill(inv, None, (0, 0), 0); m |= inv          # enclosed holes
 fg = im.copy()
-# neck sides are blown out to white in the source: rebuild them with shaded skin
-y0, y1, x0, x1 = 190, 262, 372, 452
-sub = m[y0:y1, x0:x1]
-hull = np.zeros_like(sub); cv2.fillPoly(hull, [cv2.convexHull(np.argwhere(sub)[:, ::-1].astype(np.int32))], 1)
-F = np.zeros_like(m, bool); F[y0:y1, x0:x1] = (hull > 0) & (sub == 0)
-skin = np.float32([100, 116, 152])
-yy = np.arange(m.shape[0])[:, None].astype(np.float32)
-col = skin * np.clip(0.85 + (yy - y0) / (y1 - y0) * 0.15, 0.8, 1.0)[..., None]
-soft = cv2.GaussianBlur(F.astype(np.float32), (0, 0), 2.0)[..., None]
-fg = fg * (1 - soft) + col * soft
-m[F] = 1
 a = cv2.GaussianBlur(m.astype(np.float32), (0, 0), 0.8)
 edge = (a > 0.02) & (a < 0.98)
 fg[edge] = np.clip((fg[edge] - 255 * (1 - a[edge][:, None])) / np.maximum(a[edge][:, None], 0.3), 0, 255)   # de-fringe white
