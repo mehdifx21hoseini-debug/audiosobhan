@@ -8,7 +8,7 @@ P = cv2.imread(f"newguy/{tag}.png").astype(np.float32)
 A = cv2.imread(f"newguy/{tag}_alpha.png", 0).astype(np.float32) / 255
 ys, xs = np.nonzero(A > 0.5)
 top, bot, left, right = ys.min(), ys.max(), xs.min(), xs.max()
-H_TARGET, FEET_Y, LEFT_X = {"left": (1292, 1568, 806), "user": (1352, 1570, 790), "right": (1318, 1597, 2018)}[MODE]                    # p5: ~1320 px tall, feet at ~1590
+H_TARGET, FEET_Y, LEFT_X = {"left": (1292, 1568, 806), "user": (1352, 1566, 836), "right": (1318, 1597, 2018)}[MODE]                    # p5: ~1320 px tall, feet at ~1590
 k = H_TARGET / (bot - top)
 P = cv2.resize(P[top:bot + 1, left:right + 1], None, fx=k, fy=k, interpolation=cv2.INTER_AREA)
 A = cv2.resize(A[top:bot + 1, left:right + 1], (P.shape[1], P.shape[0]), interpolation=cv2.INTER_AREA)
