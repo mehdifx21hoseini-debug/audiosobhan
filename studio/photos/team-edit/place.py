@@ -20,6 +20,16 @@ pm = A > 0.9; S = L[pm]
 for c, wgt in (((0, 0.85), (1, 0.9), (2, 0.9)) if MODE == "user" else ((0, 0.8), (1, 0.7), (2, 0.7))):
     L[..., c] = (L[..., c] - S[:, c].mean()) * (1 - wgt + wgt * R[:, c].std() / S[:, c].std()) + \
                 (1 - wgt) * S[:, c].mean() + wgt * R[:, c].mean()
+if MODE == "user":                                       # legs + shoes: matte warm black like the others
+    hh = L.shape[0]; ry = np.arange(hh)[:, None].astype(np.float32)
+    legs = np.clip((ry - 0.50 * hh) / (0.06 * hh), 0, 1)
+    L[..., 1] = L[..., 1] * (1 - legs) + (L[..., 1] * 0.4 + 129 * 0.6) * legs          # kill the blue cast
+    L[..., 2] = L[..., 2] * (1 - legs) + (L[..., 2] * 0.4 + 131 * 0.6) * legs
+    L0 = L[..., 0]
+    comp = np.where(L0 > 48, 48 + (L0 - 48) * 0.35, L0)                               # no glossy highlights
+    L[..., 0] = L0 * (1 - legs) + (comp * 0.92) * legs
+    shoes = np.clip((ry - 0.90 * hh) / (0.02 * hh), 0, 1)
+    L0 = L[..., 0]; L[..., 0] = L0 * (1 - shoes) + np.where(L0 > 40, 40 + (L0 - 40) * 0.3, L0) * shoes
 P = cv2.cvtColor(np.clip(L, 0, 255).astype(np.uint8), cv2.COLOR_LAB2BGR).astype(np.float32)
 P = P * 0.93 + 0.07 * 200                                        # lifted blacks like the rest
 P = cv2.GaussianBlur(P, (0, 0), 0.85 if MODE == "user" else 0.55)
@@ -42,12 +52,21 @@ if MODE == "user":                                       # wide stance: one cont
         if not len(cols): continue
         fy = y0 + int(h * 0.85) + rows.max(); fx0, fx1 = x0 + xa_ + cols.min(), x0 + xa_ + cols.max()
         e = np.zeros((H, W), np.float32)
-        cv2.ellipse(e, ((fx0 + fx1) // 2, fy - 3), ((fx1 - fx0) // 2 + 6, 7), 0, 0, 360, 1, -1)
+        cv2.ellipse(e, ((fx0 + fx1) // 2, fy - 2), ((fx1 - fx0) // 2 + 4, 6), 0, 0, 360, 1, -1)
         foot = np.maximum(foot, e)
         e2 = np.zeros((H, W), np.float32)
-        cv2.ellipse(e2, ((fx0 + fx1) // 2, fy - 2), ((fx1 - fx0) // 2 + 22, 16), 0, 0, 360, 1, -1)
-        sh = np.maximum(sh, cv2.GaussianBlur(e2, (0, 0), 10) * 0.5)
-sh = np.maximum(sh, cv2.GaussianBlur(foot, (0, 0), 4) * 0.75)
+        cv2.ellipse(e2, ((fx0 + fx1) // 2, fy - 8), ((fx1 - fx0) // 2 + 26, 20), 0, 0, 360, 1, -1)
+        sh = np.maximum(sh, cv2.GaussianBlur(e2, (0, 0), 11) * 0.62)
+    # contact line that follows each sole (heel, arch and toe)
+    sole = np.zeros((H, W), np.float32)
+    bandA = A[int(h * 0.9):]
+    for cx in range(w):
+        r = np.nonzero(bandA[:, cx] > 0.5)[0]
+        if len(r): cv2.circle(sole, (x0 + cx, y0 + int(h * 0.9) + r.max() + 1), 3, 1, -1)
+    sh = np.maximum(sh, cv2.GaussianBlur(sole, (0, 0), 2.2) * 0.85)
+    sh = np.maximum(sh, cv2.GaussianBlur(foot, (0, 0), 2.5) * 0.9)
+else:
+    sh = np.maximum(sh, cv2.GaussianBlur(foot, (0, 0), 4) * 0.75)
 out = base * (1 - sh[..., None])
 # person
 xa, xb = max(x0, 0), min(x0 + w, W); ya, yb = max(y0, 0), min(y0 + h, H)
