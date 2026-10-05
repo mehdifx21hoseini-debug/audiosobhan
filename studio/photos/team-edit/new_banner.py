@@ -47,10 +47,7 @@ tracked(d, (tx_c, top + 156 * SS), en_txt, en, GOLD, 9 * SS)
 band_h = 262 * SS; by = DH * SS - band_h
 d.rectangle([0, by, DW * SS, DH * SS], fill=NAVY)
 d.rectangle([0, by, DW * SS, by + 7 * SS], fill=GOLD)
-small = font("/home/user/tools/fonts/Montserrat.ttf", 30 * SS, 500)
-tracked(d, (300 * SS, by + 125 * SS), "sobhansamadi.com", small, (235, 225, 200), 4 * SS)
-tracked(d, (300 * SS, by + 180 * SS), "@sobhansamadi", small, GOLD, 4 * SS)
-D = D.resize((DW, DH), Image.LANCZOS); D.save("design.png")
+D = D.resize((DW, DH), Image.LANCZOS); D.save("design_v02.png")
 
 # ---------------------------------------------------------------- photo mapping
 img = cv2.imread("step3_text.png").astype(np.float32)
@@ -96,5 +93,5 @@ region = cv2.GaussianBlur(region, (0, 0), 1.0)
 keep = cv2.GaussianBlur((people > 0).astype(np.float32), (0, 0), 0.8)
 A = (region * (1 - keep))[..., None]
 res = img * (1 - A) + out_b * A
-cv2.imwrite("step4_banner.png", np.clip(res, 0, 255).astype(np.uint8))
+cv2.imwrite("step4_banner_v02.png", np.clip(res, 0, 255).astype(np.uint8))
 print("ok")
