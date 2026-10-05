@@ -2,3 +2,7 @@ step*.png
 mask_*.png
 newguy/*.png
 newguy/*.jpg
+p4ref/*.jpg
+p4ref/*.png
+p4ref/*.npy
+p4ref/*.task
