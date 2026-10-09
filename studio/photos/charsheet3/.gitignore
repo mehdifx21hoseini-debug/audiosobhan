@@ -5,3 +5,5 @@ f*.png
 *.npy
 ref_sheet.png
 md*.png
+smile_src.jpg
+smile_matte.png
