@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-ExtraBold.ttf"); font-weight: 800; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { width: 1080px; height: 1920px; overflow: hidden; background: #000; font-family: "Vaz"; color: #fff; }
+#cv { position: absolute; inset: 0; }
+.tag { position: absolute; left: 60px; top: 80px; font-weight: 500; font-size: 22px; letter-spacing: 9px; color: rgba(255,255,255,.55); direction: ltr; }
+.tag b { color: #e9c77f; font-weight: 700; }
+.pill { position: absolute; left: 50%; bottom: 250px; transform: translateX(-50%); white-space: nowrap; padding: 14px 40px 20px; border-radius: 999px;
+  background: rgba(255,255,255,.93); color: #0b0b0e; font-weight: 900; font-size: 62px; box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+.pill .k { color: #b07d25; }
+.card { position: absolute; border-radius: 30px; background: linear-gradient(160deg, rgba(40,38,44,.82), rgba(14,14,18,.86)); border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 30px 70px rgba(0,0,0,.55); backdrop-filter: blur(16px); }
+.gold { background: linear-gradient(180deg, #fff0c4, #e9c77f 50%, #b8862b); -webkit-background-clip: text; color: transparent; }
+</style></head><body>
+<canvas id="cv" width="1080" height="1920"></canvas>
+<div class="tag"><b>SOBHAN SAMADI</b> · FINANCIAL IQ</div>
+<div id="ui"></div>
+<script>
+const Q = new URLSearchParams(location.search), SC = Q.get("s") || "hook";
+const cfg = {
+  hook:  { f: 95,  big: ["۷۳۰"], bigSize: 520, bigY: 900, outline: "میلیون تومان", pill: 'آیفون ۱۸ پرومکس، <span class="k">۷۳۰ میلیون</span>' },
+  chart: { f: 1000, chart: true, pill: 'پولش براش <span class="k">پو..ل</span> میاره؟' },
+  quote: { f: 640, outlineBig: ["WARREN", "BUFFETT"], tree: true, pill: 'سال‌ها قبل <span class="k">درختش رو کاشته</span>' },
+  bars:  { f: 905, big: ["۱۰"], bigSize: 560, bigY: 860, outline: "میلیارد", bars: true, pill: 'می‌تونی <span class="k">ده تومنت</span> رو هم' },
+}[SC];
+const cv = document.getElementById("cv"), cx = cv.getContext("2d");
+const load = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+(async () => {
+  await document.fonts.load("900 100px Vaz"); await document.fonts.load("500 30px Vaz"); await document.fonts.load("800 30px Vaz");
+  const pad = n => String(n).padStart(5, "0");
+  const [fr, mt] = await Promise.all([load(`../frames/f_${pad(cfg.f)}.jpg`), load(`../matte/m_${pad(cfg.f)}.png`)]);
+  // studio: charcoal with a warm key glow behind the head and a floor falloff
+  const g = cx.createRadialGradient(540, 820, 60, 540, 1000, 1300); g.addColorStop(0, "#2a2724"); g.addColorStop(.45, "#141416"); g.addColorStop(1, "#050506"); cx.fillStyle = g; cx.fillRect(0, 0, 1080, 1920);
+  const h = cx.createRadialGradient(560, 760, 20, 560, 760, 560); h.addColorStop(0, "rgba(255,196,110,.22)"); h.addColorStop(1, "rgba(255,196,110,0)"); cx.fillStyle = h; cx.fillRect(0, 0, 1080, 1920);
+  const fl = cx.createLinearGradient(0, 1380, 0, 1920); fl.addColorStop(0, "rgba(0,0,0,0)"); fl.addColorStop(1, "rgba(0,0,0,.6)"); cx.fillStyle = fl; cx.fillRect(0, 1380, 1080, 540);
+  const goldGrad = (y0, y1) => { const lg = cx.createLinearGradient(0, y0, 0, y1); lg.addColorStop(0, "#fff0c4"); lg.addColorStop(.5, "#e9c77f"); lg.addColorStop(1, "#a8772a"); return lg; };
+  cx.textAlign = "center";
+  if (cfg.big) { cx.font = `900 ${cfg.bigSize}px Vaz`; cx.fillStyle = goldGrad(cfg.bigY - cfg.bigSize, cfg.bigY); cx.globalAlpha = .95; cfg.big.forEach((l, i) => cx.fillText(l, 540, cfg.bigY + i * cfg.bigSize)); cx.globalAlpha = 1; }
+  if (cfg.outline) { cx.font = "800 64px Vaz"; cx.fillStyle = "rgba(255,255,255,.85)"; cx.fillText(cfg.outline, 540, cfg.bigY - cfg.bigSize * .78); }
+  if (cfg.outlineBig) { cx.font = "900 190px Vaz"; cx.lineWidth = 3; cx.strokeStyle = "rgba(233,199,127,.85)"; cfg.outlineBig.forEach((l, i) => cx.strokeText(l, 540, 520 + i * 200)); }
+  if (cfg.chart) {   // real weekly COMEX gold drawn big across the studio wall, behind him
+    const tl = await (await fetch("tl.json")).json(), C = tl.gold.candles, lo = Math.min(...C.map(c => c[3])), hi = Math.max(...C.map(c => c[2]));
+    const X = i => 40 + i / (C.length - 1) * 1000, Y = v => 1150 - (v - lo) / (hi - lo) * 780;
+    cx.strokeStyle = "rgba(255,255,255,.06)"; for (let k = 0; k < 6; k++) { cx.beginPath(); cx.moveTo(0, 370 + k * 156); cx.lineTo(1080, 370 + k * 156); cx.stroke(); }
+    const ar = cx.createLinearGradient(0, 400, 0, 1200); ar.addColorStop(0, "rgba(233,199,127,.28)"); ar.addColorStop(1, "rgba(233,199,127,0)");
+    cx.beginPath(); cx.moveTo(X(0), 1200); C.forEach((c, i) => cx.lineTo(X(i), Y(c[4]))); cx.lineTo(X(C.length - 1), 1200); cx.closePath(); cx.fillStyle = ar; cx.fill();
+    cx.beginPath(); C.forEach((c, i) => i ? cx.lineTo(X(i), Y(c[4])) : cx.moveTo(X(i), Y(c[4]))); cx.lineWidth = 6; cx.strokeStyle = "#e9c77f"; cx.shadowColor = "rgba(233,199,127,.8)"; cx.shadowBlur = 20; cx.stroke(); cx.shadowBlur = 0;
+    cx.font = "900 150px Vaz"; cx.fillStyle = "#e9c77f"; cx.textAlign = "right"; cx.fillText("+۵۷٪", 1010, 330); cx.font = "700 34px Vaz"; cx.fillStyle = "rgba(255,255,255,.6)"; cx.fillText("طلا · ۲ سال اخیر · COMEX", 1010, 390); cx.textAlign = "center";
+  }
+  if (cfg.tree) {   // gold line tree growing out from behind him
+    let seed = 3; const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+    cx.strokeStyle = "rgba(233,199,127,.95)"; cx.lineCap = "round"; cx.shadowColor = "rgba(255,200,120,.9)"; cx.shadowBlur = 16;
+    (function br(x, y, a, l, w, d) { const x2 = x + Math.cos(a) * l, y2 = y + Math.sin(a) * l; cx.lineWidth = w; cx.beginPath(); cx.moveTo(x, y); cx.lineTo(x2, y2); cx.stroke();
+      if (d < 8) { br(x2, y2, a - .35 - rnd() * .2, l * .76, w * .7, d + 1); br(x2, y2, a + .35 + rnd() * .2, l * .76, w * .7, d + 1); } else { cx.fillStyle = "#ffe3a8"; cx.beginPath(); cx.arc(x2, y2, 5, 0, 7); cx.fill(); } })(540, 1400, -Math.PI / 2, 300, 18, 0);
+    cx.shadowBlur = 0;
+  }
+  // Sobhan cut out of his room, with a warm rim
+  const off = document.createElement("canvas"); off.width = 1080; off.height = 1920; const ox = off.getContext("2d");
+  ox.drawImage(fr, 0, 0, 1080, 1920); ox.globalCompositeOperation = "destination-in"; ox.drawImage(mt, 0, 0, 1080, 1920);
+  cx.save(); cx.shadowColor = "rgba(255,190,110,.45)"; cx.shadowBlur = 38; cx.filter = "contrast(1.08) saturate(.95) brightness(1.02)"; cx.drawImage(off, 0, 60); cx.restore();
+  const ui = document.getElementById("ui");
+  if (SC === "hook") ui.innerHTML = `<div class="card" style="right:60px; top:1060px; width:360px; height:250px; transform:perspective(900px) rotateY(-16deg) rotateZ(2deg)">
+    <img src="../iphone18_burgundy.png" style="position:absolute; left:18px; top:-40px; height:280px; transform:rotate(-8deg); filter:drop-shadow(0 18px 24px rgba(0,0,0,.6))">
+    <div style="position:absolute; right:26px; top:40px; font-weight:800; font-size:30px; direction:ltr">iPhone 18<br>Pro Max</div>
+    <div style="position:absolute; right:26px; top:150px; font-weight:500; font-size:22px; color:rgba(255,255,255,.55)">۵۱۲ گیگ · زرشکی</div></div>`;
+  if (SC === "bars") ui.innerHTML = `<img src="bars_cut.png" style="position:absolute; left:-40px; top:1180px; width:520px; filter:drop-shadow(0 30px 30px rgba(0,0,0,.6))">`;
+  ui.insertAdjacentHTML("beforeend", `<div class="pill">${cfg.pill}</div>`);
+  await Promise.all([...document.images].map(i => i.decode().catch(() => {})));
+  document.title = "done";
+})();
+</script></body></html>

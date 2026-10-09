@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; padding: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; background: #040a1c; }
+svg { position: absolute; inset: 0; }
+#title { position: absolute; top: 200px; left: 0; right: 0; text-align: center; font-weight: 900; font-size: 118px; color: #f5f7fc; text-shadow: 0 12px 40px rgba(0,0,0,.5); }
+#title .w { display: inline-block; }
+#rule { position: absolute; left: 50%; top: 375px; width: 320px; height: 7px; margin-left: -160px; border-radius: 4px; background: linear-gradient(90deg, rgba(201,164,92,0), #f0d9a0, rgba(201,164,92,0)); }
+#kicker { position: absolute; top: 405px; left: 0; right: 0; text-align: center; font-weight: 500; font-size: 46px; color: #cfe0ff; letter-spacing: .5px; }
+#meterLabel { position: absolute; left: 540px; top: 860px; font-weight: 900; font-size: 70px; color: #fff; padding: 12px 40px; border-radius: 70px; white-space: nowrap;
+  background: linear-gradient(180deg, rgba(20,44,100,.92), rgba(8,20,52,.92)); border: 3px solid #8cc4ff; box-shadow: 0 0 50px rgba(140,196,255,.5), inset 0 1px 0 rgba(255,255,255,.25); }
+#sub { position: absolute; bottom: 180px; left: 50%; transform: translateX(-50%); padding: 22px 48px; border-radius: 50px; white-space: nowrap;
+  background: rgba(2,6,18,.72); border: 1px solid rgba(140,196,255,.25); font-weight: 700; font-size: 52px; color: #f4f6fb; }
+#sub .w { display: inline-block; margin: 0 6px; }
+#logo { position: absolute; top: 70px; right: 64px; height: 104px; }
+#speedfx { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+#speedfx div { position: absolute; height: 4px; border-radius: 2px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.85)); }
+#flash { position: absolute; inset: 0; background: #e8f0ff; opacity: 0; }
+#grade { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(40,90,160,.10), rgba(0,0,0,0) 40%, rgba(120,80,40,.08)); mix-blend-mode: soft-light; }
+#vignette { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 48%, rgba(0,0,0,0) 52%, rgba(0,0,0,.6) 100%); }
+#grain { position: absolute; inset: -200px; background: url("../../brand/grain.png"); opacity: .07; mix-blend-mode: overlay; pointer-events: none; }
+#black { position: absolute; inset: 0; background: #000; }
+</style>
+</head>
+<body>
+<div id="stage">
+<svg id="svg" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#030817"/><stop offset=".5" stop-color="#0b1d48"/><stop offset="1" stop-color="#1c3b7e"/></linearGradient>
+    <radialGradient id="moonGlow"><stop offset="0" stop-color="#d6e4ff" stop-opacity=".6"/><stop offset=".4" stop-color="#9fbaf0" stop-opacity=".18"/><stop offset="1" stop-color="#9fbaf0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ray" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe0ff" stop-opacity=".22"/><stop offset="1" stop-color="#cfe0ff" stop-opacity="0"/></linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1f4a"/><stop offset=".25" stop-color="#07122e"/><stop offset="1" stop-color="#030816"/></linearGradient>
+    <linearGradient id="shell" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f86e0"/><stop offset="1" stop-color="#22488f"/></linearGradient>
+    <filter id="mblur" x="-40%" y="-20%" width="180%" height="140%"><feGaussianBlur id="mblurStd" stdDeviation="0 0"/></filter>
+    <filter id="soft" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="cloudBlur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#sky)"/>
+  <g id="rays" opacity=".9"></g>
+  <g id="stars"></g>
+  <g id="moon"><circle cx="800" cy="600" r="300" fill="url(#moonGlow)"/><circle cx="800" cy="600" r="82" fill="#eef3ff"/>
+    <circle cx="828" cy="578" r="16" fill="#d5dff4"/><circle cx="780" cy="628" r="11" fill="#d5dff4"/><circle cx="812" cy="640" r="7" fill="#d5dff4"/></g>
+  <g id="clouds" filter="url(#cloudBlur)" opacity=".55">
+    <ellipse id="cl1" cx="560" cy="640" rx="220" ry="46" fill="#5a78b8"/><ellipse id="cl2" cx="1000" cy="520" rx="180" ry="36" fill="#4d6aa8"/>
+  </g>
+  <g id="cam">
+    <g id="cityFar" style="filter: blur(2.6px)"></g>
+    <g id="cityNear" style="filter: blur(1.1px)"></g>
+    <g id="world">
+      <rect x="-4000" y="1300" width="14000" height="6000" fill="url(#ground)"/>
+      <rect x="-4000" y="1296" width="14000" height="6" fill="#8cc4ff" opacity=".9" filter="url(#soft)"/>
+      <g id="lanes"></g>
+      <g id="grass"></g>
+      <g id="dust"></g>
+      <g id="tortWrap"></g>
+      <g id="hareWrap" filter="url(#mblur)"></g>
+      <g id="meter" opacity="0">
+        <line id="mLine" stroke="#8cc4ff" stroke-width="26" stroke-linecap="round"/>
+        <line id="mT1" stroke="#8cc4ff" stroke-width="22" stroke-linecap="round"/><line id="mT2" stroke="#8cc4ff" stroke-width="22" stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+</svg>
+<div id="speedfx"></div>
+<div id="title"><span class="w">لاک‌پشت</span> <span class="w">و</span> <span class="w">خرگوش</span></div>
+<div id="rule"></div>
+<div id="kicker">یک درس بزرگ برای معامله‌گرها</div>
+<div id="meterLabel" style="opacity:0">۰ متر جلوتر!</div>
+<div id="sub"></div>
+<img id="logo" src="../../brand/logo_white_gold.png">
+<div id="flash"></div>
+<div id="grade"></div>
+<div id="vignette"></div>
+<div id="grain"></div>
+<div id="black"></div>
+</div>
+<script src="../../engine/chars.js"></script>
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const NS = "http://www.w3.org/2000/svg", $ = s => document.querySelector(s);
+function el(tag, a, p) { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; }
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+$("#hareWrap").innerHTML = HARE_SVG; $("#tortWrap").innerHTML = TORT_SVG;
+
+// ---- environment ----
+const starEls = []; for (let i = 0; i < 150; i++) starEls.push(el("circle", { cx: rnd() * 1080, cy: rnd() * 1050, r: .7 + rnd() * 2.1, fill: "#e3ecff", opacity: .3 + rnd() * .6 }, $("#stars")));
+for (let i = 0; i < 6; i++) el("polygon", { points: `800,600 ${-200 + i * 260},1900 ${-80 + i * 260},1900`, fill: "url(#ray)", opacity: .5 }, $("#rays"));
+function skyline(g, col, hmin, hmax, win) {
+  let x = -2500; while (x < 7000) { const w = 70 + rnd() * 120, h = hmin + rnd() * (hmax - hmin);
+    el("rect", { x, y: 1300 - h, width: w, height: h, fill: col }, g);
+    if (rnd() < .25) el("rect", { x: x + w / 2 - 3, y: 1300 - h - 40, width: 6, height: 40, fill: col }, g);
+    if (win) for (let wy = 1300 - h + 24; wy < 1286; wy += 34) for (let wx = x + 14; wx < x + w - 14; wx += 26) if (rnd() < .3) el("rect", { x: wx, y: wy, width: 9, height: 13, fill: "#f6d38f", opacity: .3 + rnd() * .55 }, g);
+    x += w + 8 + rnd() * 18; } }
+skyline($("#cityFar"), "#10265a", 220, 600, true); skyline($("#cityNear"), "#091838", 90, 320, true);
+for (let x = -3000; x < 8000; x += 190) el("rect", { x, y: 1420, width: 100, height: 12, rx: 6, fill: "#fff", opacity: .2 }, $("#lanes"));
+for (let k = 0; k < 8; k++) el("rect", { x: -4000, y: 1480 + k * k * 16, width: 14000, height: 2, fill: "#8cc4ff", opacity: .05 + k * .01 }, $("#lanes"));
+const tufts = []; for (let x = -1500; x < 6500; x += 90 + rnd() * 160) { const g = el("g", {}, $("#grass")); tufts.push(g);
+  for (let b = 0; b < 3; b++) el("path", { d: `M ${x + b * 8} 1302 Q ${x + b * 8 - 6 + b * 6} ${1270 - rnd() * 22} ${x + b * 8 + (b - 1) * 10} ${1256 - rnd() * 18}`, stroke: "#3f6fb8", "stroke-width": 5, fill: "none", "stroke-linecap": "round" }, g); }
+const puffs = []; for (let i = 0; i < 90; i++) puffs.push(el("circle", { cx: 0, cy: 0, r: 10, fill: "#cfdcf5", opacity: 0 }, $("#dust")));
+const sp = $("#speedfx"); for (let i = 0; i < 26; i++) { const d = document.createElement("div"); d.style.top = (560 + rnd() * 900) + "px"; d.style.left = (rnd() * 1300 - 200) + "px"; d.style.width = (160 + rnd() * 380) + "px"; d.style.opacity = .3 + rnd() * .7; sp.appendChild(d); }
+
+// ---- subtitles ----
+const sub = $("#sub");
+function setSub(t) { sub.innerHTML = t ? t.split(" ").map(w => `<span class="w">${w}</span>`).join(" ") : ""; sub.style.opacity = t ? 1 : 0; }
+function karaoke(p) { const ws = sub.querySelectorAll(".w"), n = ws.length; ws.forEach((w, i) => { const on = i < p * n; w.style.color = on ? "#8cc4ff" : "#f4f6fb"; }); }
+
+// ---- rig origins ----
+const O = (sel, o) => gsap.set(sel, { svgOrigin: o });
+O("#hBody", "0 -60"); O("#hHind", "-92 -104"); O("#hHindFar", "-86 -100"); O("#hHindFoot", "-80 -34"); O("#hFront", "90 -98"); O("#hFrontFar", "76 -98");
+O("#hHead", "110 -160"); O("#hEarB", "128 -252"); O("#hEarF", "156 -256"); O("#hTail", "-160 -110");
+O("#tBody", "0 -40"); O("#tHead", "120 -62"); ["#tLegBF", "#tLegFF", "#tLegBN", "#tLegFN"].forEach(l => gsap.set(l, { svgOrigin: l.includes("B") ? "-70 -40" : "96 -40" }));
+gsap.set("#hLid", { y: 0 }); gsap.set("#tLid", { y: 0 });     // half-lid (smug / calm) by default
+gsap.set("#tLegBN, #tLegBF", { svgOrigin: "-60 -40" }); gsap.set("#tLegFN, #tLegFF", { svgOrigin: "110 -40" });
+
+// ---- world positions ----
+const GROUND = 1300;
+gsap.set("#hare", { x: 740, y: GROUND, scale: 1.0 }); gsap.set("#tort", { x: 300, y: GROUND, scale: .92 });
+gsap.set("#cam", { svgOrigin: "0 0" });
+const CLIPS = window.CLIPS, T = window.DUR = 8.8, tl = gsap.timeline({ paused: true });
+const camAt = (cx, s, sy = 1150) => ({ x: 540 - cx * s, y: sy - 1150 * s - (GROUND - 1150) * (s - 1) * 0, scale: s });
+
+// camera: opening push-in
+gsap.set("#cam", camAt(560, 1.2));
+tl.to("#black", { opacity: 0, duration: .8, ease: "power2.out" }, 0)
+  .to("#cam", { ...camAt(560, 1.0), duration: 2.6, ease: "power3.out" }, 0);
+gsap.set("#logo", { opacity: 0, y: -16 }); tl.to("#logo", { opacity: .95, y: 0, duration: .6 }, .6);
+// title
+gsap.set("#title .w", { opacity: 0, y: 70, filter: "blur(20px)", scale: 1.15 }); gsap.set("#rule", { scaleX: 0, opacity: 1 }); gsap.set("#kicker", { opacity: 0, y: 24, letterSpacing: "12px" });
+tl.to("#title .w", { opacity: 1, y: 0, filter: "blur(0px)", scale: 1, duration: .9, ease: "back.out(1.7)", stagger: -.16 }, .4)
+  .to("#rule", { scaleX: 1, duration: .8, ease: "expo.out" }, 1.0)
+  .to("#kicker", { opacity: 1, y: 0, letterSpacing: ".5px", duration: .8, ease: "power3.out" }, 1.15);
+// sky life
+starEls.forEach((s, i) => tl.to(s, { opacity: .12 + (i % 5) * .16, duration: .5 + (i % 7) * .18, repeat: 14, yoyo: true, ease: "sine.inOut" }, (i % 11) * .06));
+tl.to("#rays", { rotation: 4, svgOrigin: "800 600", duration: T, ease: "sine.inOut" }, 0).to("#cl1", { attr: { cx: 760 }, duration: T, ease: "none" }, 0).to("#cl2", { attr: { cx: 820 }, duration: T, ease: "none" }, 0);
+tufts.forEach((g, i) => tl.to(g, { skewX: 6, svgOrigin: "0 1300", duration: .9 + (i % 4) * .2, repeat: 8, yoyo: true, ease: "sine.inOut" }, (i % 6) * .1));
+
+// ---- TORTOISE: steady walk the whole time ----
+tl.to("#tort", { x: 520, duration: T, ease: "none" }, 0);
+const TP = .5;
+tl.fromTo("#tLegBN, #tLegFF", { rotation: -12 }, { rotation: 12, duration: TP / 2, repeat: Math.ceil(T / (TP / 2)), yoyo: true, ease: "sine.inOut" }, 0)
+  .fromTo("#tLegFN, #tLegBF", { rotation: 12 }, { rotation: -12, duration: TP / 2, repeat: Math.ceil(T / (TP / 2)), yoyo: true, ease: "sine.inOut" }, 0)
+  .to("#tBody", { y: -6, rotation: .8, duration: TP / 4, repeat: Math.ceil(T / (TP / 4)), yoyo: true, ease: "sine.inOut" }, 0)
+  .to("#tHead", { x: 8, rotation: -3, duration: TP / 2, repeat: Math.ceil(T / (TP / 2)), yoyo: true, ease: "sine.inOut" }, 0);
+[1.6, 6.3].forEach(b => tl.to("#tLid", { y: 24, duration: .07, yoyo: true, repeat: 1 }, b));
+tl.to("#tPupil", { x: -8, duration: .4 }, 6.0);   // tortoise glances at the hare when it's gone
+
+// ---- HARE idle: breathing, ear twitch, smug wink ----
+tl.to("#hBody", { scaleY: 1.025, duration: .45, repeat: 5, yoyo: true, ease: "sine.inOut" }, 0)
+  .to("#hEarF", { rotation: 12, duration: .08, yoyo: true, repeat: 3, ease: "power1.inOut" }, 1.05)
+  .to("#hPupil", { x: 4, y: 3, duration: .3 }, 1.4)
+  .to("#hBrow", { y: -8, rotation: -8, svgOrigin: "172 -266", duration: .25, ease: "back.out(3)" }, 1.8)
+  .to("#hLid", { y: 30, duration: .08 }, 2.0).to("#hLid", { y: 0, duration: .12 }, 2.3)
+  .to("#hMouth", { attr: { d: "M 194 -168 C 206 -148 228 -154 234 -180" }, duration: .25, ease: "back.out(2)" }, 1.95);
+
+// ---- ANTICIPATION (crouch) ----
+const L = 3.05;
+tl.to("#title .w, #kicker", { opacity: 0, y: -50, filter: "blur(12px)", duration: .45, stagger: .05, ease: "power2.in" }, 2.55)
+  .to("#rule", { scaleX: 0, duration: .35, ease: "power2.in" }, 2.55)
+  .to("#hBody", { scaleY: .78, scaleX: 1.14, rotation: -7, duration: .4, ease: "power2.out" }, L - .45)
+  .to("#hEarB, #hEarF", { rotation: -48, duration: .4, ease: "power2.out" }, L - .45)
+  .to("#hHead", { rotation: 6, y: 18, duration: .4, ease: "power2.out" }, L - .45)
+  .to("#hLid", { y: 10, duration: .2 }, L - .35)
+  .to("#hBrow", { rotation: 10, y: 4, duration: .2 }, L - .35);
+
+// ---- LAUNCH ----
+const END = 3330;
+tl.to("#hBody", { scaleX: 1.38, scaleY: .78, rotation: -2, duration: .08, ease: "power2.out" }, L)
+  .to("#hBody", { scaleX: 1, scaleY: 1, duration: .3, ease: "elastic.out(1,.45)" }, L + .1)
+  .to("#hHead", { rotation: -4, y: 0, duration: .2 }, L)
+  .to("#flash", { opacity: .32, duration: .04 }, L).to("#flash", { opacity: 0, duration: .22 }, L + .04)
+  .to("#speedfx", { opacity: 1, duration: .12 }, L).to("#speedfx", { opacity: 0, duration: .3 }, 5.3)
+  .to("#speedfx div", { x: -1400, duration: .35, repeat: 7, ease: "none", stagger: { each: .013, from: "random" } }, L)
+  .to("#mblurStd", { attr: { stdDeviation: "16 0" }, duration: .15 }, L + .05).to("#mblurStd", { attr: { stdDeviation: "0 0" }, duration: .25 }, 5.2)
+  .to("#hare", { x: END - 90, duration: 5.45 - L, ease: "power1.in" }, L)
+  .to("#cam", { x: 520 - (END - 90), duration: 5.45 - L, ease: "power1.in" }, L)
+  .to("#cam", { y: "+=10", duration: .05, yoyo: true, repeat: 3 }, L);
+function burst(x, y, n, spread, up, dur, at, big) {
+  for (let k = 0; k < n; k++) { const p = puffs[(burst.i = ((burst.i || 0) + 1) % puffs.length)];
+    tl.set(p, { attr: { cx: x + (rnd() - .5) * 60, cy: y - rnd() * 10, r: (big ? 14 : 8) + rnd() * 10 }, opacity: .8 }, at)
+      .to(p, { attr: { cx: x - spread * (.3 + rnd()), cy: y - up * rnd() - 20, r: (big ? 50 : 26) + rnd() * 26 }, opacity: 0, duration: dur * (.7 + rnd() * .5), ease: "power2.out" }, at); } }
+burst(740 - 100, GROUND, 18, 320, 140, 1.0, L, true);
+// gallop hops
+const HOPS = 6, HD = (5.45 - L - .1) / HOPS;
+for (let i = 0; i < HOPS; i++) {
+  const t0 = L + .1 + i * HD;
+  tl.to("#hHop", { y: -170, duration: HD / 2, ease: "power2.out" }, t0).to("#hHop", { y: 0, duration: HD / 2, ease: "power2.in" }, t0 + HD / 2)
+    .to("#hBody", { rotation: -12, duration: HD / 2, ease: "sine.out" }, t0).to("#hBody", { rotation: 10, duration: HD / 2, ease: "sine.in" }, t0 + HD / 2)
+    .fromTo("#hHind, #hHindFar", { rotation: 38 }, { rotation: -30, duration: HD * .6, ease: "power2.out" }, t0).to("#hHind, #hHindFar", { rotation: 5, duration: HD * .4 }, t0 + HD * .6)
+    .fromTo("#hFront, #hFrontFar", { rotation: 25 }, { rotation: -55, duration: HD * .55, ease: "power2.out" }, t0).to("#hFront, #hFrontFar", { rotation: 20, duration: HD * .45, ease: "power1.in" }, t0 + HD * .55)
+    .fromTo("#hEarB", { rotation: -40 }, { rotation: -62, duration: HD / 2, yoyo: true, repeat: 1, ease: "sine.inOut" }, t0 + .06)
+    .fromTo("#hEarF", { rotation: -36 }, { rotation: -58, duration: HD / 2, yoyo: true, repeat: 1, ease: "sine.inOut" }, t0 + .1)
+    .to("#hShadow", { attr: { rx: 80 }, opacity: .15, duration: HD / 2, yoyo: true, repeat: 1, ease: "power2.out" }, t0)
+    .fromTo("#hBody", { scaleX: 1.12, scaleY: .86 }, { scaleX: 1, scaleY: 1, duration: .16, ease: "elastic.out(1,.4)" }, t0 + HD - .01);
+  // dust at each landing (hare world x at landing, approximated from its tween)
+  const prog = (t) => { const u = Math.min(1, Math.max(0, (t - L) / (5.45 - L))); return 740 + (END - 90 - 740) * (u * u); };
+  burst(prog(t0 + HD) - 110, GROUND, 8, 220, 90, .8, t0 + HD, false);
+}
+// ---- SKID STOP + follow-through ----
+const S = 5.45;
+tl.to("#hare", { x: END, duration: .5, ease: "power3.out" }, S).to("#cam", { x: 540 - END - 60, duration: .8, ease: "power2.out" }, S)
+  .to("#hBody", { rotation: -16, duration: .18, ease: "power2.out" }, S).to("#hBody", { rotation: 0, duration: .7, ease: "elastic.out(1,.35)" }, S + .2)
+  .to("#hHind, #hHindFar", { rotation: -34, duration: .15 }, S).to("#hHind, #hHindFar", { rotation: 0, duration: .5, ease: "elastic.out(1,.4)" }, S + .3)
+  .to("#hFront, #hFrontFar", { rotation: -20, duration: .15 }, S).to("#hFront, #hFrontFar", { rotation: 0, duration: .5, ease: "elastic.out(1,.4)" }, S + .3)
+  .to("#hEarB, #hEarF", { rotation: 34, duration: .18, ease: "power2.out", stagger: .04 }, S + .05)
+  .to("#hEarB, #hEarF", { rotation: -6, duration: 1.1, ease: "elastic.out(1.2,.3)", stagger: .05 }, S + .25);
+for (let k = 0; k < 5; k++) burst(END - 150 + k * 22, GROUND, 6, -160, 70, .9, S + k * .07, false);
+// look back, smug
+tl.to("#hHead", { rotation: -10, duration: .35, ease: "back.out(2)" }, 6.05)
+  .to("#hPupil", { x: -9, y: 2, duration: .25 }, 6.1)
+  .to("#hBrow", { rotation: -12, y: -10, duration: .25, ease: "back.out(3)" }, 6.1)
+  .to("#hLid", { y: -2, duration: .2 }, 6.1)
+  .to("#hLid", { y: 30, duration: .08 }, 7.2).to("#hLid", { y: -2, duration: .14 }, 7.45)
+  .to("#hBody", { scaleY: 1.03, duration: .4, repeat: 3, yoyo: true, ease: "sine.inOut" }, 6.4);
+
+// ---- WIDE REVEAL + meter ----
+const W0 = 6.0, midX = (560 + END) / 2, sW = .3;
+tl.to("#cam", { ...camAt(midX, sW, 1180), duration: 1.5, ease: "power3.inOut" }, W0);
+const MY = 820, MX1 = 820, MX2 = END - 260;
+tl.set("#meter", { opacity: 1 }, W0 + 1.1)
+  .set("#mLine", { attr: { x1: MX1, x2: MX1, y1: MY, y2: MY } }, W0 + 1.1)
+  .set("#mT1", { attr: { x1: MX1, x2: MX1, y1: MY - 70, y2: MY + 70 } }, W0 + 1.1)
+  .set("#mT2", { attr: { x1: MX1, x2: MX1, y1: MY - 70, y2: MY + 70 } }, W0 + 1.1)
+  .to("#mLine", { attr: { x2: MX2 }, duration: 1.0, ease: "expo.out" }, W0 + 1.15)
+  .to("#mT2", { attr: { x1: MX2, x2: MX2 }, duration: 1.0, ease: "expo.out" }, W0 + 1.15);
+const lab = $("#meterLabel"), cnt = { v: 0 };
+gsap.set(lab, { xPercent: -50, yPercent: -50, scale: .3 });
+tl.to(lab, { opacity: 1, scale: 1, duration: .55, ease: "back.out(2.4)" }, W0 + 1.2)
+  .to(cnt, { v: 300, duration: 1.2, ease: "expo.out", onUpdate: () => { lab.textContent = Math.round(cnt.v).toLocaleString("fa-IR") + " متر جلوتر!"; } }, W0 + 1.2);
+// outro
+tl.to("#black", { opacity: 1, duration: .45 }, T - .45);
+// subtitles
+CLIPS.forEach(([a, b, t], i) => { tl.call(setSub, [t], a - .05); const o = { p: 0 };
+  tl.to(o, { p: 1, duration: Math.max(.3, b - a - .1), ease: "none", onUpdate: () => karaoke(o.p) }, a);
+  if (i === CLIPS.length - 1) tl.call(setSub, [""], b + .25); });
+tl.set({}, {}, T);
+
+// parallax: city layers move slower than the camera
+function parallax() {
+  const cx = gsap.getProperty("#cam", "x"), s = gsap.getProperty("#cam", "scaleX");
+  const ref = 540 - 560 * s; // camera x if it stayed on the start
+  gsap.set("#cityFar", { x: -(cx - ref) * .6 / s }); gsap.set("#cityNear", { x: -(cx - ref) * .35 / s });
+}
+let frame = 0;
+window.seek = t => { tl.seek(t, false); parallax(); frame++; $("#grain").style.transform = `translate(${(frame * 37) % 200 - 100}px, ${(frame * 53) % 200 - 100}px)`; };
+window.ready = true;
+</script>
+</body>
+</html>

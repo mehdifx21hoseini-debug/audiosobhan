@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Black.ttf"); font-weight: 900; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Bold.ttf"); font-weight: 700; }
+@font-face { font-family: "Vaz"; src: url("../../fonts/Vazirmatn-Medium.ttf"); font-weight: 500; }
+html, body { margin: 0; background: #000; }
+#stage { position: relative; width: 1080px; height: 1920px; overflow: hidden; font-family: "Vaz"; color: #f5f7fc; background: #000; }
+#cv { position: absolute; inset: 0; }
+#grade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(4,10,28,.38) 0%, rgba(4,10,28,0) 22%, rgba(4,10,28,0) 62%, rgba(4,10,28,.55) 100%); }
+#warm { position: absolute; inset: 0; background: rgba(214,178,112,.07); mix-blend-mode: soft-light; }
+#vig { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 58%, rgba(0,0,0,.5) 100%); }
+.abs { position: absolute; }
+.card { position: absolute; left: 90px; right: 90px; border-radius: 34px; background: rgba(6,14,36,.84); border: 2px solid rgba(214,178,112,.55); box-shadow: 0 24px 70px rgba(0,0,0,.45); backdrop-filter: blur(8px); opacity: 0; }
+.ttl { font-weight: 900; text-align: center; text-shadow: 0 8px 30px rgba(0,0,0,.55); }
+.pill { position: absolute; display: flex; align-items: center; gap: 18px; padding: 16px 30px; border-radius: 26px; font-weight: 900; font-size: 46px; white-space: nowrap; }
+#sub { position: absolute; bottom: 250px; left: 50%; transform: translateX(-50%); padding: 20px 42px; border-radius: 40px; width: max-content; max-width: 920px; text-align: center; line-height: 1.55;
+  background: rgba(4,10,28,.78); border: 1px solid rgba(214,178,112,.35); font-weight: 700; font-size: 50px; opacity: 0; }
+#sub .w { display: inline-block; margin: 0 5px; color: rgba(245,247,252,.42); transition: none; }
+#sub .w.on { color: #fff; } #sub .w.on.g { color: #46d696; } #sub .w.on.r { color: #ff6b76; } #sub .w.on.y { color: #f0d9a0; } #sub .w.on.b { color: #8cc4ff; }
+#brand { position: absolute; top: 62px; right: 56px; height: 96px; padding: 0 28px 0 22px; border-radius: 52px; background: rgba(255,255,255,.95); display: flex; align-items: center; gap: 14px; box-shadow: 0 12px 36px rgba(0,0,0,.3); }
+#brand img { height: 72px; } #brand .t1 { font-weight: 900; font-size: 28px; color: #29386c; line-height: 1.1; } #brand .t2 { font-weight: 500; font-size: 18px; color: #b8914a; direction: ltr; text-align: right; }
+#lower { position: absolute; right: 60px; top: 1180px; opacity: 0; }
+#lower .n { padding: 12px 32px; border-radius: 16px 16px 0 16px; background: #fff; color: #12245a; font-weight: 900; font-size: 50px; }
+#lower .r { display: inline-block; margin-top: 8px; padding: 6px 22px; border-radius: 12px; background: #d6b270; color: #1a1406; font-weight: 700; font-size: 30px; }
+#flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+#outro { position: absolute; inset: 0; opacity: 0; background: radial-gradient(ellipse at 50% 40%, #1a3572 0%, #0b1a40 50%, #040a1c 100%); }
+#black { position: absolute; inset: 0; background: #000; opacity: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="cv" width="1080" height="1920"></canvas>
+  <div id="warm"></div><div id="grade"></div><div id="vig"></div>
+
+  <!-- G0 hook title -->
+  <div class="card" id="g0" style="top:230px; padding:30px 0 36px">
+    <div class="ttl" style="font-size:40px; color:#f0d9a0; margin-bottom:6px">اعلام مهم</div>
+    <div class="ttl" style="font-size:104px; line-height:1.1">سرمایه‌ی <span style="color:#46d696">ریل</span></div>
+    <div class="ttl" style="font-size:52px; margin-top:10px">برای معامله‌گرهای بااستعداد</div>
+  </div>
+  <!-- G1 checklist -->
+  <div class="card" id="g1" style="top:250px; height:330px">
+    <div class="pill" id="c1" style="right:40px; top:40px; background:rgba(70,214,150,.14); border:3px solid #46d696; color:#bff5da">مهارت <span>✓</span></div>
+    <div class="pill" id="c2" style="right:40px; top:180px; background:rgba(70,214,150,.14); border:3px solid #46d696; color:#bff5da">استعداد <span>✓</span></div>
+    <div class="pill" id="c3" style="left:40px; top:108px; background:rgba(255,107,118,.14); border:3px solid #ff6b76; color:#ffc2c7">سرمایه <span id="c3i">✗</span></div>
+  </div>
+  <!-- G2 scam props -->
+  <div class="card" id="g2" style="top:250px; height:330px; border-color:#ff6b76">
+    <div class="ttl abs" style="left:0; right:0; top:52px; font-size:44px; color:#ffc2c7"><span style="font-family:'DejaVu Sans'">⚠</span> پراپ‌های کلاهبردار</div>
+    <div class="abs" id="g2x" style="left:0; right:0; top:128px; text-align:center">
+      <span style="display:inline-block; padding:14px 50px; border-radius:20px; border:8px solid #46d696; color:#46d696; font-weight:900; font-size:92px; transform:rotate(-5deg); background:rgba(4,20,14,.6)">خلاص!</span></div>
+  </div>
+  <!-- G3 statement -->
+  <div class="card" id="g3" style="top:230px; height:390px">
+    <div class="abs" style="right:40px; top:32px; font-weight:900; font-size:46px">استیتمنت معاملاتی</div>
+    <svg class="abs" style="left:40px; top:110px" width="820" height="230" viewBox="0 0 820 230">
+      <path d="M0 225 H820" stroke="rgba(255,255,255,.18)" stroke-width="2"/>
+      <path id="curve" d="M0 200 L90 180 L150 190 L230 150 L300 160 L380 120 L450 130 L530 90 L600 100 L690 55 L760 60 L820 20" fill="none" stroke="#46d696" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+    <div class="pill" id="t_demo" style="left:40px; top:26px; font-size:34px; padding:8px 22px; background:rgba(140,196,255,.16); border:2px solid #8cc4ff; color:#cfe4ff">دمو</div>
+    <div class="pill" id="t_real" style="left:170px; top:26px; font-size:34px; padding:8px 22px; background:rgba(140,196,255,.16); border:2px solid #8cc4ff; color:#cfe4ff">ریل</div>
+  </div>
+  <!-- G4 3-6 months -->
+  <div class="card" id="g4" style="top:270px; height:290px">
+    <div class="abs ttl" style="left:0; right:0; top:34px; font-size:48px">بازه‌ی ۳ تا ۶ ماه</div>
+    <div class="abs" style="left:70px; right:70px; top:150px; height:34px; border-radius:17px; background:rgba(255,255,255,.1); overflow:hidden">
+      <div id="bar" style="position:absolute; right:0; top:0; bottom:0; width:0; background:linear-gradient(270deg,#d6b270,#46d696)"></div></div>
+    <div class="abs" style="right:70px; top:200px; font-weight:700; font-size:34px; color:#cfe0ff">شروع</div>
+    <div class="abs" id="m3" style="right:calc(70px + 47%); top:200px; font-weight:900; font-size:36px; color:#f0d9a0; opacity:0">۳ ماه</div>
+    <div class="abs" id="m6" style="left:70px; top:200px; font-weight:900; font-size:36px; color:#46d696; opacity:0">۶ ماه</div>
+  </div>
+  <!-- G5 have / don't -->
+  <div class="abs" id="g5" style="left:0; right:0; top:260px; opacity:0">
+    <div class="pill" id="h1" style="right:90px; top:0; background:#46d696; color:#062016; box-shadow:0 14px 40px rgba(70,214,150,.4)">داری؟ ← بفرست</div>
+    <div class="pill" id="h2" style="right:90px; top:130px; background:#d6b270; color:#1a1406; box-shadow:0 14px 40px rgba(214,178,112,.4)">نداری؟ ← از همین ثانیه بساز</div>
+  </div>
+  <!-- G6 team -->
+  <div class="card" id="g6" style="top:240px; height:350px">
+    <div class="abs ttl" style="left:0; right:0; top:26px; font-size:50px">تیم <span id="cnt" style="color:#8cc4ff">۰</span> نفره</div>
+    <div class="abs" id="ppl" style="left:60px; right:60px; top:120px; display:flex; flex-wrap:wrap; gap:14px 24px; justify-content:center"></div>
+  </div>
+  <!-- G7 promise -->
+  <div class="card" id="g7" style="top:240px; padding:30px 0 34px">
+    <div class="ttl" style="font-size:100px; line-height:1.15">تمام‌قد<br><span style="color:#f0d9a0">کنارتون هستیم</span></div>
+    <div id="uline" style="margin:18px auto 0; width:0; height:8px; border-radius:4px; background:#d6b270"></div>
+  </div>
+  <div class="card" id="g8" style="top:260px; padding:30px 0 34px">
+    <div class="ttl" style="font-size:84px; line-height:1.2"><span style="color:#f0d9a0">رشدتون</span><br>افتخار منه</div>
+  </div>
+
+  <div id="lower"><div class="n">سبحان صمدی</div><div style="text-align:right"><span class="r">بنیان‌گذار آکادمی سبحان صمدی</span></div></div>
+  <div id="sub"></div>
+
+  <div id="outro">
+    <div class="abs" id="o_badge" style="left:50%; top:700px; transform:translateX(-50%); width:max-content; white-space:nowrap; padding:34px 56px; border-radius:58px; background:#fff; display:flex; align-items:center; gap:28px; box-shadow:0 30px 90px rgba(0,0,0,.5), 0 0 0 6px rgba(240,217,160,.8)">
+      <div><div style="font-weight:900; font-size:60px; color:#29386c">آکادمی سبحان صمدی</div><div style="font-weight:500; font-size:32px; color:#b8914a; direction:ltr; text-align:right">Sobhan Samadi Academy</div></div>
+      <img src="../../brand/logo_navy_gold.png" style="height:160px"></div>
+    <div class="abs ttl" id="o_cta" style="left:0; right:0; top:1110px; font-size:56px">برای رفیق معامله‌گرت بفرست</div>
+    <div class="abs ttl" id="o_cta2" style="left:0; right:0; top:1205px; font-size:42px; color:#f0d9a0; direction:ltr">@sobhansamadi</div>
+  </div>
+  <div id="brand"><img src="../../brand/logo_navy_gold.png"><div><div class="t1">آکادمی سبحان صمدی</div><div class="t2">Sobhan Samadi Academy</div></div></div>
+  <div id="flash"></div><div id="black"></div>
+</div>
+<script src="../../engine/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const $ = s => document.querySelector(s), TL = window.TL, T = window.DUR = TL.T, S = TL.subs, VE = TL.voice_end;
+const tl = gsap.timeline({ paused: true }), cv = $("#cv"), cx = cv.getContext("2d");
+const d = (a) => a - TL.src_offset;          // source time -> timeline time
+// ---------- camera: punch-in per line (jump-cut feel), gentle drift inside a line ----------
+const cam = { z: 1 }, ZOOMS = [1.0, 1.12, 1.0, 1.18, 1.06, 1.14, 1.0, 1.1, 1.2, 1.04, 1.12, 1.0, 1.08, 1.22, 1.1, 1.16];
+S.forEach((s, i) => { tl.set(cam, { z: ZOOMS[i % ZOOMS.length] }, s.dst[0]).to(cam, { z: `+=${.025}`, duration: s.dst[1] - s.dst[0], ease: "none" }, s.dst[0]); });
+// ---------- subtitles with word timing ----------
+const sub = $("#sub");
+function setSub(i) { if (i < 0) { sub.style.opacity = 0; return; }
+  sub.innerHTML = S[i].text.split(" ").map(w => { let c = ""; if (w[0] === "^") { c = w[1]; w = w.slice(2); } return `<span class="w ${c}">${w}</span>`; }).join(" "); sub.style.opacity = 1; sub.dataset.i = i; }
+S.forEach((s, i) => tl.call(setSub, [i], s.dst[0] - .03));
+tl.call(setSub, [-1], VE + .1);
+function karaoke(t) { const i = +sub.dataset.i; if (isNaN(i) || sub.style.opacity == 0) return;
+  sub.querySelectorAll(".w").forEach((w, k) => w.classList.toggle("on", t >= S[i].wt[k][0] - .02)); }
+// ---------- helpers ----------
+const card = (sel, a, b) => { tl.fromTo(sel, { opacity: 0, y: -30, scale: .96 }, { opacity: 1, y: 0, scale: 1, duration: .35, ease: "back.out(1.6)" }, a).to(sel, { opacity: 0, y: -20, duration: .25 }, b - .25); };
+const pop = (sel, t, from = {}) => tl.fromTo(sel, { opacity: 0, scale: .5, ...from }, { opacity: 1, scale: 1, x: 0, duration: .3, ease: "back.out(2.2)" }, t);
+const flash = t => tl.to("#flash", { opacity: .28, duration: .04 }, t).to("#flash", { opacity: 0, duration: .25 }, t + .04);
+// ---------- graphics (times from word timings) ----------
+tl.fromTo("#g0", { opacity: 0, y: 30, filter: "blur(10px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: .4, ease: "power3.out" }, 0).to("#g0", { opacity: 0, y: -20, duration: .25 }, S[1].dst[0] - .25);
+card("#g1", S[1].dst[0], S[3].dst[0]);
+gsap.set(["#c1", "#c2", "#c3"], { opacity: 0 });
+pop("#c1", S[1].wt[3][0]); pop("#c2", S[1].wt[5][0]); pop("#c3", S[2].wt[1][0]);
+tl.to("#c3", { x: -6, duration: .05, repeat: 5, yoyo: true }, S[2].wt[1][0] + .3)
+  .to("#c3", { background: "#46d696", borderColor: "#46d696", color: "#062016", duration: .25 }, S[2].wt[3][0])
+  .call(() => { $("#c3i").textContent = "✓"; }, [], S[2].wt[3][0] + .01).call(() => { $("#c3i").textContent = "✗"; }, [], S[2].wt[3][0]);
+flash(S[2].wt[3][0]);
+card("#g2", S[3].dst[0], S[4].dst[0]);
+gsap.set("#g2x", { opacity: 0 }); tl.fromTo("#g2x", { opacity: 0, scale: 2.5 }, { opacity: 1, scale: 1, duration: .28, ease: "back.out(2)" }, S[3].wt[6][0]);
+card("#g3", S[4].dst[0], S[7].dst[0]);
+const curve = $("#curve"), L = curve.getTotalLength(); gsap.set(curve, { attr: { "stroke-dasharray": L, "stroke-dashoffset": L } });
+tl.to(curve, { attr: { "stroke-dashoffset": 0 }, duration: 2.4, ease: "power1.inOut" }, S[5].dst[0]);
+gsap.set(["#t_demo", "#t_real"], { opacity: 0 }); pop("#t_demo", S[6].wt[1][0]); pop("#t_real", S[6].wt[3][0]);
+card("#g4", S[7].dst[0], S[8].dst[0]);
+tl.to("#bar", { width: "50%", duration: .5, ease: "power2.out" }, S[7].wt[3][0]).to("#m3", { opacity: 1, duration: .2 }, S[7].wt[3][0] + .3)
+  .to("#bar", { width: "100%", duration: .5, ease: "power2.out" }, S[7].wt[5][0]).to("#m6", { opacity: 1, duration: .2 }, S[7].wt[5][0] + .3);
+tl.set("#g5", { opacity: 1 }, S[8].dst[0]).to("#g5", { opacity: 0, duration: .25 }, S[10].dst[0] - .25);
+gsap.set(["#h1", "#h2"], { opacity: 0 }); pop("#h1", S[8].wt[0][0], { x: 200 }); pop("#h2", S[8].wt[4][0], { x: 200 });
+tl.to("#h2", { scale: 1.06, duration: .25, yoyo: true, repeat: 1 }, S[9].wt[2][0]);
+// team of 12
+const ppl = $("#ppl"), fa = n => n.toLocaleString("fa-IR");
+for (let i = 0; i < 12; i++) ppl.insertAdjacentHTML("beforeend", `<svg class="pp" width="92" height="92" viewBox="0 0 100 100"><circle cx="50" cy="32" r="20" fill="${i === 0 ? "#f0d9a0" : "#8cc4ff"}"/><path d="M14 94 C14 64 86 64 86 94 Z" fill="${i === 0 ? "#f0d9a0" : "#8cc4ff"}"/></svg>`);
+card("#g6", S[10].dst[0], S[12].dst[0]);
+const pp = document.querySelectorAll(".pp"), oc = { n: 0 }; gsap.set(pp, { opacity: 0, scale: .3 });
+tl.to(pp, { opacity: 1, scale: 1, duration: .25, stagger: .09, ease: "back.out(2)" }, S[10].wt[4][0])
+  .to(oc, { n: 12, duration: 12 * .09 + .2, ease: "none", onUpdate: () => $("#cnt").textContent = fa(Math.round(oc.n)) }, S[10].wt[4][0]);
+// name lower third
+tl.fromTo("#lower", { opacity: 0, x: 260 }, { opacity: 1, x: 0, duration: .45, ease: "back.out(1.7)" }, S[10].wt[1][0] - .1).to("#lower", { opacity: 0, x: 200, duration: .3 }, S[12].dst[0]);
+// promise
+tl.fromTo("#g7", { opacity: 0, scale: 1.3, filter: "blur(12px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: .4, ease: "power3.out" }, S[13].dst[0])
+  .to("#uline", { width: 520, duration: .6, ease: "power2.out" }, S[13].dst[0] + .3).to("#g7", { opacity: 0, duration: .25 }, S[15].dst[0] - .2);
+flash(S[13].dst[0]);
+tl.fromTo("#g8", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: .45, ease: "power2.out" }, S[15].dst[0]).to("#g8", { opacity: 0, duration: .25 }, VE);
+// outro + brand
+gsap.set("#brand", { opacity: 0, y: -20 }); tl.to("#brand", { opacity: 1, y: 0, duration: .5, ease: "back.out(2)" }, .2).to("#brand", { opacity: 0, duration: .25 }, VE);
+tl.to("#outro", { opacity: 1, duration: .35 }, VE).fromTo("#o_badge", { scale: .5, opacity: 0 }, { scale: 1, opacity: 1, duration: .6, ease: "back.out(1.8)" }, VE + .1)
+  .from("#o_cta", { opacity: 0, y: 30, duration: .45 }, VE + .5).from("#o_cta2", { opacity: 0, y: 20, duration: .45 }, VE + .8)
+  .to("#black", { opacity: 1, duration: .3 }, T - .3);
+tl.set({}, {}, T);
+// ---------- frame loader (async seek: renderer awaits it) ----------
+const img = new Image(); let lastIdx = -1;
+async function drawFrame(t) {
+  const idx = Math.min(TL.frames - 1, Math.max(0, Math.round(t * TL.fps_src)));
+  if (idx !== lastIdx) { img.src = `frames/f_${String(idx + 1).padStart(5, "0")}.jpg`; await img.decode(); lastIdx = idx; }
+  const z = cam.z, fx = 540, fy = 800;                           // zoom around the face
+  cx.save(); cx.filter = "contrast(1.07) saturate(1.08) brightness(1.02)";
+  cx.translate(fx, fy); cx.scale(z, z); cx.translate(-fx, -fy); cx.drawImage(img, 0, 0, 1080, 1920); cx.restore();
+}
+window.seek = async t => { tl.seek(t, false); karaoke(t); if (t < VE + .4) await drawFrame(Math.min(t, VE - .01)); };
+document.fonts.ready.then(async () => { await window.seek(0); window.ready = true; });
+</script>
+</body>
+</html>

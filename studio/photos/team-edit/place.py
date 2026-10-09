@@ -1,0 +1,81 @@
+"""Place the new team member. usage: place.py base.jpg out.jpg [left]  (left = in place of the removed pair)"""
+import sys, cv2, numpy as np
+base = cv2.imread(sys.argv[1]).astype(np.float32)
+MODE = sys.argv[3] if len(sys.argv) > 3 else "right"
+LEFT = MODE in ("left", "user")
+tag = {"right": "person", "left": "person2", "user": "person3"}[MODE]
+P = cv2.imread(f"newguy/{tag}.png").astype(np.float32)
+A = cv2.imread(f"newguy/{tag}_alpha.png", 0).astype(np.float32) / 255
+ys, xs = np.nonzero(A > 0.5)
+top, bot, left, right = ys.min(), ys.max(), xs.min(), xs.max()
+H_TARGET, FEET_Y, LEFT_X = {"left": (1292, 1568, 806), "user": (1352, 1566, 836), "right": (1318, 1597, 2018)}[MODE]                    # p5: ~1320 px tall, feet at ~1590
+k = H_TARGET / (bot - top)
+P = cv2.resize(P[top:bot + 1, left:right + 1], None, fx=k, fy=k, interpolation=cv2.INTER_AREA)
+A = cv2.resize(A[top:bot + 1, left:right + 1], (P.shape[1], P.shape[0]), interpolation=cv2.INTER_AREA)
+# grade to the group's look: LAB stats of person 5 (dark suit + face), partial transfer
+ref_m = cv2.imread("mask_p5.png", 0) > 0
+R = cv2.cvtColor(base.astype(np.uint8), cv2.COLOR_BGR2LAB).astype(np.float32)[ref_m]
+L = cv2.cvtColor(P.astype(np.uint8), cv2.COLOR_BGR2LAB).astype(np.float32)
+pm = A > 0.9; S = L[pm]
+for c, wgt in (((0, 0.85), (1, 0.9), (2, 0.9)) if MODE == "user" else ((0, 0.8), (1, 0.7), (2, 0.7))):
+    L[..., c] = (L[..., c] - S[:, c].mean()) * (1 - wgt + wgt * R[:, c].std() / S[:, c].std()) + \
+                (1 - wgt) * S[:, c].mean() + wgt * R[:, c].mean()
+if MODE == "user":                                       # legs + shoes: matte warm black like the others
+    hh = L.shape[0]; ry = np.arange(hh)[:, None].astype(np.float32)
+    legs = np.clip((ry - 0.50 * hh) / (0.06 * hh), 0, 1)
+    L[..., 1] = L[..., 1] * (1 - legs) + (L[..., 1] * 0.4 + 129 * 0.6) * legs          # kill the blue cast
+    L[..., 2] = L[..., 2] * (1 - legs) + (L[..., 2] * 0.4 + 131 * 0.6) * legs
+    L0 = L[..., 0]
+    comp = np.where(L0 > 48, 48 + (L0 - 48) * 0.35, L0)                               # no glossy highlights
+    L[..., 0] = L0 * (1 - legs) + (comp * 0.92) * legs
+    shoes = np.clip((ry - 0.90 * hh) / (0.02 * hh), 0, 1)
+    L0 = L[..., 0]; L[..., 0] = L0 * (1 - shoes) + np.where(L0 > 40, 40 + (L0 - 40) * 0.3, L0) * shoes
+P = cv2.cvtColor(np.clip(L, 0, 255).astype(np.uint8), cv2.COLOR_LAB2BGR).astype(np.float32)
+P = P * 0.93 + 0.07 * 200                                        # lifted blacks like the rest
+P = cv2.GaussianBlur(P, (0, 0), 0.85 if MODE == "user" else 0.55)
+if MODE == "user": A = cv2.GaussianBlur(A, (0, 0), 0.9)                           # same softness as the photo
+P += np.random.default_rng(11).normal(0, 2.6, P.shape)
+h, w = P.shape[:2]; y0 = FEET_Y - h; x0 = LEFT_X
+H, W = base.shape[:2]
+# soft contact shadow on the carpet + faint ambient occlusion
+sh = np.zeros((H, W), np.float32)
+cv2.ellipse(sh, (x0 + w // 2, FEET_Y - 6), (int(w * 0.46), 22), 0, 0, 360, 1, -1)
+sh = cv2.GaussianBlur(sh, (0, 0), 14) * 0.55
+foot = np.zeros((H, W), np.float32)
+cv2.ellipse(foot, (x0 + w // 2, FEET_Y - 4), (int(w * 0.36), 9), 0, 0, 360, 1, -1)
+if MODE == "user":                                       # wide stance: one contact shadow per shoe
+    foot[:] = 0; sh[:] = 0
+    lowA = A[int(h * 0.85):]
+    for xa_, xb_ in ((0, w // 2), (w // 2, w)):
+        cols = np.nonzero(lowA[:, xa_:xb_].max(0) > 0.5)[0]
+        rows = np.nonzero(lowA[:, xa_:xb_].max(1) > 0.5)[0]
+        if not len(cols): continue
+        fy = y0 + int(h * 0.85) + rows.max(); fx0, fx1 = x0 + xa_ + cols.min(), x0 + xa_ + cols.max()
+        e = np.zeros((H, W), np.float32)
+        cv2.ellipse(e, ((fx0 + fx1) // 2, fy - 2), ((fx1 - fx0) // 2 + 4, 6), 0, 0, 360, 1, -1)
+        foot = np.maximum(foot, e)
+        e2 = np.zeros((H, W), np.float32)
+        cv2.ellipse(e2, ((fx0 + fx1) // 2, fy - 8), ((fx1 - fx0) // 2 + 26, 20), 0, 0, 360, 1, -1)
+        sh = np.maximum(sh, cv2.GaussianBlur(e2, (0, 0), 11) * 0.62)
+    # contact line that follows each sole (heel, arch and toe)
+    sole = np.zeros((H, W), np.float32)
+    bandA = A[int(h * 0.9):]
+    for cx in range(w):
+        r = np.nonzero(bandA[:, cx] > 0.5)[0]
+        if len(r): cv2.circle(sole, (x0 + cx, y0 + int(h * 0.9) + r.max() + 1), 3, 1, -1)
+    sh = np.maximum(sh, cv2.GaussianBlur(sole, (0, 0), 2.2) * 0.85)
+    sh = np.maximum(sh, cv2.GaussianBlur(foot, (0, 0), 2.5) * 0.9)
+else:
+    sh = np.maximum(sh, cv2.GaussianBlur(foot, (0, 0), 4) * 0.75)
+out = base * (1 - sh[..., None])
+# person
+xa, xb = max(x0, 0), min(x0 + w, W); ya, yb = max(y0, 0), min(y0 + h, H)
+a = A[ya - y0:yb - y0, xa - x0:xb - x0][..., None]
+out[ya:yb, xa:xb] = out[ya:yb, xa:xb] * (1 - a) + P[ya - y0:yb - y0, xa - x0:xb - x0] * a
+# people in front of him (Sobhan overlaps his right shoulder)
+if LEFT:
+    front = cv2.imread("mask_p3.png", 0).astype(np.float32) / 255
+    front = cv2.GaussianBlur(front, (0, 0), 0.7)[..., None]
+    out = out * (1 - front) + base * front
+cv2.imwrite(sys.argv[2], np.clip(out, 0, 255).astype(np.uint8), [cv2.IMWRITE_JPEG_QUALITY, 95])
+print("ok", (x0, y0, w, h))
