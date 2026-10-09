@@ -29,13 +29,15 @@ cut = chin[1] + 0.08 * face_h
 head = aw * np.clip((cut - yy) / (0.05 * face_h), 0, 1)
 # below the ears keep only the jaw/chin width (no selfie shoulders/polo)
 jaw_half = 0.5 * np.linalg.norm(swl[454] - swl[234]) * 1.02
-ear_y = 0.5 * (swl[177][1] + swl[401][1])
+ear_y = max(swl[132][1], swl[361][1]) + 0.07 * face_h     # below the ear lobes
 JAW = [234, 93, 132, 58, 172, 136, 150, 149, 176, 148, 152, 377, 400, 378, 379, 365, 397, 288, 361, 323, 454]
 inside = np.zeros((h, w), np.uint8)
-pj = swl[JAW].copy(); pj[:, 1] += 3                       # include the beard edge under the jaw
+pj = swl[JAW].copy()
+c0 = swl[1]                                                # expand the jaw outline outward so the selfie's own
+v = pj - c0; pj = c0 + v * (1 + 10 / np.linalg.norm(v, axis=1, keepdims=True))   # soft matte edge defines the jaw
 cv2.fillPoly(inside, [np.vstack([[[pj[0][0] - 40, 0]], pj, [[pj[-1][0] + 40, 0]]]).astype(np.int32)], 1)
 lim = np.where(yy > ear_y, inside.astype(np.float32), 1.0)
-head *= cv2.GaussianBlur(lim, (0, 0), 1.5)
+head *= cv2.GaussianBlur(lim, (0, 0), 3)
 # body behind: remove the old head (and anything above the shoulders) -> backdrop plate
 md = cv2.imread("md1.png", 0).astype(np.float32) / 255
 ear_lo = max(bl[177][1], bl[401][1]) + 25
